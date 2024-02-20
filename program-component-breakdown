@@ -1,1 +1,9 @@
 AM (Asset Manager) - Needs to read the data files and convert/decode the information from xml files to be understandable by the rest of the code [NO UI] [Decoded Data can be stored in local files]
+
+SDM (Source Data Manager) - responsible for managing user access to data source servers, databases, data models and all related elements [NO UI] 
+
+RDM (Result Data Management) - responsible for collecting, organising, protecting and storing the data so it can be analysed for business decisions
+
+OPT (Optimiser) - central module optimising heat production schedules for economic efficiency while ensuring continuous heat availability to all buildings.
+
+DV (Data Visualisation) - Graphically presents key source and result data, allowing inspection of heating grid configuration, production units, and time series representations of various information.
