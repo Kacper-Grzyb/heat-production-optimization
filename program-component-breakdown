@@ -1,0 +1,1 @@
+AM (Asset Manager) - Needs to read the data files and convert/decode the information from xml files to be understandable by the rest of the code [NO UI] [Decoded Data can be stored in local files]
