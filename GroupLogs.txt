@@ -1,0 +1,25 @@
+Group Logs
+
+Meeting 1
+Date: 02/02/2024
+Time: 15:30 - 19:30
+Place: SDU Library 
+Preparation: None
+Agenda: Clear vision of the project, User Stories, Definition of Done, Technical Requirements, 
+Rough Product Design.
+Present: Kacper Grzyb, Sebestyen Deak, Levente Sohar, Leonardo Gianola, Ignat Bozhinov.   
+
+Supervisor Meeting 1
+Date: 08/03/2024 
+Time: 10:00 - 10:34
+Place: SDU
+Agenda: Introduction to the Semester Project 
+Present: Kacper Grzyb, Sebestyen Deak, Levente Sohar, Ignat Bozhinov.   
+
+Meeting 2
+Date: 16/09/2023
+Time: 12:30 -  
+Place: SDU Library 
+Preparation: None 
+Agenda: Preparation for Sprint 1
+Present: Kacper Grzyb, Sebestyen Deak, Levente Sohar, Leonardo Gianola, Ignat Bozhinov.
