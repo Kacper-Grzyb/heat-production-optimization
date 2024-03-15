@@ -23,3 +23,10 @@ Place: SDU Library
 Preparation: None 
 Agenda: Preparation for Sprint 1
 Present: Kacper Grzyb, Sebestyen Deak, Levente Sohar, Leonardo Gianola, Ignat Bozhinov.
+
+Supervisor Meeting 2
+Date: 15/03/2024 
+Time: 10:00 - 10:15
+Place: Online
+Agenda: Overview of progress 
+Present: Kacper Grzyb, Sebestyen Deak, Levente Sohar, Leonardo Gianola, Ignat Bozhinov. 
