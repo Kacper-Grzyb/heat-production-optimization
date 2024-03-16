@@ -17,8 +17,8 @@ Agenda: Introduction to the Semester Project
 Present: Kacper Grzyb, Sebestyen Deak, Levente Sohar, Ignat Bozhinov.   
 
 Meeting 2
-Date: 16/09/2023
-Time: 12:30 -  
+Date: 12/03/2023
+Time: 12:30 -  15:00
 Place: SDU Library 
 Preparation: None 
 Agenda: Preparation for Sprint 1
@@ -30,3 +30,11 @@ Time: 10:00 - 10:15
 Place: Online
 Agenda: Overview of progress 
 Present: Kacper Grzyb, Sebestyen Deak, Levente Sohar, Leonardo Gianola, Ignat Bozhinov. 
+
+Meeting 3
+Date: 16/03/2023
+Time: 16:00 -  19:30
+Place: SDU Library 
+Preparation: None
+Agenda: Finishing Sprint 1
+Present: Kacper Grzyb, Sebestyen Deak, Levente Sohar, Leonardo Gianola, Ignat Bozhinov.
