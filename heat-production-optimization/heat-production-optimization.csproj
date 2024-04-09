@@ -7,4 +7,8 @@
     <RootNamespace>heat_production_optimization</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.3" />
+  </ItemGroup>
+
 </Project>
