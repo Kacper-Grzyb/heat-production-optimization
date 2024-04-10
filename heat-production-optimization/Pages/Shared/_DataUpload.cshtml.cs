@@ -18,27 +18,55 @@ namespace heat_production_optimization.Pages.Shared
         {
         }
 
-        public void OnPost(IFormFile uploadedFile)
+        public void OnPost(string buttonAction, IFormFile uploadedFile)
         {
-            if (uploadedFile.ContentType != "text/csv" || uploadedFile == null || uploadedFile.Length == 0)
+			SourceDataManager sdm = new SourceDataManager(_context);
+			switch (buttonAction)
             {
-                Console.WriteLine("Wrong file format uploaded!");
-                // show some message for the user
-                return;
+                case "uploadData":
+					if (uploadedFile.ContentType != "text/csv" || uploadedFile == null || uploadedFile.Length == 0)
+					{
+						Console.WriteLine("Wrong file format uploaded!");
+						// show some message for the user
+						return;
+					}
+
+					if (sdm.LoadDbWithInputData(uploadedFile))
+					{
+						Console.WriteLine("Data loaded successfully!");
+						// display a message for the user
+					}
+					else
+					{
+						Console.WriteLine("Failed to load data from upload!");
+						// display a message for the user
+					}
+					break;
+				case "loadDataSummer":
+					if (sdm.LoadDbWithDanfossData(true))
+					{
+						Console.WriteLine("Data loaded successfully!");
+					}
+					else
+					{
+						Console.WriteLine("Failed to load data!");
+					}
+					break;
+				case "loadDataWinter":
+					if(sdm.LoadDbWithDanfossData(false))
+					{
+						Console.WriteLine("Data loaded successfully!");
+					}
+					else
+					{
+						Console.WriteLine("Failed to load data!");
+					}
+					break;
+				default:
+					Console.WriteLine("Wrong arguments provided to the function!");
+					break;
             }
 
-            SourceDataManager sdm = new SourceDataManager(_context);
-
-            if (sdm.LoadDbWithInputData(uploadedFile))
-            {
-                Console.WriteLine("Data loaded successfully!");
-                // display a message for the user
-            }
-            else
-            {
-                Console.WriteLine("Failed to load data from upload!");
-                // display a message for the user
-            }
 
         }
     }
