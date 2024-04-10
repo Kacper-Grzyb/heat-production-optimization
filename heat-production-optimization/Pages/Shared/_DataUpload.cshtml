@@ -1,0 +1,15 @@
+﻿@page
+@model _DataUploadModel
+@{
+}
+
+
+@* TODO add an button that will create a popup window with the required format of the csv file *@
+<form method="post" enctype="multipart/form-data">
+	<div class="container">
+		<label class="form-label">Upload heating demand data csv file</label>
+		<input type="file" name="uploadedFile" class="form-control"/>
+		<div class="mt-3"><button type="submit" class="btn btn-primary">Upload</button></div>
+	</div>
+@* TODO add buttons that will load the summer or winter data pre-provided by danfoss instead of the user upload *@
+</form>

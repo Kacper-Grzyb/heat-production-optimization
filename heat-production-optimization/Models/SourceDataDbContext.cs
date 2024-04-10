@@ -12,5 +12,10 @@ namespace heat_production_optimization.Models
         {
             optionsBuilder.UseInMemoryDatabase("CalculatorAppDb");
         }
+
+        public bool IsDataLoaded()
+        {
+            return HeatDemandData.Count() > 0;
+        }
     }
 }
