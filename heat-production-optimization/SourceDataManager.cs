@@ -40,6 +40,8 @@ namespace heat_production_optimization
                         id++;
                         _context.HeatDemandData.Add(temp);
                     }
+
+                    _context.SaveChanges();
                 }
             }
             catch(Exception ex)
@@ -55,8 +57,8 @@ namespace heat_production_optimization
         {
             int id = 1;
             string dataPath;
-            if (summerPeriod) dataPath = "~/danfoss_data/DanfossData_Summer.csv";
-            else dataPath = "~/danfoss_data/DanfossData_Winter.csv";
+            if (summerPeriod) dataPath = "wwwroot/danfoss_data/DanfossData_Summer.csv";
+            else dataPath = "wwwroot/danfoss_data/DanfossData_Winter.csv";
 
             try
             {
@@ -79,6 +81,8 @@ namespace heat_production_optimization
                         id++;
                         _context.HeatDemandData.Add(temp);
                     }
+
+                    _context.SaveChanges();
                 }
             }
             catch(Exception ex) 
