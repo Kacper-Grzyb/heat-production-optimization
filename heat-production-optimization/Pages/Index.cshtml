@@ -1,6 +1,10 @@
 ﻿@page
 @model IndexModel
 @{
+    GasBoiler gasBoiler = new("GB", 5, 500, 215, 1.1);
+    OilBoiler oilBoiler = new("OB", 4, 700, 265, 1.2);
+    GasMotor gasMotor= new GasMotor("GM", 3.6, 2.4, 1100, 640, 1.9);
+    ElectricBoiler electricBoiler= new ElectricBoiler("EK", 8, -8, 50, 0);
 }
 
 <h1>This is the Asset Manager Component</h1>
@@ -10,4 +14,30 @@
 @Html.Partial("_DataUpload", Model._dataUploadModel)
 </partial>
 
-<img src="~/images/heatington_map.png" alt="Heatington Map" />
+<div>
+    <br>
+</div>
+<img src="~/images/gas_boiler.png" alt="Gas Boiler" />
+
+<div>
+    <br>Name: @gasBoiler.Name
+    <br>Maximum Produced Heat: @gasBoiler.MaxHeat MW
+    <br>Production Cost: @gasBoiler.ProductionCost DKK/MWh
+    <br>CO2 Emissions: @gasBoiler.CO2Emission KG/MWh
+    <br>Gas Consumption: @gasBoiler.GasConsumption MWh(gas)/MWh(heat)
+</div>
+
+<div>
+    <br>
+</div>
+
+<img src="~/images/oil_boiler.png" alt="Oil Boiler" />
+
+
+<div>
+    <br>Name: @oilBoiler.Name
+    <br>Maximum Produced Heat: @oilBoiler.MaxHeat MW
+    <br>Production Cost: @oilBoiler.ProductionCost DKK/MWh
+    <br>CO2 Emissions: @oilBoiler.CO2Emission KG/MWh
+    <br>Gas Consumption: @oilBoiler.OilConsumption MWh(oil)/MWh(heat)
+</div>
