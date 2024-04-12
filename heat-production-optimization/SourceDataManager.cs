@@ -1,6 +1,7 @@
 ﻿using heat_production_optimization.Models;
 using Microsoft.AspNetCore.Components.Forms;
 using System.Diagnostics;
+using System.Reflection.Metadata.Ecma335;
 
 namespace heat_production_optimization
 {
@@ -17,22 +18,77 @@ namespace heat_production_optimization
         {
             int id = 1;
             if (formFile == null) return false;
-            var stream = formFile.OpenReadStream();
-            using (var reader = new StreamReader(stream))
+
+            try
             {
-                Console.WriteLine(reader.ReadLine()); // skip the header files
-                while (!reader.EndOfStream)
+                var stream = formFile.OpenReadStream();
+                using (var reader = new StreamReader(stream))
                 {
-                    string[] splitLine = reader.ReadLine().Split(";");
-                    HeatDemandDataModel temp = new HeatDemandDataModel();
-                    temp.timeFrom = DateTime.Parse(splitLine[0]);
-                    temp.timeTo = DateTime.Parse(splitLine[1]);
-                    temp.heatDemand = double.Parse(splitLine[2]);
-                    temp.electricityPrice = double.Parse(splitLine[3]);
-                    temp.Id = id;
-                    id++;
-                    _context.HeatDemandData.Add(temp);
+                    reader.ReadLine(); // skip the header files
+                    while (!reader.EndOfStream)
+                    {
+                        string? line = reader.ReadLine();
+                        if (line == null) continue;
+
+                        string[] splitLine = line.Split(";");
+                        HeatDemandDataModel temp = new HeatDemandDataModel();
+                        temp.timeFrom = DateTime.Parse(splitLine[0]);
+                        temp.timeTo = DateTime.Parse(splitLine[1]);
+                        temp.heatDemand = double.Parse(splitLine[2]);
+                        temp.electricityPrice = double.Parse(splitLine[3]);
+                        temp.Id = id;
+                        id++;
+                        _context.HeatDemandData.Add(temp);
+                    }
+
+                    _context.SaveChanges();
                 }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"There was an error during loading the file! Exception message {ex.Message}");
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool LoadDbWithDanfossData(bool summerPeriod)
+        {
+            int id = 1;
+            string dataPath;
+            if (summerPeriod) dataPath = "wwwroot/danfoss_data/DanfossData_Summer.csv";
+            else dataPath = "wwwroot/danfoss_data/DanfossData_Winter.csv";
+
+            try
+            {
+                using (StreamReader reader = new StreamReader(dataPath))
+                {
+                    reader.ReadLine(); // skip the header files
+
+                    while (!reader.EndOfStream)
+                    {
+                        string? line = reader.ReadLine();
+                        if (line == null) continue;
+
+                        string[] splitLine = line.Split(";");
+                        HeatDemandDataModel temp = new HeatDemandDataModel();
+                        temp.timeFrom = DateTime.Parse(splitLine[0]);
+                        temp.timeTo = DateTime.Parse(splitLine[1]);
+                        temp.heatDemand = double.Parse(splitLine[2]);
+                        temp.electricityPrice = double.Parse(splitLine[3]);
+                        temp.Id = id;
+                        id++;
+                        _context.HeatDemandData.Add(temp);
+                    }
+
+                    _context.SaveChanges();
+                }
+            }
+            catch(Exception ex) 
+            {
+                Console.WriteLine($"There was an error during loading the data! Exception message: {ex.Message}");
+                return false;
             }
             return true;
         }

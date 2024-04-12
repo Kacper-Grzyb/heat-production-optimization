@@ -1,6 +1,7 @@
 using heat_production_optimization.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using heat_production_optimization.Pages.Shared;
 
 namespace heat_production_optimization.Pages
 {
@@ -8,6 +9,7 @@ namespace heat_production_optimization.Pages
     {
         private readonly SourceDataDbContext _context = new SourceDataDbContext();
         private readonly ILogger<IndexModel> _logger;
+        public _DataUploadModel _dataUploadModel;
 
         [BindProperty]
         public IFormFile formFile { get; set; }
@@ -16,6 +18,7 @@ namespace heat_production_optimization.Pages
         {
             _logger = logger;
             if (context != null) _context = context;
+            _dataUploadModel = new _DataUploadModel(_context);
         }
 
         public void OnGet()
@@ -23,28 +26,56 @@ namespace heat_production_optimization.Pages
 
         }
 
-        public void OnPost(IFormFile uploadedFile)
+        public void OnPost(string buttonAction, IFormFile uploadedFile)
         {
-            if (uploadedFile.ContentType != "text/csv" || uploadedFile == null || uploadedFile.Length == 0)
-            {
-                Console.WriteLine("Wrong file format uploaded!");
-                // show some message for the user
-                return;
-            }
-
             SourceDataManager sdm = new SourceDataManager(_context);
-            
-            if(sdm.LoadDbWithInputData(uploadedFile))
+            switch (buttonAction)
             {
-                Console.WriteLine("Data loaded successfully!");
-                // display a message for the user
-            }
-            else
-            {
-                Console.WriteLine("Failed to load data from upload!");
-                // display a message for the user
+                case "uploadData":
+                    if (uploadedFile == null || uploadedFile.ContentType != "text/csv" || uploadedFile.Length == 0)
+                    {
+                        Console.WriteLine("Wrong file format uploaded!");
+                        // show some message for the user
+                        return;
+                    }
+
+                    if (sdm.LoadDbWithInputData(uploadedFile))
+                    {
+                        Console.WriteLine("Data loaded successfully!");
+                        // display a message for the user
+                    }
+                    else
+                    {
+                        Console.WriteLine("Failed to load data from upload!");
+                        // display a message for the user
+                    }
+                    break;
+                case "loadDataSummer":
+                    if (sdm.LoadDbWithDanfossData(true))
+                    {
+                        Console.WriteLine("Data loaded successfully!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Failed to load data!");
+                    }
+                    break;
+                case "loadDataWinter":
+                    if (sdm.LoadDbWithDanfossData(false))
+                    {
+                        Console.WriteLine("Data loaded successfully!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Failed to load data!");
+                    }
+                    break;
+                default:
+                    Console.WriteLine("Wrong arguments provided to the function!");
+                    break;
             }
 
+            Console.WriteLine(_context.IsDataLoaded());
         }
     }
 }

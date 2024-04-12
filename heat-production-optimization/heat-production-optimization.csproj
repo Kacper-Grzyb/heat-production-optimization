@@ -8,6 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\images\electric_boiler.png" />
+    <None Include="wwwroot\images\gas_boiler.png" />
+    <None Include="wwwroot\images\gas_motor.png" />
+    <None Include="wwwroot\images\heatington_map.png" />
+    <None Include="wwwroot\images\oil_boiler.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.3" />
   </ItemGroup>
 
