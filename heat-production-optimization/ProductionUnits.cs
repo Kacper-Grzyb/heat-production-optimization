@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace heat_production_optimization
 {
-    public interface IBoiler
+    public interface IUnit
     {
         public string? Name { get;}
         public double MaxHeat { get;}
@@ -10,7 +10,7 @@ namespace heat_production_optimization
         public int CO2Emission { get;}
     }
 
-    public class GasBoiler : IBoiler
+    public class GasBoiler : IUnit
     {
         public string? Name { get;}
         public double MaxHeat { get;}
@@ -28,7 +28,7 @@ namespace heat_production_optimization
         } 
     }
 
-    public class OilBoiler : IBoiler
+    public class OilBoiler : IUnit
     {
         public string? Name { get;}
         public double MaxHeat { get;}
@@ -47,7 +47,7 @@ namespace heat_production_optimization
 
     }
 
-    public class GasMotor : IBoiler
+    public class GasMotor : IUnit
     {
         public string? Name { get;}
         public double MaxHeat { get;}
@@ -67,7 +67,7 @@ namespace heat_production_optimization
         }   
     }
 
-    public class ElectricBoiler : IBoiler
+    public class ElectricBoiler : IUnit
     {
         public string? Name { get;}
         public double MaxHeat { get;}
