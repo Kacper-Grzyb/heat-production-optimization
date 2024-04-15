@@ -43,9 +43,6 @@ namespace heat_production_optimization
                         id++;
                         _context.HeatDemandData.Add(temp);
                     }
-
-                    _context.loadedDataPath = formFile.FileName;
-                    _context.SaveChanges();
                 }
             }
             catch(Exception ex)
@@ -54,7 +51,11 @@ namespace heat_production_optimization
                 return false;
             }
 
-            return true;
+
+			_context.loadedDataPath = formFile.FileName;
+			_context.errorMessage = string.Empty;
+			_context.SaveChanges();
+			return true;
         }
 
         public bool LoadDbWithDanfossData(bool summerPeriod)
@@ -63,12 +64,12 @@ namespace heat_production_optimization
 
 			int id = 1;
             string dataPath;
-            if (summerPeriod) dataPath = "wwwroot/danfoss_data/DanfossData_Summer.csv";
-            else dataPath = "wwwroot/danfoss_data/DanfossData_Winter.csv";
+            if (summerPeriod) dataPath = "DanfossData_Summer.csv";
+            else dataPath = "DanfossData_Winter.csv";
 
             try
             {
-                using (StreamReader reader = new StreamReader(dataPath))
+                using (StreamReader reader = new StreamReader("wwwroot/danfoss_data/" + dataPath))
                 {
                     reader.ReadLine(); // skip the header files
 
@@ -88,8 +89,6 @@ namespace heat_production_optimization
                         _context.HeatDemandData.Add(temp);
                     }
 
-                    _context.loadedDataPath = dataPath;
-                    _context.SaveChanges();
                 }
             }
             catch(Exception ex) 
@@ -97,7 +96,12 @@ namespace heat_production_optimization
                 Console.WriteLine($"There was an error during loading the data! Exception message: {ex.Message}");
                 return false;
             }
-            return true;
+
+
+			_context.loadedDataPath = dataPath;
+			_context.errorMessage = string.Empty;
+			_context.SaveChanges();
+			return true;
         }
 
         public void ClearDatabase()
@@ -108,6 +112,9 @@ namespace heat_production_optimization
 				{
 					_context.HeatDemandData.Remove(item);
 				}
+
+                _context.loadedDataPath = "";
+                _context.SaveChanges();
 			}
 		}
     }

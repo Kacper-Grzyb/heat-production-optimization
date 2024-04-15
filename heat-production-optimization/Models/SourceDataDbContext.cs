@@ -8,7 +8,8 @@ namespace heat_production_optimization.Models
     {
         // TODO add user input to save here
         public DbSet<HeatDemandDataModel> HeatDemandData { get; set; }
-        public string loadedDataPath { get; set; } = "";
+        public string loadedDataPath { get; set; }
+        public string errorMessage { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
