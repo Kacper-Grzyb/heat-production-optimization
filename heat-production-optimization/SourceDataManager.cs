@@ -1,11 +1,12 @@
 ﻿using heat_production_optimization.Models;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Reflection.Metadata.Ecma335;
 
 namespace heat_production_optimization
 {
-    public class SourceDataManager
+    public class SourceDataManager : IDataBaseManager
     {
         private readonly SourceDataDbContext _context = new SourceDataDbContext();
 
@@ -16,7 +17,9 @@ namespace heat_production_optimization
 
         public bool LoadDbWithInputData(IFormFile formFile)
         {
-            int id = 1;
+            if (_context.IsDataLoaded()) ClearDatabase();
+
+			int id = 1;
             if (formFile == null) return false;
 
             try
@@ -40,8 +43,6 @@ namespace heat_production_optimization
                         id++;
                         _context.HeatDemandData.Add(temp);
                     }
-
-                    _context.SaveChanges();
                 }
             }
             catch(Exception ex)
@@ -50,19 +51,25 @@ namespace heat_production_optimization
                 return false;
             }
 
-            return true;
+
+			_context.loadedDataPath = formFile.FileName;
+			_context.errorMessage = string.Empty;
+			_context.SaveChanges();
+			return true;
         }
 
         public bool LoadDbWithDanfossData(bool summerPeriod)
         {
-            int id = 1;
+			if (_context.IsDataLoaded()) ClearDatabase();
+
+			int id = 1;
             string dataPath;
-            if (summerPeriod) dataPath = "wwwroot/danfoss_data/DanfossData_Summer.csv";
-            else dataPath = "wwwroot/danfoss_data/DanfossData_Winter.csv";
+            if (summerPeriod) dataPath = "DanfossData_Summer.csv";
+            else dataPath = "DanfossData_Winter.csv";
 
             try
             {
-                using (StreamReader reader = new StreamReader(dataPath))
+                using (StreamReader reader = new StreamReader("wwwroot/danfoss_data/" + dataPath))
                 {
                     reader.ReadLine(); // skip the header files
 
@@ -82,7 +89,6 @@ namespace heat_production_optimization
                         _context.HeatDemandData.Add(temp);
                     }
 
-                    _context.SaveChanges();
                 }
             }
             catch(Exception ex) 
@@ -90,7 +96,26 @@ namespace heat_production_optimization
                 Console.WriteLine($"There was an error during loading the data! Exception message: {ex.Message}");
                 return false;
             }
-            return true;
+
+
+			_context.loadedDataPath = dataPath;
+			_context.errorMessage = string.Empty;
+			_context.SaveChanges();
+			return true;
         }
+
+        public void ClearDatabase()
+        {
+			if (_context.IsDataLoaded())
+			{
+				foreach (var item in _context.HeatDemandData)
+				{
+					_context.HeatDemandData.Remove(item);
+				}
+
+                _context.loadedDataPath = "";
+                _context.SaveChanges();
+			}
+		}
     }
 }

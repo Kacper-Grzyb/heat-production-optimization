@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.InMemory;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace heat_production_optimization.Models
 {
@@ -7,6 +8,8 @@ namespace heat_production_optimization.Models
     {
         // TODO add user input to save here
         public DbSet<HeatDemandDataModel> HeatDemandData { get; set; }
+        public string loadedDataPath { get; set; }
+        public string errorMessage { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -15,7 +18,8 @@ namespace heat_production_optimization.Models
 
         public bool IsDataLoaded()
         {
-            return HeatDemandData.Count() > 0;
+            if (HeatDemandData == null) return false;
+            else return HeatDemandData.Count() > 0;
         }
     }
 }

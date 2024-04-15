@@ -2,14 +2,14 @@ using heat_production_optimization.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using heat_production_optimization.Pages.Shared;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace heat_production_optimization.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly SourceDataDbContext _context = new SourceDataDbContext();
+        public readonly SourceDataDbContext _context = new SourceDataDbContext();
         private readonly ILogger<IndexModel> _logger;
-        public _DataUploadModel _dataUploadModel;
 
         [BindProperty]
         public IFormFile formFile { get; set; }
@@ -18,7 +18,6 @@ namespace heat_production_optimization.Pages
         {
             _logger = logger;
             if (context != null) _context = context;
-            _dataUploadModel = new _DataUploadModel(_context);
         }
 
         public void OnGet()
@@ -28,54 +27,42 @@ namespace heat_production_optimization.Pages
 
         public void OnPost(string buttonAction, IFormFile uploadedFile)
         {
-            SourceDataManager sdm = new SourceDataManager(_context);
+            IDataBaseManager sdm = new SourceDataManager(_context);
             switch (buttonAction)
-            {
-                case "uploadData":
-                    if (uploadedFile == null || uploadedFile.ContentType != "text/csv" || uploadedFile.Length == 0)
+			{
+				case "uploadData":
+                    if (uploadedFile == null || (uploadedFile.ContentType != "text/csv" && uploadedFile.ContentType != "application/vnd.ms-excel") || uploadedFile.Length == 0)
                     {
-                        Console.WriteLine("Wrong file format uploaded!");
-                        // show some message for the user
-                        return;
+                        _context.errorMessage = "Wrong file format uploaded!";
+						_context.SaveChanges();
+                        break;
                     }
 
-                    if (sdm.LoadDbWithInputData(uploadedFile))
-                    {
-                        Console.WriteLine("Data loaded successfully!");
-                        // display a message for the user
-                    }
-                    else
-                    {
-                        Console.WriteLine("Failed to load data from upload!");
-                        // display a message for the user
-                    }
+                    if (!sdm.LoadDbWithInputData(uploadedFile))
+                    { 
+                        _context.errorMessage = "Failed to load data from upload!";
+						_context.SaveChanges();
+					}
                     break;
                 case "loadDataSummer":
-                    if (sdm.LoadDbWithDanfossData(true))
+                    if (!sdm.LoadDbWithDanfossData(true))
                     {
-                        Console.WriteLine("Data loaded successfully!");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Failed to load data!");
-                    }
+                        _context.errorMessage = "Failed to load data!";
+						_context.SaveChanges();
+					}
                     break;
                 case "loadDataWinter":
-                    if (sdm.LoadDbWithDanfossData(false))
+                    if (!sdm.LoadDbWithDanfossData(false))
                     {
-                        Console.WriteLine("Data loaded successfully!");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Failed to load data!");
-                    }
+                        _context.errorMessage = "Failed to load data!";
+						_context.SaveChanges();
+					}
                     break;
                 default:
-                    Console.WriteLine("Wrong arguments provided to the function!");
+                    _context.errorMessage = "Wrong arguments provided to the function!";
                     break;
             }
 
-            Console.WriteLine(_context.IsDataLoaded());
         }
     }
 }

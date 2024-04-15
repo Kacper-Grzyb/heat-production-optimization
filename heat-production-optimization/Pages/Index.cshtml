@@ -5,39 +5,36 @@
     OilBoiler oilBoiler = new("OB", 4, 700, 265, 1.2);
     GasMotor gasMotor= new GasMotor("GM", 3.6, 2.4, 1100, 640, 1.9);
     ElectricBoiler electricBoiler= new ElectricBoiler("EK", 8, -8, 50, 0);
+    // TODO Move this to source data manager
 }
 
-<h1>This is the Asset Manager Component</h1>
-<p>Display the data input, map and boiler data here</p>
+<h1>Asset Manager</h1>
 
-<partial>
-@Html.Partial("_DataUpload", Model._dataUploadModel)
-</partial>
+@await Component.InvokeAsync("DataUpload")
 
-<div>
-    <br>
-</div>
-<img src="~/images/gas_boiler.png" alt="Gas Boiler" />
+<br>
 
-<div>
-    <br>Name: @gasBoiler.Name
-    <br>Maximum Produced Heat: @gasBoiler.MaxHeat MW
-    <br>Production Cost: @gasBoiler.ProductionCost DKK/MWh
-    <br>CO2 Emissions: @gasBoiler.CO2Emission KG/MWh
-    <br>Gas Consumption: @gasBoiler.GasConsumption MWh(gas)/MWh(heat)
+<div class="row">
+    <img src="~/images/gas_boiler.png" alt="Gas Boiler" class="col" style="max-height: 230px; max-width: 457px"/>
+    <div class="col" style="max-height:230px">
+        <br>Name: @gasBoiler.Name
+        <br>Maximum Produced Heat: @gasBoiler.MaxHeat MW
+        <br>Production Cost: @gasBoiler.ProductionCost DKK/MWh
+        <br>CO2 Emissions: @gasBoiler.CO2Emission kg/MWh
+        <br>Gas Consumption: @gasBoiler.GasConsumption MWh(gas)/MWh(heat)
+    </div>
 </div>
 
-<div>
-    <br>
-</div>
 
-<img src="~/images/oil_boiler.png" alt="Oil Boiler" />
+<br>
 
-
-<div>
-    <br>Name: @oilBoiler.Name
-    <br>Maximum Produced Heat: @oilBoiler.MaxHeat MW
-    <br>Production Cost: @oilBoiler.ProductionCost DKK/MWh
-    <br>CO2 Emissions: @oilBoiler.CO2Emission KG/MWh
-    <br>Gas Consumption: @oilBoiler.OilConsumption MWh(oil)/MWh(heat)
+<div class="row">
+    <img src="~/images/oil_boiler.png" alt="Oil Boiler" class="col" style="max-height: 230px; max-width: 457px" />
+    <div class="col" style="max-height: 230px;">
+        <br>Name: @oilBoiler.Name
+        <br>Maximum Produced Heat: @oilBoiler.MaxHeat MW
+        <br>Production Cost: @oilBoiler.ProductionCost DKK/MWh
+        <br>CO2 Emissions: @oilBoiler.CO2Emission kg/MWh
+        <br>Oil Consumption: @oilBoiler.OilConsumption MWh(oil)/MWh(heat)
+    </div>
 </div>

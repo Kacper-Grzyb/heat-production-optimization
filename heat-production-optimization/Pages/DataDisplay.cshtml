@@ -1,0 +1,38 @@
+﻿@page
+@model heat_production_optimization.Pages.DataDisplayModel
+@{
+}
+
+@if(Model.heatDemandData.Count()>0)
+{
+	<div class="row">
+		<table>
+			<thead>
+				<tr>
+					<th>Item Id</th>
+					<th>Time from</th>
+					<th>Time to</th>
+					<th>Heat Demand</th>
+					<th>Electricity Price</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				@foreach (var item in Model.heatDemandData)
+				{
+					<tr>
+						<td>@item.Id</td>
+						<td>@item.timeFrom</td>
+						<td>@item.timeTo</td>
+						<th>@item.heatDemand</th>
+						<th>@item.electricityPrice</th>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+}
+else
+{
+	<h1>There is no data to display yet</h1>
+}
