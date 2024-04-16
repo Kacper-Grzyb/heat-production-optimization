@@ -1,3 +1,4 @@
+using heat_production_optimization;
 using heat_production_optimization.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<SourceDataDbContext>();
+builder.Services.AddSingleton<Optimizer>();
 
 var app = builder.Build();
 
