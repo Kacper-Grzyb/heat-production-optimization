@@ -96,6 +96,6 @@ namespace heat_production_optimization
 
             return (gasProductionCost, gasCO2Emission, oilProductionCost, oilCO2Emission);
         }
-
     }
+
 }
