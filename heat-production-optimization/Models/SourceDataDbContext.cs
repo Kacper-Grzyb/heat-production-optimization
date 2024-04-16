@@ -13,7 +13,7 @@ namespace heat_production_optimization.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseInMemoryDatabase("CalculatorAppDb");
+            optionsBuilder.UseInMemoryDatabase("HeatManagementDb");
         }
 
         public bool IsDataLoaded()

@@ -64,42 +64,48 @@
 </head>
 
 <body>
-    <div class="center-box">
-        <h1>Choose Production Unit Scenario</h1>
-        <div class="button-container">
-            <button>Scenario One</button>
-            <button>Scenario Two</button>
+    <div class="d-flex justify-content-center">
+        <div class="center-box">
+            <h1>Choose Production Unit Scenario</h1>
+            <div class="button-container">
+                <button>Scenario One</button>
+                <button>Scenario Two</button>
+            </div>
         </div>
     </div>
 
 
-    <div class="center-box">
-        <h1>Optimization Results</h1>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Production Unit  </th>
-                        <th>Production Cost (€)  </th>
-                        <th>CO2 Emission (kg)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Gas Boiler</td>
-                        <td>@Model.GasProductionCost</td>
-                        <td>@Model.GasCO2Emission</td>
-                    </tr>
-                    <tr>
-                        <td>Oil Boiler</td>
-                        <td>@Model.OilProductionCost</td>
-                        <td>@Model.OilCO2Emission</td>
-                    </tr>
-                    
-                </tbody>
-            </table>
-        </div>
-    </div>
+	<div class="d-flex justify-content-center mt-5">
+		<div class="center-box">
+			<h1>Optimization Results</h1>
+
+			<div class="table-container d-flex justify-content-center">
+				<table>
+					<thead>
+						<tr>
+							<th>Production Unit  </th>
+							<th>Production Cost (€)  </th>
+							<th>CO2 Emission (kg)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Gas Boiler</td>
+							<td>@Model.GasProductionCost</td>
+							<td>@Model.GasCO2Emission</td>
+						</tr>
+						<tr>
+							<td>Oil Boiler</td>
+							<td>@Model.OilProductionCost</td>
+							<td>@Model.OilCO2Emission</td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
 </body>
 
 </html>
