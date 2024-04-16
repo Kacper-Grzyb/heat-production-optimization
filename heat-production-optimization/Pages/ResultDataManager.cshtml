@@ -2,5 +2,104 @@
 @model heat_production_optimization.Pages.ResultDataManagerModel
 @{
 }
-<h1>This is the Result Data Manager Component</h1>
-<p>Display the optimized data and spreadsheets/graphs here</p>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Production Unit Scenario</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            margin: auto;
+            padding: 0;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .center-box {
+            text-align: center;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            width: 80vw;
+            max-width: 800px;
+            font-family: Arial, sans-serif;
+        }
+
+        .button-container {
+            margin-top: 30px;
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        button {
+            flex: 1;
+            padding: 15px 0;
+            margin: 0 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #e60000;
+            color: #fff;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: 48%;
+        }
+
+        button:hover {
+            background-color: #ff4d4d;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="center-box">
+        <h1>Choose Production Unit Scenario</h1>
+        <div class="button-container">
+            <button>Scenario One</button>
+            <button>Scenario Two</button>
+        </div>
+    </div>
+
+
+    <div class="center-box">
+        <h1>Optimization Results</h1>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Production Unit  </th>
+                        <th>Production Cost (€)  </th>
+                        <th>CO2 Emission (kg)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Gas Boiler</td>
+                        <td>@Model.GasProductionCost</td>
+                        <td>@Model.GasCO2Emission</td>
+                    </tr>
+                    <tr>
+                        <td>Oil Boiler</td>
+                        <td>@Model.OilProductionCost</td>
+                        <td>@Model.OilCO2Emission</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>
