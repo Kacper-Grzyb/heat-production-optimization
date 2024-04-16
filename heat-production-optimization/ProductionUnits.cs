@@ -44,7 +44,6 @@ namespace heat_production_optimization
             CO2Emission = cO2Emission;
             OilConsumption = oilConsumption;
         } 
-
     }
 
     public class GasMotor : IUnit

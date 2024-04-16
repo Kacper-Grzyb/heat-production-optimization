@@ -1,4 +1,6 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore;
+using heat_production_optimization.Models;
 
 // namespace heat_production_optimization
 // {
@@ -59,23 +61,25 @@ namespace heat_production_optimization
 {
     public class Optimizer
     {
-        private readonly GasBoiler _gasBoiler;
-        private readonly OilBoiler _oilBoiler;
+        private GasBoiler _gasBoiler;
+        private OilBoiler _oilBoiler;
 
-        public Optimizer()
-        {
-            _gasBoiler = new GasBoiler("GB", 5, 500, 215, 1.1);
-            _oilBoiler = new OilBoiler("OB", 4, 700, 265, 1.2);
-        }
+  //      public Optimizer(SourceDataDbContext context)
+  //      {
+		//	_gasBoiler = context.gasBoiler;
+		//	_oilBoiler = context.oilBoiler;
+		//}
 
-        public (double, double, double, double) OptimizeHeatProduction(double heatDemand)
+        public (double, double, double, double) OptimizeHeatProduction(double heatDemand, SourceDataDbContext context)
         {
             double gasProductionCost = 0;
             double gasCO2Emission = 0;
             double oilProductionCost = 0;
             double oilCO2Emission = 0;
+			_gasBoiler = context.gasBoiler;
+			_oilBoiler = context.oilBoiler;
 
-            if (heatDemand <= _gasBoiler.MaxHeat)
+			if (heatDemand <= _gasBoiler.MaxHeat)
             {
                 gasProductionCost = heatDemand * _gasBoiler.ProductionCost;
                 gasCO2Emission = heatDemand * _gasBoiler.CO2Emission;
