@@ -46,3 +46,19 @@ Place: Online
 Preparation: None
 Agenda: Sprint 2 planning
 Present: Kacper Grzyb, Sebestyen Deak, Levente Sohar, Leonardo Gianola, Ignat Bozhinov.
+
+Meeting 5
+Date: 16/04/2024
+Time: 13:00 -  16:00
+Place: SDU Software Room  
+Preparation: None
+Agenda: Make The Presentation 
+Present: Kacper Grzyb, Sebestyen Deak, Levente Sohar, Leonardo Gianola, Ignat Bozhinov.
+
+Mid-Term Evaluation
+Date: 17/04/2024
+Time: 9:00 -  10:30
+Place: SDU U304  
+Preparation: None
+Agenda: Present Progress To SuperVisors 
+Present: Kacper Grzyb, Sebestyen Deak, Levente Sohar, Leonardo Gianola, Ignat Bozhinov.
