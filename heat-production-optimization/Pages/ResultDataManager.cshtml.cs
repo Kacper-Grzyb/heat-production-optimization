@@ -24,7 +24,7 @@ namespace heat_production_optimization.Pages
         public void OnGet()
         {
             double heatDemand = _context.HeatDemandData.Sum(data => data.heatDemand);
-            (GasProductionCost, GasCO2Emission, OilProductionCost, OilCO2Emission) = _optimizer.OptimizeHeatProduction(heatDemand);
+            (GasProductionCost, GasCO2Emission, OilProductionCost, OilCO2Emission) = _optimizer.OptimizeHeatProduction(heatDemand, _context);
         }
     }
 }
