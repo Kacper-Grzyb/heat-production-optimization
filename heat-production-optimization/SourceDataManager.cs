@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
-using System.Reflection.Metadata.Ecma335;
+using System.Reflection.Metadata.Ecma335; 
+using System.Globalization;
 
 namespace heat_production_optimization
 {
@@ -27,7 +28,10 @@ namespace heat_production_optimization
                 var stream = formFile.OpenReadStream();
                 using (var reader = new StreamReader(stream))
                 {
+                    Console.WriteLine(CultureInfo.CurrentCulture);
+                    Console.WriteLine(CultureInfo.CurrentUICulture);
                     reader.ReadLine(); // skip the header files
+                    CultureInfo ci = new CultureInfo("en-GB");
                     while (!reader.EndOfStream)
                     {
                         string? line = reader.ReadLine();
@@ -35,8 +39,8 @@ namespace heat_production_optimization
 
                         string[] splitLine = line.Split(";");
                         HeatDemandDataModel temp = new HeatDemandDataModel();
-                        temp.timeFrom = DateTime.Parse(splitLine[0]);
-                        temp.timeTo = DateTime.Parse(splitLine[1]);
+                        temp.timeFrom = DateTime.ParseExact(splitLine[0], "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
+                        temp.timeTo = DateTime.ParseExact(splitLine[1], "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
                         temp.heatDemand = double.Parse(splitLine[2]);
                         temp.electricityPrice = double.Parse(splitLine[3]);
                         temp.Id = id;
