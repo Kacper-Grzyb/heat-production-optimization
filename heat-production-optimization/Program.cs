@@ -1,5 +1,9 @@
 using heat_production_optimization;
 using heat_production_optimization.Models;
+using System.Globalization;
+CultureInfo customCulture = new CultureInfo("en-GB");
+CultureInfo.DefaultThreadCurrentCulture = customCulture;
+CultureInfo.DefaultThreadCurrentUICulture = customCulture;
 
 var builder = WebApplication.CreateBuilder(args);
 

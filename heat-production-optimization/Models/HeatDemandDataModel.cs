@@ -1,5 +1,8 @@
-﻿namespace heat_production_optimization.Models
+﻿
+
+namespace heat_production_optimization.Models
 {
+    
     public class HeatDemandDataModel
     {
         public int Id { get; set; }
