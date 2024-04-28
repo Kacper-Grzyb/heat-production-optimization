@@ -18,8 +18,7 @@ namespace heat_production_optimization.Pages
 
 		public double TotalHeatProduction { get; set; }
 		public double TotalElectricityProduction { get; set; }
-		public double Expenses { get; set; }
-		public double Profit { get; set; }
+		public double Turnover { get; set; }
 		public double ConsumptionOfGas { get; set; }
 		public double ConsumptionOfOil { get; set; }
 		public double ConsumptionOfElectricity { get; set; }
@@ -32,8 +31,7 @@ namespace heat_production_optimization.Pages
 
             TotalHeatProduction = _optimizer.TotalHeatProduction;
             TotalElectricityProduction = _optimizer.TotalElectricityProduction;
-            Expenses = _optimizer.Expenses;
-            Profit = _optimizer.Profit;
+            Turnover = _optimizer.Turnover;
             ConsumptionOfGas = _optimizer.ConsumptionOfGas;
             ConsumptionOfOil = _optimizer.ConsumptionOfOil;
             ConsumptionOfElectricity = _optimizer.ConsumptionOfElectricity;

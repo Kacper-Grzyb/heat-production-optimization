@@ -14,8 +14,7 @@ namespace heat_production_optimization
         public Dictionary<Tuple<DateTime, DateTime>, Dictionary<IUnit, bool>> boilerActivations = new();
         public double TotalHeatProduction = 0.0;
         public double TotalElectricityProduction = 0.0;
-        public double Expenses = 0.0;
-        public double Profit = 0.0;
+        public double Turnover = 0.0;
         public double ConsumptionOfGas = 0.0;
         public double ConsumptionOfOil = 0.0;
         public double ConsumptionOfElectricity = 0.0;
@@ -46,23 +45,12 @@ namespace heat_production_optimization
 
         private void SortProductionUnits(DateTime timeKey)
         {
-            List<Tuple<IUnit, double>> unitValues = new();
-
             foreach(var unit in ProductionUnits)
             {
-                double currentProductionCost = unit.ProductionCost ?? 1;
-                double currentHeatProduction = unit.MaxHeat ?? 1;
-                if (unit.MaxElectricity != null)
-                {
-					currentProductionCost -= unit.MaxElectricity * electricityPrices[timeKey] ?? 0;
-                }
-                double ratio = currentProductionCost / currentHeatProduction;
-                unitValues.Add(new Tuple<IUnit, double> (unit, ratio));
+                unit.PriceToHeatRatio = unit.ProductionCost - (unit.MaxElectricity * electricityPrices[timeKey]) / unit.MaxHeat;
             }
 
-            List<IUnit> newProductionUnits = new();
-            foreach (var item in unitValues.OrderBy(i => i.Item2)) newProductionUnits.Add(item.Item1);
-            ProductionUnits = newProductionUnits;
+            ProductionUnits = ProductionUnits.OrderBy(u => u.PriceToHeatRatio).ToList();
 	    }
 
         public void OptimizeHeatProduction()
@@ -72,30 +60,24 @@ namespace heat_production_optimization
             {
                 Tuple<DateTime, DateTime> currentTimeFrame = new(record.timeFrom, record.timeTo);
                 currentHeatDemand += record.heatDemand;
+
                 SortProductionUnits(currentTimeFrame.Item1);
 
                 foreach(var unit in ProductionUnits)
                 {
                     if(currentHeatDemand > TotalHeatProduction)
                     {
-                        TotalHeatProduction += unit.MaxHeat ?? 0;
-                        if(unit.MaxElectricity != null)
+                        TotalHeatProduction += unit.MaxHeat;
+                        if(unit.MaxElectricity != 0)
                         {
-                            if(unit.MaxElectricity > 0)
-                            {
-                                TotalElectricityProduction += unit.MaxElectricity ?? 0;
-                                Profit += unit.MaxElectricity * record.electricityPrice ?? 0;
-                            }
-                            else
-                            {
-                                Expenses -= unit.MaxElectricity * record.electricityPrice ?? 0;
-                            }
+                            TotalElectricityProduction += unit.MaxElectricity;
+                            Turnover += unit.MaxElectricity * record.electricityPrice;
                         }
 
-                        ConsumptionOfGas += unit.GasConsumption ?? 0;
-                        ConsumptionOfOil += unit.OilConsumption ?? 0;
-                        ConsumptionOfElectricity += unit.MaxElectricity < 0 ? unit.MaxElectricity ?? 0 : 0;
-                        ProducedCO2 += unit.CO2Emission ?? 0;
+                        ConsumptionOfGas += unit.GasConsumption;
+                        ConsumptionOfOil += unit.OilConsumption;
+                        ConsumptionOfElectricity += unit.MaxElectricity < 0 ? Math.Abs(unit.MaxElectricity) : 0;
+                        ProducedCO2 += unit.CO2Emission;
 
                         boilerActivations[currentTimeFrame].Add(unit, true);
                     }
@@ -108,8 +90,7 @@ namespace heat_production_optimization
 
             TotalHeatProduction = Math.Round(TotalHeatProduction, 2);
             TotalElectricityProduction = Math.Round(TotalElectricityProduction, 2);
-            Expenses = Math.Round(Expenses, 2);
-            Profit = Math.Round(Profit, 2);
+            Turnover = Math.Round(Turnover, 2);
             ConsumptionOfGas = Math.Round(ConsumptionOfGas, 2);
             ConsumptionOfOil = Math.Round(ConsumptionOfOil, 2);
             ConsumptionOfElectricity = Math.Round(ConsumptionOfElectricity, 2);
