@@ -10,10 +10,10 @@ namespace heat_production_optimization.Pages
         private readonly SourceDataDbContext _context;
         private readonly Optimizer _optimizer;
 
-        public ResultDataManagerModel(SourceDataDbContext context, Optimizer optimizer)
+        public ResultDataManagerModel(SourceDataDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
-            _optimizer = optimizer ?? throw new ArgumentNullException(nameof(optimizer));
+            _optimizer = new Optimizer(context.productionUnits, context.HeatDemandData);
         }
 
         public double GasProductionCost { get; set; }
@@ -23,8 +23,9 @@ namespace heat_production_optimization.Pages
 
         public void OnGet()
         {
-            double heatDemand = _context.HeatDemandData.Sum(data => data.heatDemand);
-            (GasProductionCost, GasCO2Emission, OilProductionCost, OilCO2Emission) = _optimizer.OptimizeHeatProduction(heatDemand, _context);
+			double heatDemand = _context.HeatDemandData.Sum(data => data.heatDemand);
+            if(_context != null) (GasProductionCost, GasCO2Emission, OilProductionCost, OilCO2Emission) = _optimizer.OptimizeHeatProduction();
         }
+
     }
 }

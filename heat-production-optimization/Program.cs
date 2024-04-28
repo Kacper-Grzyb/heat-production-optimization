@@ -1,9 +1,9 @@
 using heat_production_optimization;
 using heat_production_optimization.Models;
 using System.Globalization;
-CultureInfo customCulture = new CultureInfo("en-GB");
-CultureInfo.DefaultThreadCurrentCulture = customCulture;
-CultureInfo.DefaultThreadCurrentUICulture = customCulture;
+//CultureInfo customCulture = new CultureInfo("en-GB");
+//CultureInfo.DefaultThreadCurrentCulture = customCulture;
+//CultureInfo.DefaultThreadCurrentUICulture = customCulture;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<SourceDataDbContext>();
-builder.Services.AddSingleton<Optimizer>();
+//builder.Services.AddSingleton<Optimizer>();
 
 var app = builder.Build();
 

@@ -28,10 +28,7 @@ namespace heat_production_optimization
                 var stream = formFile.OpenReadStream();
                 using (var reader = new StreamReader(stream))
                 {
-                    Console.WriteLine(CultureInfo.CurrentCulture);
-                    Console.WriteLine(CultureInfo.CurrentUICulture);
                     reader.ReadLine(); // skip the header files
-                    CultureInfo ci = new CultureInfo("en-GB");
                     while (!reader.EndOfStream)
                     {
                         string? line = reader.ReadLine();
@@ -39,10 +36,10 @@ namespace heat_production_optimization
 
                         string[] splitLine = line.Split(";");
                         HeatDemandDataModel temp = new HeatDemandDataModel();
-                        temp.timeFrom = DateTime.ParseExact(splitLine[0], "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
-                        temp.timeTo = DateTime.ParseExact(splitLine[1], "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
-                        temp.heatDemand = double.Parse(splitLine[2]);
-                        temp.electricityPrice = double.Parse(splitLine[3]);
+                        temp.timeFrom = DateTime.ParseExact(splitLine[0], "dd/MM/yyyy HH:mm", CultureInfo.GetCultureInfo("en-GB"));
+                        temp.timeTo = DateTime.ParseExact(splitLine[1], "dd/MM/yyyy HH:mm", CultureInfo.GetCultureInfo("en-GB"));
+                        temp.heatDemand = double.Parse(splitLine[2], CultureInfo.GetCultureInfo("da-DK"));
+                        temp.electricityPrice = double.Parse(splitLine[3], CultureInfo.GetCultureInfo("da-DK"));
                         temp.Id = id;
                         id++;
                         _context.HeatDemandData.Add(temp);
@@ -54,7 +51,6 @@ namespace heat_production_optimization
                 Console.WriteLine($"There was an error during loading the file! Exception message {ex.Message}");
                 return false;
             }
-
 
 			_context.loadedDataPath = formFile.FileName;
 			_context.errorMessage = string.Empty;
@@ -84,10 +80,10 @@ namespace heat_production_optimization
 
                         string[] splitLine = line.Split(";");
                         HeatDemandDataModel temp = new HeatDemandDataModel();
-                        temp.timeFrom = DateTime.Parse(splitLine[0]);
-                        temp.timeTo = DateTime.Parse(splitLine[1]);
-                        temp.heatDemand = double.Parse(splitLine[2]);
-                        temp.electricityPrice = double.Parse(splitLine[3]);
+                        temp.timeFrom = DateTime.Parse(splitLine[0], CultureInfo.GetCultureInfo("en-GB"));
+                        temp.timeTo = DateTime.Parse(splitLine[1], CultureInfo.GetCultureInfo("en-GB"));
+                        temp.heatDemand = double.Parse(splitLine[2], CultureInfo.GetCultureInfo("da-DK"));
+                        temp.electricityPrice = double.Parse(splitLine[3], CultureInfo.GetCultureInfo("da-DK"));
                         temp.Id = id;
                         id++;
                         _context.HeatDemandData.Add(temp);
