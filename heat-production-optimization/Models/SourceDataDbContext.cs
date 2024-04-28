@@ -20,7 +20,7 @@ namespace heat_production_optimization.Models
         {
 			gasBoiler = new GasBoiler(5, 500, 215, 1.1, "GB", "Gas Boiler");
 			oilBoiler = new OilBoiler(4, 700, 265, 1.2, "OB", "Oil Boiler");
-			gasMotor = new GasMotor(3.6, 2.4, 1100, 640, 1.9, "GM", "Gas Motor");
+			gasMotor = new GasMotor(3.6, 2.7, 1100, 640, 1.9, "GM", "Gas Motor");
 			electricBoiler = new ElectricBoiler(8, -8, 50, 0, "EK", "Electric Boiler");
             productionUnits = new List<IUnit>() { gasBoiler, oilBoiler, gasMotor, electricBoiler };
 		}

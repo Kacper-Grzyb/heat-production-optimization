@@ -99,6 +99,7 @@ namespace heat_production_optimization
 
         public ElectricBoiler(double maxHeat, double maxElectricity, int productionCost, int cO2Emission, string alias = "EK", string name = "Electric Boiler")
         {
+            Alias = alias;
             Name = name;
             MaxHeat = maxHeat;
             MaxElectricity = maxElectricity;
