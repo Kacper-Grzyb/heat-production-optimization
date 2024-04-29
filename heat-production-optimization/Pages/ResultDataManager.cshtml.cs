@@ -8,12 +8,12 @@ namespace heat_production_optimization.Pages
     public class ResultDataManagerModel : PageModel
     {
         private readonly SourceDataDbContext _context;
-        private readonly Optimizer _optimizer;
+        private readonly KOptimizer _optimizer;
 
         public ResultDataManagerModel(SourceDataDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
-            _optimizer = new Optimizer(context.productionUnits, context.HeatDemandData);
+            _optimizer = new KOptimizer(context.productionUnits, context.HeatDemandData);
         }
 
 		public double TotalHeatProduction { get; set; }
