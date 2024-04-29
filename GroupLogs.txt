@@ -70,3 +70,11 @@ Place: SDU Software Room
 Preparation: None
 Agenda: Rewrite User Stories 
 Present: Kacper Grzyb, Sebestyen Deak, Levente Sohar, Leonardo Gianola, Ignat Bozhinov.
+
+Meeting 7
+Date: 29/04/2024
+Time: 13:00 -  14:30
+Place: SDU Software Room  
+Preparation: Prepare optimization algorithm 
+Agenda: Optimizer Discussion, Project Vision Realignment 
+Present: Kacper Grzyb, Sebestyen Deak, Levente Sohar, Leonardo Gianola, Ignat Bozhinov.
