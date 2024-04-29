@@ -121,6 +121,24 @@ namespace heat_production_optimization
 	    }
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public class SOptimizer : IOptimizer
     {
         //private SourceDataDbContext _context;
@@ -159,7 +177,7 @@ namespace heat_production_optimization
 				boilerActivations.Add(timeFrame, new Dictionary<IUnit, bool>());
 			}
         }
-        public (double TotalCost, double TotalCO2Emissions, double TotalElectricityGenerated, double TotalHeatProduced) OptimizeCost(double heatDemand, double electricityPrice, List<IUnit> ProductionUnits)
+        public (double TotalCost, double TotalCO2Emissions, double TotalElectricityGenerated, double TotalHeatProduced) OptimizeCost(double heatDemand, double electricityPrice)
         {
             //DON'T USE
             //Only use if machines can only produce whole MWh
@@ -211,7 +229,7 @@ namespace heat_production_optimization
                 double totalHeatProduced = 0;
                 for (int i = 0; i < units.Length; i++)
                 {
-                    System.Console.WriteLine($"{units[i].Name} operates at {unitOperation[i].SolutionValue() * 100}% capacity;");
+                    System.Console.WriteLine($"{units[i].Name} operates at {Math.Round(unitOperation[i].SolutionValue() * 100)}% capacity;");
                     totalCO2Emissions += unitOperation[i].SolutionValue() * units[i].CO2Emission;
                     if (units[i] is GasMotor)
                     {
@@ -223,10 +241,14 @@ namespace heat_production_optimization
                     }
                     totalHeatProduced += unitOperation[i].SolutionValue() * units[i].MaxHeat;
                 }
-                System.Console.WriteLine($"Total Cost: {objective.Value()}");
-                System.Console.WriteLine($"Total CO2 Emissions: {totalCO2Emissions}");
-                System.Console.WriteLine($"Total Electricity Generated: {totalElectricityGenerated}");
-                System.Console.WriteLine($"Total Heat Produced: {totalHeatProduced}");
+                System.Console.WriteLine($"Total Cost: {Math.Round(objective.Value())}");
+                Turnover += objective.Value();
+                System.Console.WriteLine($"Total CO2 Emissions: {Math.Round(totalCO2Emissions)}");
+                ProducedCO2 += totalCO2Emissions;
+                System.Console.WriteLine($"Total Electricity Generated: {Math.Round(totalElectricityGenerated)}");
+                TotalElectricityProduction += totalElectricityGenerated;
+                System.Console.WriteLine($"Total Heat Produced: {Math.Round(totalHeatProduced)}");
+                TotalHeatProduction += totalHeatProduced;
 
                 return (objective.Value(), totalCO2Emissions, totalElectricityGenerated, totalHeatProduced);
             }
@@ -237,6 +259,16 @@ namespace heat_production_optimization
             }
         }
 
+        public void OptimizingCycle(SourceDataDbContext context)
+        {
+            var heatDemandArray = context.HeatDemandData.ToArray();
+            for(int i = 0; i < heatDemandArray.Length; i++)
+            {
+                double HeatDemandForHour = heatDemandArray[i].heatDemand;
+                double ElectricyPriceForHour = heatDemandArray[i].electricityPrice;
+                OptimizeCost(HeatDemandForHour, ElectricyPriceForHour);
+            }
+        }
         
 
     }
