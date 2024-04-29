@@ -36,10 +36,10 @@ namespace heat_production_optimization
 
                         string[] splitLine = line.Split(";");
                         HeatDemandDataModel temp = new HeatDemandDataModel();
-                        temp.timeFrom = DateTime.ParseExact(splitLine[0], "dd/MM/yyyy HH:mm", CultureInfo.GetCultureInfo("en-GB"));
-                        temp.timeTo = DateTime.ParseExact(splitLine[1], "dd/MM/yyyy HH:mm", CultureInfo.GetCultureInfo("en-GB"));
-                        temp.heatDemand = double.Parse(splitLine[2], CultureInfo.GetCultureInfo("da-DK"));
-                        temp.electricityPrice = double.Parse(splitLine[3], CultureInfo.GetCultureInfo("da-DK"));
+                        temp.timeFrom = DateTime.Parse(splitLine[0]);
+                        temp.timeTo = DateTime.Parse(splitLine[1]);
+                        temp.heatDemand = double.Parse(splitLine[2]);
+                        temp.electricityPrice = double.Parse(splitLine[3]);
                         temp.Id = id;
                         id++;
                         _context.HeatDemandData.Add(temp);
@@ -80,10 +80,10 @@ namespace heat_production_optimization
 
                         string[] splitLine = line.Split(";");
                         HeatDemandDataModel temp = new HeatDemandDataModel();
-                        temp.timeFrom = DateTime.Parse(splitLine[0], CultureInfo.GetCultureInfo("en-GB"));
-                        temp.timeTo = DateTime.Parse(splitLine[1], CultureInfo.GetCultureInfo("en-GB"));
-                        temp.heatDemand = double.Parse(splitLine[2], CultureInfo.GetCultureInfo("da-DK"));
-                        temp.electricityPrice = double.Parse(splitLine[3], CultureInfo.GetCultureInfo("da-DK"));
+                        temp.timeFrom = DateTime.Parse(splitLine[0]);
+                        temp.timeTo = DateTime.Parse(splitLine[1]);
+                        temp.heatDemand = double.Parse(splitLine[2]);
+                        temp.electricityPrice = double.Parse(splitLine[3]);
                         temp.Id = id;
                         id++;
                         _context.HeatDemandData.Add(temp);

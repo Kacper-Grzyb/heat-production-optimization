@@ -4,7 +4,18 @@ using heat_production_optimization.Models;
 
 namespace heat_production_optimization
 {
-    public class Optimizer
+    public interface IOptimizer
+    {
+		public double TotalHeatProduction { get; set; }
+		public double TotalElectricityProduction { get; set; }
+		public double Turnover { get; set; }
+		public double ConsumptionOfGas { get; set; }
+		public double ConsumptionOfOil { get; set; }
+		public double ConsumptionOfElectricity { get; set; }
+		public double ProducedCO2 { get; set; }
+	}
+
+    public class Optimizer : IOptimizer
     {
         //private SourceDataDbContext _context;
         private List<IUnit> ProductionUnits;
@@ -12,13 +23,13 @@ namespace heat_production_optimization
         private Dictionary<DateTime, double> electricityPrices = new();
 
         public Dictionary<Tuple<DateTime, DateTime>, Dictionary<IUnit, bool>> boilerActivations = new();
-        public double TotalHeatProduction = 0.0;
-        public double TotalElectricityProduction = 0.0;
-        public double Turnover = 0.0;
-        public double ConsumptionOfGas = 0.0;
-        public double ConsumptionOfOil = 0.0;
-        public double ConsumptionOfElectricity = 0.0;
-        public double ProducedCO2 = 0.0;
+        public double TotalHeatProduction { get; set; } = 0.0;
+        public double TotalElectricityProduction { get; set; } = 0.0;
+        public double Turnover { get; set; } = 0.0;
+        public double ConsumptionOfGas { get; set; } = 0.0;
+        public double ConsumptionOfOil { get; set; } = 0.0;
+        public double ConsumptionOfElectricity { get; set; } = 0.0;
+        public double ProducedCO2 { get; set; } = 0.0;
         
         /* Needed data: 
          *  Max heat production from result configuration 

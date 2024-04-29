@@ -9,8 +9,10 @@ namespace heat_production_optimization
         public string Name { get;}
         public double MaxHeat { get;}
         public double MaxElectricity { get; }
-        public int ProductionCost { get;}
-        public int CO2Emission { get;}
+        public double ProductionCost { get; }
+        public double ProductionCostMWh { get;}
+        public double CO2Emission { get; }
+        public double CO2EmissionMWh { get;}
         public double GasConsumption { get; }
         public double OilConsumption { get; }
 
@@ -22,9 +24,11 @@ namespace heat_production_optimization
         public string Alias { get; }
         public string Name { get;}
         public double MaxHeat { get;}
-        public int ProductionCost { get;}
-        public int CO2Emission { get;}
-        public double GasConsumption { get;}
+        public double ProductionCost { get;}
+		public double ProductionCostMWh { get; }
+		public double CO2Emission { get;}
+		public double CO2EmissionMWh { get; }
+		public double GasConsumption { get;}
 		public double PriceToHeatRatio { get; set; }
 
         public double OilConsumption { get; } = 0;
@@ -37,8 +41,10 @@ namespace heat_production_optimization
 			Alias = alias;
             Name = name;
             MaxHeat = maxHeat;
-            ProductionCost = productionCost;
-            CO2Emission = cO2Emission;
+            ProductionCostMWh = productionCost;
+            ProductionCost = productionCost * maxHeat;
+            CO2EmissionMWh = cO2Emission;
+            CO2Emission = cO2Emission * maxHeat;
             GasConsumption = gasConsumption;
 		} 
     }
@@ -48,8 +54,10 @@ namespace heat_production_optimization
         public string Alias { get; }
         public string Name { get;}
         public double MaxHeat { get;}
-        public int ProductionCost { get;}
-        public int CO2Emission { get;}
+		public double ProductionCost { get;}
+		public double ProductionCostMWh { get; }
+        public double CO2Emission { get;}
+        public double CO2EmissionMWh { get;}
         public double OilConsumption { get;}
 		public double PriceToHeatRatio { get; set; }
 
@@ -63,9 +71,11 @@ namespace heat_production_optimization
 			Alias = alias;
             Name = name;
             MaxHeat = maxHeat;
-            ProductionCost = productionCost;
-            CO2Emission = cO2Emission;
-            OilConsumption = oilConsumption;
+            ProductionCostMWh = productionCost;
+            ProductionCost = productionCost * maxHeat;
+			CO2EmissionMWh = cO2Emission;
+			CO2Emission = cO2Emission * maxHeat;
+			OilConsumption = oilConsumption;
 		} 
     }
 
@@ -75,8 +85,10 @@ namespace heat_production_optimization
         public string Name { get;}
         public double MaxHeat { get;}
         public double MaxElectricity { get;}
-        public int ProductionCost { get;}
-        public int CO2Emission { get;}
+        public double ProductionCost { get;}
+		public double ProductionCostMWh { get; }
+		public double CO2Emission { get;}
+        public double CO2EmissionMWh { get; } 
         public double GasConsumption { get;}
 		public double PriceToHeatRatio { get; set; }
 
@@ -90,8 +102,10 @@ namespace heat_production_optimization
             Name = name;
             MaxHeat = maxHeat;
             MaxElectricity = maxElectricity;
-            ProductionCost = productionCost;
-            CO2Emission = cO2Emission;
+            ProductionCost = productionCost * maxHeat;
+            ProductionCostMWh = productionCost;
+			CO2Emission = cO2Emission * maxHeat;
+			CO2EmissionMWh = cO2Emission;
             GasConsumption = gasConsumption;
 		}   
     }
@@ -102,8 +116,10 @@ namespace heat_production_optimization
         public string Name { get;}
         public double MaxHeat { get;}
         public double MaxElectricity { get;}
-        public int ProductionCost { get;}
-        public int CO2Emission { get;}
+        public double ProductionCost { get;}
+		public double ProductionCostMWh { get; }
+		public double CO2Emission { get;}
+        public double CO2EmissionMWh { get; }
 		public double PriceToHeatRatio { get; set; }
 
 		public double GasConsumption { get; } = 0;
@@ -117,8 +133,10 @@ namespace heat_production_optimization
             Name = name;
             MaxHeat = maxHeat;
             MaxElectricity = maxElectricity;
-            ProductionCost = productionCost;
-            CO2Emission = cO2Emission;
+            ProductionCost = productionCost * maxHeat;
+            ProductionCostMWh = productionCost;
+			CO2Emission = cO2Emission * maxHeat;
+			CO2EmissionMWh = cO2Emission;
 		}
     }
 
@@ -128,8 +146,10 @@ namespace heat_production_optimization
 		public string Name { get; }
 		public double MaxHeat { get; }
 		public double MaxElectricity { get; }
-		public int ProductionCost { get; }
-		public int CO2Emission { get; }
+		public double ProductionCost { get; }
+		public double ProductionCostMWh { get; }
+		public double CO2Emission { get; }
+        public double CO2EmissionMWh { get; }
 		public double GasConsumption { get; }
 		public double OilConsumption { get; }
 		public double PriceToHeatRatio { get; set; }
@@ -142,12 +162,12 @@ namespace heat_production_optimization
 			Name = name;
 			MaxHeat = maxHeat;
 			MaxElectricity = maxElectricity;
-			ProductionCost = productionCost;
-			CO2Emission = cO2Emission;
+			ProductionCost = productionCost * maxHeat;
+            ProductionCostMWh = productionCost;
+			CO2Emission = cO2Emission * maxHeat;
+			CO2EmissionMWh = cO2Emission;
 			GasConsumption = gasConsumption;
 			OilConsumption = oilConsumption;
 		}
 	}
-
-
 }
