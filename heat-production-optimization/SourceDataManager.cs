@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
-using System.Reflection.Metadata.Ecma335;
+using System.Reflection.Metadata.Ecma335; 
+using System.Globalization;
 
 namespace heat_production_optimization
 {
@@ -50,7 +51,6 @@ namespace heat_production_optimization
                 Console.WriteLine($"There was an error during loading the file! Exception message {ex.Message}");
                 return false;
             }
-
 
 			_context.loadedDataPath = formFile.FileName;
 			_context.errorMessage = string.Empty;

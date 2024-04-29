@@ -11,10 +11,10 @@ namespace heat_production_optimization.Pages
         public readonly SourceDataDbContext _context = new SourceDataDbContext();
         private readonly ILogger<IndexModel> _logger;
 
-        public GasBoiler gasBoiler;
-        public OilBoiler oilBoiler;
-        public GasMotor gasMotor;
-        public ElectricBoiler electricBoiler;
+        public IUnit gasBoiler;
+        public IUnit oilBoiler;
+        public IUnit gasMotor;
+        public IUnit electricBoiler;
 
 		[BindProperty]
         public IFormFile formFile { get; set; }

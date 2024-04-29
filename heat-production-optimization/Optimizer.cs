@@ -2,104 +2,122 @@
 using Microsoft.EntityFrameworkCore;
 using heat_production_optimization.Models;
 
-// namespace heat_production_optimization
-// {
-//     public class Optimizer
-//     {
-//         private GasBoiler gasBoiler;
-//         private OilBoiler oilBoiler;
-
-//         public Optimizer()
-//         {
-//             // Initialize GasBoiler and OilBoiler with their respective capacities and parameters
-//             gasBoiler = new GasBoiler("GB", maxHeat: 5, productionCost: 500, cO2Emission: 215, gasConsumption: 1.1);
-//             oilBoiler = new OilBoiler("OB", maxHeat: 4, productionCost: 700, cO2Emission: 265, oilConsumption: 1.2);
-//         }
-
-//         public OptimizeHeatProduction()
-//         {
-//             double remainingHeatDemand = heatDemand;
-
-//             // Check if GasBoiler alone can meet the demand
-//             if (gasBoiler.MaxHeat >= remainingHeatDemand)
-//             {
-//                 // GasBoiler can meet the demand
-//                 Console.WriteLine($"Using {gasBoiler.Name} to meet the heat demand.");
-//                 double gasProductionCost = gasBoiler.ProductionCost * remainingHeatDemand;
-//                 double gasCO2Emission = gasBoiler.CO2Emission * remainingHeatDemand;
-//                 return;
-//             }
-
-//             // Use GasBoiler as much as possible
-//             double gasHeatProduced = gasBoiler.MaxHeat;
-//             remainingHeatDemand -= gasHeatProduced;
-
-//             // Check if OilBoiler is needed to meet the remaining demand
-//             if (remainingHeatDemand > 0 && oilBoiler.MaxHeat >= remainingHeatDemand)
-//             {
-//                 // Both GasBoiler and OilBoiler are needed
-//                 Console.WriteLine($"Using {gasBoiler.Name} and {oilBoiler.Name} to meet the heat demand.");
-//                 double gasProductionCost = gasBoiler.ProductionCost * gasHeatProduced;
-//                 double gasCO2Emission = gasBoiler.CO2Emission * gasHeatProduced;
-//                 double oilProductionCost = oilBoiler.ProductionCost * remainingHeatDemand;
-//                 double oilCO2Emission = oilBoiler.CO2Emission * remainingHeatDemand;
-//                 double totalProductionCost = gasProductionCost + oilProductionCost;
-//                 double totalCO2Emission = gasCO2Emission + oilCO2Emission;
-//                 return;
-//             }
-
-//             // GasBoiler and OilBoiler combined cannot meet the demand
-//             Console.WriteLine("Insufficient heat production capacity.");
-//             
-//         }
-//     }
-// }
-
-using System;
-
 namespace heat_production_optimization
 {
-    public class Optimizer
+    public interface IOptimizer
     {
-        private GasBoiler _gasBoiler;
-        private OilBoiler _oilBoiler;
+		public double TotalHeatProduction { get; set; }
+		public double TotalElectricityProduction { get; set; }
+		public double Turnover { get; set; }
+		public double ConsumptionOfGas { get; set; }
+		public double ConsumptionOfOil { get; set; }
+		public double ConsumptionOfElectricity { get; set; }
+		public double ProducedCO2 { get; set; }
+	}
 
-  //      public Optimizer(SourceDataDbContext context)
-  //      {
-		//	_gasBoiler = context.gasBoiler;
-		//	_oilBoiler = context.oilBoiler;
-		//}
+    public class Optimizer : IOptimizer
+    {
+        //private SourceDataDbContext _context;
+        private List<IUnit> ProductionUnits;
+        private HeatDemandDataModel[] HeatDemandData;
+        private Dictionary<DateTime, double> electricityPrices = new();
 
-        public (double, double, double, double) OptimizeHeatProduction(double heatDemand, SourceDataDbContext context)
+        public Dictionary<Tuple<DateTime, DateTime>, Dictionary<IUnit, bool>> boilerActivations = new();
+        public double TotalHeatProduction { get; set; } = 0.0;
+        public double TotalElectricityProduction { get; set; } = 0.0;
+        public double Turnover { get; set; } = 0.0;
+        public double ConsumptionOfGas { get; set; } = 0.0;
+        public double ConsumptionOfOil { get; set; } = 0.0;
+        public double ConsumptionOfElectricity { get; set; } = 0.0;
+        public double ProducedCO2 { get; set; } = 0.0;
+        
+        /* Needed data: 
+         *  Max heat production from result configuration 
+         *  Max electricity production
+         *  Max electricity consumption
+         *  Expenses and profit
+         *  Consumption of primary energy
+         *  Produced C02
+         *  
+         * Sort either by highest profit or lowest co2 emissions
+         */
+
+        public Optimizer(List<IUnit> productionUnits, DbSet<HeatDemandDataModel> heatDemandData)
         {
-            double gasProductionCost = 0;
-            double gasCO2Emission = 0;
-            double oilProductionCost = 0;
-            double oilCO2Emission = 0;
-			_gasBoiler = context.gasBoiler;
-			_oilBoiler = context.oilBoiler;
-
-			if (heatDemand <= _gasBoiler.MaxHeat)
+            HeatDemandData = heatDemandData.ToArray().OrderBy(r => r.timeFrom).ToArray();
+			ProductionUnits = productionUnits.OrderByDescending(u => u.MaxHeat / u.ProductionCost).ToList(); // ordering the boilers based on the best heat to price ratio
+            foreach(var record in HeatDemandData)
             {
-                gasProductionCost = heatDemand * _gasBoiler.ProductionCost;
-                gasCO2Emission = heatDemand * _gasBoiler.CO2Emission;
-            }
-            else
-            {
-                gasProductionCost = _gasBoiler.MaxHeat * _gasBoiler.ProductionCost;
-                gasCO2Emission = _gasBoiler.MaxHeat * _gasBoiler.CO2Emission;
-
-                double remainingHeatDemand = heatDemand - _gasBoiler.MaxHeat;
-                double oilHeatProduced = Math.Min(remainingHeatDemand, _oilBoiler.MaxHeat);
-                oilProductionCost = oilHeatProduced * _oilBoiler.ProductionCost;
-                oilCO2Emission = oilHeatProduced * _oilBoiler.CO2Emission;
-
-                gasProductionCost += oilProductionCost;
-                gasCO2Emission += oilCO2Emission;
-            }
-
-            return (gasProductionCost, gasCO2Emission, oilProductionCost, oilCO2Emission);
+                electricityPrices.Add(record.timeFrom, record.electricityPrice);
+                Tuple<DateTime, DateTime> timeFrame = new(record.timeFrom, record.timeTo);
+				boilerActivations.Add(timeFrame, new Dictionary<IUnit, bool>());
+			}
         }
+
+        private void SortProductionUnits(DateTime timeKey)
+        {
+            foreach(var unit in ProductionUnits)
+            {
+                unit.PriceToHeatRatio = unit.ProductionCost - (unit.MaxElectricity * electricityPrices[timeKey]) / unit.MaxHeat;
+            }
+
+            ProductionUnits = ProductionUnits.OrderBy(u => u.PriceToHeatRatio).ToList();
+	    }
+
+        public void OptimizeHeatProduction()
+        {
+            double currentHeatDemand = 0.0;
+            foreach(var record in HeatDemandData)
+            {
+                Tuple<DateTime, DateTime> currentTimeFrame = new(record.timeFrom, record.timeTo);
+                currentHeatDemand += record.heatDemand;
+
+                SortProductionUnits(currentTimeFrame.Item1);
+
+                foreach(var unit in ProductionUnits)
+                {
+                    if(currentHeatDemand > TotalHeatProduction)
+                    {
+                        TotalHeatProduction += unit.MaxHeat;
+                        if(unit.MaxElectricity != 0)
+                        {
+                            TotalElectricityProduction += unit.MaxElectricity;
+                            Turnover += unit.MaxElectricity * record.electricityPrice;
+                        }
+
+                        ConsumptionOfGas += unit.GasConsumption;
+                        ConsumptionOfOil += unit.OilConsumption;
+                        ConsumptionOfElectricity += unit.MaxElectricity < 0 ? Math.Abs(unit.MaxElectricity) : 0;
+                        ProducedCO2 += unit.CO2Emission;
+
+                        boilerActivations[currentTimeFrame].Add(unit, true);
+                    }
+                    else
+                    {
+						boilerActivations[currentTimeFrame].Add(unit, false);
+					}
+                }
+            }
+
+            TotalHeatProduction = Math.Round(TotalHeatProduction, 2);
+            TotalElectricityProduction = Math.Round(TotalElectricityProduction, 2);
+            Turnover = Math.Round(Turnover, 2);
+            ConsumptionOfGas = Math.Round(ConsumptionOfGas, 2);
+            ConsumptionOfOil = Math.Round(ConsumptionOfOil, 2);
+            ConsumptionOfElectricity = Math.Round(ConsumptionOfElectricity, 2);
+            ProducedCO2 = Math.Round(ProducedCO2, 2);
+
+            foreach(var record in HeatDemandData)
+            {
+                Tuple<DateTime, DateTime> timeFrame = new(record.timeFrom, record.timeTo);
+                Console.Write(timeFrame);
+                foreach(var unit in ProductionUnits)
+                {
+                    Console.Write($"{unit.Alias} {boilerActivations[timeFrame][unit]} ");
+                }
+                Console.WriteLine();
+            }
+	    }
     }
 
 }

@@ -10,21 +10,34 @@ namespace heat_production_optimization.Pages
         private readonly SourceDataDbContext _context;
         private readonly Optimizer _optimizer;
 
-        public ResultDataManagerModel(SourceDataDbContext context, Optimizer optimizer)
+        public ResultDataManagerModel(SourceDataDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
-            _optimizer = optimizer ?? throw new ArgumentNullException(nameof(optimizer));
+            _optimizer = new Optimizer(context.productionUnits, context.HeatDemandData);
         }
 
-        public double GasProductionCost { get; set; }
-        public double GasCO2Emission { get; set; }
-        public double OilProductionCost { get; set; }
-        public double OilCO2Emission { get; set; }
+		public double TotalHeatProduction { get; set; }
+		public double TotalElectricityProduction { get; set; }
+		public double Turnover { get; set; }
+		public double ConsumptionOfGas { get; set; }
+		public double ConsumptionOfOil { get; set; }
+		public double ConsumptionOfElectricity { get; set; }
+		public double CO2Emission { get; set; }
 
-        public void OnGet()
+		public void OnGet()
         {
-            double heatDemand = _context.HeatDemandData.Sum(data => data.heatDemand);
-            (GasProductionCost, GasCO2Emission, OilProductionCost, OilCO2Emission) = _optimizer.OptimizeHeatProduction(heatDemand, _context);
+			double heatDemand = _context.HeatDemandData.Sum(data => data.heatDemand);
+            _optimizer.OptimizeHeatProduction();
+
+            TotalHeatProduction = _optimizer.TotalHeatProduction;
+            TotalElectricityProduction = _optimizer.TotalElectricityProduction;
+            Turnover = _optimizer.Turnover;
+            ConsumptionOfGas = _optimizer.ConsumptionOfGas;
+            ConsumptionOfOil = _optimizer.ConsumptionOfOil;
+            ConsumptionOfElectricity = _optimizer.ConsumptionOfElectricity;
+            CO2Emission = _optimizer.ProducedCO2;
+
         }
+
     }
 }

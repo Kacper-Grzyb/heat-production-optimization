@@ -74,8 +74,39 @@
         </div>
     </div>
 
-
 	<div class="d-flex justify-content-center mt-5">
+		<div class="center-box">
+			<h1>Optimization Results</h1>
+
+			<div class="table-container d-flex justify-content-center">
+				<table>
+					<thead>
+						<tr>
+							<th>Total Heat Produced  </th>
+							<th>Total Electricity Produced  </th>
+							<th>Turnover </th>
+                            <th>Consumption of Gas </th>
+                            <th>Consumption of Oil </th>
+                            <th>Consumption of Electricity </th>
+                            <th>CO2 Emissions (kg) </th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>@Model.TotalHeatProduction</td>
+							<td>@Model.TotalElectricityProduction</td>
+							<td>@Model.Turnover</td>
+                            <td>@Model.ConsumptionOfGas</td>
+                            <td>@Model.ConsumptionOfOil</td>
+                            <td>@Model.ConsumptionOfElectricity</td>
+                            <td>@Model.CO2Emission</td>
+						</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	@* 	<div class="d-flex justify-content-center mt-5">
 		<div class="center-box">
 			<h1>Optimization Results</h1>
 
@@ -92,19 +123,19 @@
 						<tr>
 							<td>Gas Boiler</td>
 							<td>@Model.GasProductionCost</td>
-							<td>@Model.GasCO2Emission</td>
+							<td>@Model.CO2Emission</td>
 						</tr>
 						<tr>
 							<td>Oil Boiler</td>
 							<td>@Model.OilProductionCost</td>
-							<td>@Model.OilCO2Emission</td>
+							<td>@Model.CO2Emission</td>
 						</tr>
 
 					</tbody>
 				</table>
 			</div>
 		</div>
-	</div>
+	</div> *@
 
 </body>
 

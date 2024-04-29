@@ -8,19 +8,21 @@ namespace heat_production_optimization.Models
     {
         // TODO add user input to save here
         public DbSet<HeatDemandDataModel> HeatDemandData { get; set; }
-        public string loadedDataPath { get; set; }
-        public string errorMessage { get; set; }
-        public GasBoiler gasBoiler { get; set; }
-        public OilBoiler oilBoiler { get; set; }
-        public GasMotor gasMotor { get; set; }
-        public ElectricBoiler electricBoiler { get; set; }
+        public string loadedDataPath { get; set; } = string.Empty;
+        public string errorMessage { get; set; } = string.Empty;
+        public IUnit gasBoiler { get; set; }
+        public IUnit oilBoiler { get; set; }
+        public IUnit gasMotor { get; set; }
+        public IUnit electricBoiler { get; set; }
+        public List<IUnit> productionUnits { get; set; }
 
         public SourceDataDbContext()
         {
-			gasBoiler = new GasBoiler("GB", 5, 500, 215, 1.1);
-			oilBoiler = new OilBoiler("OB", 4, 700, 265, 1.2);
-			gasMotor = new GasMotor("GM", 3.6, 2.4, 1100, 640, 1.9);
-			electricBoiler = new ElectricBoiler("EK", 8, -8, 50, 0);
+			gasBoiler = new GasBoiler(5, 500, 215, 1.1, "GB", "Gas Boiler");
+			oilBoiler = new OilBoiler(4, 700, 265, 1.2, "OB", "Oil Boiler");
+			gasMotor = new GasMotor(3.6, 2.7, 1100, 640, 1.9, "GM", "Gas Motor");
+			electricBoiler = new ElectricBoiler(8, -8, 50, 0, "EK", "Electric Boiler");
+            productionUnits = new List<IUnit>() { gasBoiler, oilBoiler, gasMotor, electricBoiler };
 		}
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
