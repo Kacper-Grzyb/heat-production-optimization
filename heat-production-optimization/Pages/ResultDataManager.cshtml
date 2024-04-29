@@ -77,8 +77,48 @@
 	<div class="d-flex justify-content-center mt-5">
 		<div class="center-box">
 			<h1>Optimization Results</h1>
+            <div class="d-flex justify-content-center">
+                <p style="margin: 0px 5px 0px 0px">Total Heat Produced:</p>
+                <p style="margin: 0px 0px 5px 0px">@Model.TotalHeatProduction</p>
+            </div>
 
-			<div class="table-container d-flex justify-content-center">
+            <div class="d-flex justify-content-center">
+                <p style="margin: 0px 5px 0px 0px">Total Electricity Produced:</p>
+                <p style="margin: 0px 0px 5px 0px">@Model.TotalElectricityProduction</p>
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <p style="margin: 0px 5px 0px 0px">Turnover:</p>
+                <p style="margin: 0px 0px 5px 0px">@Model.Turnover</p>
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <p style="margin: 0px 5px 0px 0px">Consumption of Gas:</p>
+                <p style="margin: 0px 0px 5px 0px">@Model.ConsumptionOfGas</p>
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <p style="margin: 0px 5px 0px 0px">Consumption of Oil:</p>
+                <p style="margin: 0px 0px 5px 0px">@Model.ConsumptionOfOil</p>
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <p style="margin: 0px 5px 0px 0px">Consumption of Gas:</p>
+                <p style="margin: 0px 0px 5px 0px">@Model.ConsumptionOfElectricity</p>
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <p style="margin: 0px 5px 0px 0px">CO2 Produced:</p>
+                <p style="margin: 0px 0px 5px 0px">@Model.CO2Emission</p>
+            </div>
+		</div>
+	</div>
+
+</body>
+
+</html>
+
+@* 			<div class="table-container d-flex justify-content-center">
 				<table>
 					<thead>
 						<tr>
@@ -102,41 +142,4 @@
                             <td>@Model.CO2Emission</td>
 						</tr>
 				</table>
-			</div>
-		</div>
-	</div>
-
-	@* 	<div class="d-flex justify-content-center mt-5">
-		<div class="center-box">
-			<h1>Optimization Results</h1>
-
-			<div class="table-container d-flex justify-content-center">
-				<table>
-					<thead>
-						<tr>
-							<th>Production Unit  </th>
-							<th>Production Cost (€)  </th>
-							<th>CO2 Emission (kg)</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>Gas Boiler</td>
-							<td>@Model.GasProductionCost</td>
-							<td>@Model.CO2Emission</td>
-						</tr>
-						<tr>
-							<td>Oil Boiler</td>
-							<td>@Model.OilProductionCost</td>
-							<td>@Model.CO2Emission</td>
-						</tr>
-
-					</tbody>
-				</table>
-			</div>
-		</div>
-	</div> *@
-
-</body>
-
-</html>
+			</div> *@

@@ -23,7 +23,7 @@ namespace heat_production_optimization
         private HeatDemandDataModel[] HeatDemandData;
         private Dictionary<DateTime, double> electricityPrices = new();
 
-        public Dictionary<Tuple<DateTime, DateTime>, Dictionary<IUnit, bool>> boilerActivations = new();
+        public Dictionary<Tuple<DateTime, DateTime>, Dictionary<IUnit, double>> boilerActivations = new();
         public double TotalHeatProduction { get; set; } = 0.0;
         public double TotalElectricityProduction { get; set; } = 0.0;
         public double Turnover { get; set; } = 0.0;
@@ -51,7 +51,7 @@ namespace heat_production_optimization
             {
                 electricityPrices.Add(record.timeFrom, record.electricityPrice);
                 Tuple<DateTime, DateTime> timeFrame = new(record.timeFrom, record.timeTo);
-				boilerActivations.Add(timeFrame, new Dictionary<IUnit, bool>());
+				boilerActivations.Add(timeFrame, new Dictionary<IUnit, double>());
 			}
         }
 
@@ -59,7 +59,7 @@ namespace heat_production_optimization
         {
             foreach(var unit in ProductionUnits)
             {
-                unit.PriceToHeatRatio = unit.ProductionCost - (unit.MaxElectricity * electricityPrices[timeKey]) / unit.MaxHeat;
+                unit.PriceToHeatRatio = ((unit.ProductionCostMWh * unit.MaxHeat) - (unit.MaxElectricity * electricityPrices[timeKey])) / unit.MaxHeat;
             }
 
             ProductionUnits = ProductionUnits.OrderBy(u => u.PriceToHeatRatio).ToList();
@@ -79,23 +79,29 @@ namespace heat_production_optimization
                 {
                     if(currentHeatDemand > TotalHeatProduction)
                     {
-                        TotalHeatProduction += unit.MaxHeat;
+                        double heatProducedActual;
+                        if (currentHeatDemand - TotalHeatProduction > unit.MaxHeat) heatProducedActual = unit.MaxHeat;
+                        else heatProducedActual = currentHeatDemand - TotalHeatProduction;
+						double activationPercentage = Math.Round(heatProducedActual / unit.MaxHeat, 2);
+
+						TotalHeatProduction += heatProducedActual;
                         if(unit.MaxElectricity != 0)
                         {
-                            TotalElectricityProduction += unit.MaxElectricity;
-                            Turnover += unit.MaxElectricity * record.electricityPrice;
+                            TotalElectricityProduction += unit.MaxElectricity * activationPercentage;
+                            Turnover += unit.MaxElectricity * activationPercentage * record.electricityPrice;
                         }
 
+                        Turnover -= unit.ProductionCostMWh * heatProducedActual;
                         ConsumptionOfGas += unit.GasConsumption;
                         ConsumptionOfOil += unit.OilConsumption;
                         ConsumptionOfElectricity += unit.MaxElectricity < 0 ? Math.Abs(unit.MaxElectricity) : 0;
                         ProducedCO2 += unit.CO2Emission;
 
-                        boilerActivations[currentTimeFrame].Add(unit, true);
+                        boilerActivations[currentTimeFrame].Add(unit, activationPercentage);
                     }
                     else
                     {
-						boilerActivations[currentTimeFrame].Add(unit, false);
+						boilerActivations[currentTimeFrame].Add(unit, 0.00);
 					}
                 }
             }
