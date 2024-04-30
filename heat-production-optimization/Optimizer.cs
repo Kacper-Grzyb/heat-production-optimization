@@ -95,7 +95,7 @@ namespace heat_production_optimization
                         ConsumptionOfGas += unit.GasConsumption;
                         ConsumptionOfOil += unit.OilConsumption;
                         ConsumptionOfElectricity += unit.MaxElectricity < 0 ? Math.Abs(unit.MaxElectricity) : 0;
-                        ProducedCO2 += unit.CO2Emission;
+                        ProducedCO2 += unit.CO2EmissionMWh * heatProducedActual;
 
                         boilerActivations[currentTimeFrame].Add(unit, activationPercentage);
                     }
