@@ -8,12 +8,14 @@ namespace heat_production_optimization.Pages
     public class ResultDataManagerModel : PageModel
     {
         private readonly SourceDataDbContext _context;
-        private readonly KOptimizer _optimizer;
+        private readonly KOptimizer kOptimizer;
+        private readonly SOptimizer sOptimizer;
 
         public ResultDataManagerModel(SourceDataDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
-            _optimizer = new KOptimizer(context.productionUnits, context.HeatDemandData);
+            kOptimizer = new KOptimizer(context.productionUnits, context.HeatDemandData);
+            sOptimizer = new SOptimizer(context.productionUnits, context.HeatDemandData);
         }
 
 		public double TotalHeatProduction { get; set; }
@@ -27,17 +29,33 @@ namespace heat_production_optimization.Pages
 		public void OnGet()
         {
 			double heatDemand = _context.HeatDemandData.Sum(data => data.heatDemand);
-            _optimizer.OptimizeHeatProduction();
+            sOptimizer.OptimizingCycle(_context);
 
-            TotalHeatProduction = _optimizer.TotalHeatProduction;
-            TotalElectricityProduction = _optimizer.TotalElectricityProduction;
-            Turnover = _optimizer.Turnover;
-            ConsumptionOfGas = _optimizer.ConsumptionOfGas;
-            ConsumptionOfOil = _optimizer.ConsumptionOfOil;
-            ConsumptionOfElectricity = _optimizer.ConsumptionOfElectricity;
-            CO2Emission = _optimizer.ProducedCO2;
+            TotalHeatProduction = Math.Round(sOptimizer.TotalHeatProduction);
+            TotalElectricityProduction = Math.Round(sOptimizer.TotalElectricityProduction);
+            Turnover = Math.Round(sOptimizer.Turnover);
+            ConsumptionOfGas = Math.Round(sOptimizer.ConsumptionOfGas);
+            ConsumptionOfOil = Math.Round(sOptimizer.ConsumptionOfOil);
+            ConsumptionOfElectricity = Math.Round(sOptimizer.ConsumptionOfElectricity);
+            CO2Emission = Math.Round(sOptimizer.ProducedCO2);
 
         }
+        /*
+		public void OnGet()
+        {
+			double heatDemand = _context.HeatDemandData.Sum(data => data.heatDemand);
+            kOptimizer.OptimizeHeatProduction(_context);
+
+            TotalHeatProduction = Math.Round(kOptimizer.TotalHeatProduction);
+            TotalElectricityProduction = Math.Round(kOptimizer.TotalElectricityProduction);
+            Turnover = Math.Round(kOptimizer.Turnover);
+            ConsumptionOfGas = Math.Round(kOptimizer.ConsumptionOfGas);
+            ConsumptionOfOil = Math.Round(kOptimizer.ConsumptionOfOil);
+            ConsumptionOfElectricity = Math.Round(kOptimizer.ConsumptionOfElectricity);
+            CO2Emission = Math.Round(kOptimizer.ProducedCO2);
+
+        }
+        */
 
     }
 }
