@@ -16,6 +16,12 @@ namespace heat_production_optimization
 		public double ProducedCO2 { get; set; }
 	}
 
+    public enum OptimizationOption
+    {
+        Cost,
+        Emission
+    }
+
     public class KOptimizer : IOptimizer
     {
         //private SourceDataDbContext _context;
@@ -55,7 +61,7 @@ namespace heat_production_optimization
 			}
         }
 
-        private void SortProductionUnits(DateTime timeKey)
+        private void SortProductionUnitsCost(DateTime timeKey)
         {
             foreach(var unit in ProductionUnits)
             {
@@ -65,7 +71,17 @@ namespace heat_production_optimization
             ProductionUnits = ProductionUnits.OrderBy(u => u.PriceToHeatRatio).ToList();
 	    }
 
-        public void OptimizeHeatProduction()
+        private void SortProductionUnitsEmission(DateTime timeKey)
+        {
+            foreach (var unit in ProductionUnits)
+            {
+                unit.PriceToHeatRatio = ((unit.ProductionCostMWh * unit.MaxHeat) - (unit.MaxElectricity * electricityPrices[timeKey])) / unit.MaxHeat;
+            }
+
+            ProductionUnits = ProductionUnits.OrderBy(u => u.CO2EmissionMWh).ToList();
+        }
+
+        public void OptimizeHeatProduction(OptimizationOption option)
         {
             double currentHeatDemand = 0.0;
             foreach(var record in HeatDemandData)
@@ -73,7 +89,15 @@ namespace heat_production_optimization
                 Tuple<DateTime, DateTime> currentTimeFrame = new(record.timeFrom, record.timeTo);
                 currentHeatDemand += record.heatDemand;
 
-                SortProductionUnits(currentTimeFrame.Item1);
+                switch(option)
+                {
+                    case OptimizationOption.Cost:
+                        SortProductionUnitsCost(currentTimeFrame.Item1);
+                        break;
+                    case OptimizationOption.Emission:
+                        SortProductionUnitsEmission(currentTimeFrame.Item1);
+                        break;
+                }
 
                 foreach(var unit in ProductionUnits)
                 {
@@ -125,6 +149,12 @@ namespace heat_production_optimization
                 Console.WriteLine();
             }
 	    }
+
+        public void OptimizeHeatProductionEmission()
+        {
+
+        }
+
     }
 
 
