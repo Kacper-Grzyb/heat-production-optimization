@@ -9,7 +9,7 @@ namespace heat_production_optimization
     {
 		public double TotalHeatProduction { get; set; }
 		public double TotalElectricityProduction { get; set; }
-		public double Turnover { get; set; }
+		public double Expenses { get; set; }
 		public double ConsumptionOfGas { get; set; }
 		public double ConsumptionOfOil { get; set; }
 		public double ConsumptionOfElectricity { get; set; }
@@ -32,7 +32,7 @@ namespace heat_production_optimization
         public Dictionary<Tuple<DateTime, DateTime>, Dictionary<IUnit, double>> boilerActivations = new();
         public double TotalHeatProduction { get; set; } = 0.0;
         public double TotalElectricityProduction { get; set; } = 0.0;
-        public double Turnover { get; set; } = 0.0;
+        public double Expenses { get; set; } = 0.0;
         public double ConsumptionOfGas { get; set; } = 0.0;
         public double ConsumptionOfOil { get; set; } = 0.0;
         public double ConsumptionOfElectricity { get; set; } = 0.0;
@@ -111,14 +111,14 @@ namespace heat_production_optimization
 						TotalHeatProduction += heatProducedActual;
                         if(unit.MaxElectricity != 0)
                         {
-                            TotalElectricityProduction += unit.MaxElectricity * activationPercentage;
-                            Turnover += unit.MaxElectricity * activationPercentage * record.electricityPrice;
+                            if (unit.MaxElectricity > 0) TotalElectricityProduction += unit.MaxElectricity * activationPercentage;
+                            else ConsumptionOfElectricity -= unit.MaxElectricity * activationPercentage;
+                            Expenses += unit.MaxElectricity * activationPercentage * record.electricityPrice;
                         }
 
-                        Turnover -= unit.ProductionCostMWh * heatProducedActual;
+                        Expenses -= unit.ProductionCostMWh * heatProducedActual;
                         ConsumptionOfGas += unit.GasConsumption;
                         ConsumptionOfOil += unit.OilConsumption;
-                        ConsumptionOfElectricity += unit.MaxElectricity < 0 ? Math.Abs(unit.MaxElectricity) : 0;
                         ProducedCO2 += unit.CO2EmissionMWh * heatProducedActual;
 
                         boilerActivations[currentTimeFrame].Add(unit, activationPercentage);
@@ -132,7 +132,7 @@ namespace heat_production_optimization
 
             TotalHeatProduction = Math.Round(TotalHeatProduction, 2);
             TotalElectricityProduction = Math.Round(TotalElectricityProduction, 2);
-            Turnover = Math.Round(Turnover, 2);
+            Expenses = Math.Round(Expenses, 2);
             ConsumptionOfGas = Math.Round(ConsumptionOfGas, 2);
             ConsumptionOfOil = Math.Round(ConsumptionOfOil, 2);
             ConsumptionOfElectricity = Math.Round(ConsumptionOfElectricity, 2);
@@ -149,11 +149,6 @@ namespace heat_production_optimization
                 Console.WriteLine();
             }
 	    }
-
-        public void OptimizeHeatProductionEmission()
-        {
-
-        }
 
     }
 
@@ -185,7 +180,7 @@ namespace heat_production_optimization
         public Dictionary<Tuple<DateTime, DateTime>, Dictionary<IUnit, bool>> boilerActivations = new();
         public double TotalHeatProduction { get; set; } = 0.0;
         public double TotalElectricityProduction { get; set; } = 0.0;
-        public double Turnover { get; set; } = 0.0;
+        public double Expenses { get; set; } = 0.0;
         public double ConsumptionOfGas { get; set; } = 0.0;
         public double ConsumptionOfOil { get; set; } = 0.0;
         public double ConsumptionOfElectricity { get; set; } = 0.0;
@@ -278,7 +273,7 @@ namespace heat_production_optimization
                     totalHeatProduced += unitOperation[i].SolutionValue() * units[i].MaxHeat;
                 }
                 System.Console.WriteLine($"Total Cost: {Math.Round(objective.Value())}");
-                Turnover += objective.Value();
+                Expenses += objective.Value();
                 System.Console.WriteLine($"Total CO2 Emissions: {Math.Round(totalCO2Emissions)}");
                 ProducedCO2 += totalCO2Emissions;
                 System.Console.WriteLine($"Total Electricity Generated: {Math.Round(totalElectricityGenerated)}");

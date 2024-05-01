@@ -15,6 +15,7 @@ namespace heat_production_optimization.Models
         public IUnit gasMotor { get; set; }
         public IUnit electricBoiler { get; set; }
         public List<IUnit> productionUnits { get; set; }
+        public List<IUnit> optimizerProductionUnits { get; set; }
 
         public SourceDataDbContext()
         {
