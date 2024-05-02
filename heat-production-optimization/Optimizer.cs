@@ -14,6 +14,7 @@ namespace heat_production_optimization
 		public double ConsumptionOfOil { get; set; }
 		public double ConsumptionOfElectricity { get; set; }
 		public double ProducedCO2 { get; set; }
+        public bool CanMeetHeatDemand { get; set; }
 	}
 
     public enum OptimizationOption
@@ -37,7 +38,8 @@ namespace heat_production_optimization
         public double ConsumptionOfOil { get; set; } = 0.0;
         public double ConsumptionOfElectricity { get; set; } = 0.0;
         public double ProducedCO2 { get; set; } = 0.0;
-        
+        public bool CanMeetHeatDemand { get; set; } = true;
+
         /* Needed data: 
          *  Max heat production from result configuration 
          *  Max electricity production
@@ -128,6 +130,11 @@ namespace heat_production_optimization
 						boilerActivations[currentTimeFrame].Add(unit, 0.00);
 					}
                 }
+                if(currentHeatDemand > TotalHeatProduction)
+                {
+                    CanMeetHeatDemand = false;
+                    return;
+                }
             }
 
             TotalHeatProduction = Math.Round(TotalHeatProduction, 2);
@@ -185,7 +192,8 @@ namespace heat_production_optimization
         public double ConsumptionOfOil { get; set; } = 0.0;
         public double ConsumptionOfElectricity { get; set; } = 0.0;
         public double ProducedCO2 { get; set; } = 0.0;
-        
+        public bool CanMeetHeatDemand { get; set; } = true;
+
         /* Needed data: 
          *  Max heat production from result configuration 
          *  Max electricity production

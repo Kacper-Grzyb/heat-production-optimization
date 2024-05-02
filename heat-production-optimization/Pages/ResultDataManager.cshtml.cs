@@ -64,9 +64,14 @@ namespace heat_production_optimization.Pages
         public void OnPost()
         {
             Console.WriteLine();
-            //TODO
-            //iterate through the boiler names in boilerchecklist and add them to the optimizerboilers
-            //add a button to optimize and implement a failsafe if there are not enough boilers
+            // TODO
+            // Message for Peanutcho
+            // The List BoilersChecked is setup in such a way already that when you select the boiler on the page
+            // and click optimize the boiler names will appear in that list. What you have to do here is iterate through
+            // that list and match the names to the boilers in the context and add them into the productionUnits List in this class
+            // here, the rest i can set up in the boiler
+            // also there will be a failsafe so that if there are not enough boilers to meet the heat demand, the koptimizer will
+            // set the CanMeetHeatDemand bool to false, so you should account for that in the ui as well
         }
 
 
