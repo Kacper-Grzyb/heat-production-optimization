@@ -11,6 +11,7 @@ namespace heat_production_optimization.Pages
         private readonly SourceDataDbContext _context;
         private readonly KOptimizer kOptimizer;
         private readonly SOptimizer sOptimizer;
+        private readonly WorstScenario worstScenario;
         public List<IUnit> productionUnits { get; set; }
 
         public ResultDataManagerModel(SourceDataDbContext context)
@@ -19,6 +20,7 @@ namespace heat_production_optimization.Pages
             productionUnits = _context.productionUnits;
             kOptimizer = new KOptimizer(context.productionUnits, context.HeatDemandData);
             sOptimizer = new SOptimizer(context.productionUnits, context.HeatDemandData);
+            worstScenario = new WorstScenario(context.productionUnits, context.HeatDemandData);
         }
 
 		public double TotalHeatProduction { get; set; }
@@ -31,6 +33,17 @@ namespace heat_production_optimization.Pages
 
         [BindProperty]
         public List<string> BoilersChecked { get; set; }
+        
+
+        //Worst case properties
+		public double WorstHeat { get; set; }
+		public double WorstElectricity { get; set; }
+		public double WorstExpenses { get; set; }
+		public double WorstConsumptionOfGas { get; set; }
+		public double WorstConsumptionOfOil { get; set; }
+		public double WorstConsumptionOfElectricity { get; set; }
+		public double WorstCO2Emission { get; set; }
+
 
         //public void OnGet()
         //{
@@ -47,10 +60,12 @@ namespace heat_production_optimization.Pages
 
         //}
 
+
+
         public void OnGet()
         {
             double heatDemand = _context.HeatDemandData.Sum(data => data.heatDemand);
-            kOptimizer.OptimizeHeatProduction(OptimizationOption.Emission);
+            kOptimizer.OptimizeHeatProduction(OptimizationOption.Cost);
 
             TotalHeatProduction = Math.Round(kOptimizer.TotalHeatProduction);
             TotalElectricityProduction = Math.Round(kOptimizer.TotalElectricityProduction);
@@ -59,6 +74,17 @@ namespace heat_production_optimization.Pages
             ConsumptionOfOil = Math.Round(kOptimizer.ConsumptionOfOil);
             ConsumptionOfElectricity = Math.Round(kOptimizer.ConsumptionOfElectricity);
             CO2Emission = Math.Round(kOptimizer.ProducedCO2);
+
+
+            worstScenario.OptimizeHeatProduction(OptimizationOption.Cost);
+
+            WorstHeat = Math.Round(worstScenario.TotalHeatProduction);
+            WorstElectricity = Math.Round(worstScenario.TotalElectricityProduction);
+            WorstExpenses = Math.Round(worstScenario.Expenses);
+            WorstConsumptionOfGas = Math.Round(worstScenario.ConsumptionOfGas);
+            WorstConsumptionOfOil = Math.Round(worstScenario.ConsumptionOfOil);
+            WorstConsumptionOfElectricity = Math.Round(worstScenario.ConsumptionOfElectricity);
+            WorstCO2Emission = Math.Round(worstScenario.ProducedCO2);
         }
 
         public void OnPost()
