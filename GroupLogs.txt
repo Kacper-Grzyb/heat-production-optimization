@@ -78,3 +78,11 @@ Place: SDU Software Room
 Preparation: Prepare optimization algorithm 
 Agenda: Optimizer Discussion, Project Vision Realignment 
 Present: Kacper Grzyb, Sebestyen Deak, Levente Sohar, Leonardo Gianola, Ignat Bozhinov.
+
+Meeting 8
+Date: 06/05/2024
+Time: 14:00 -  15:00
+Place: SDU Software Room  
+Preparation: Self-reflection on what has been done 
+Agenda: Sprint Four Review / Sprint Five Plan
+Present: Kacper Grzyb, Sebestyen Deak, Levente Sohar, Leonardo Gianola, Ignat Bozhinov.
