@@ -12,6 +12,7 @@ namespace heat_production_optimization.Pages
         private readonly KOptimizer kOptimizer;
         private readonly SOptimizer sOptimizer;
         private readonly WorstScenario worstScenario;
+        private readonly RandomOptimizer randomOptimizer;
         public List<IUnit> productionUnits { get; set; }
 
         public ResultDataManagerModel(SourceDataDbContext context)
@@ -21,6 +22,7 @@ namespace heat_production_optimization.Pages
             kOptimizer = new KOptimizer(context.productionUnits, context.HeatDemandData);
             sOptimizer = new SOptimizer(context.productionUnits, context.HeatDemandData);
             worstScenario = new WorstScenario(context.productionUnits, context.HeatDemandData);
+            randomOptimizer = new RandomOptimizer(context.productionUnits, context.HeatDemandData);
         }
 
 		public double TotalHeatProduction { get; set; }
@@ -43,6 +45,15 @@ namespace heat_production_optimization.Pages
 		public double WorstConsumptionOfOil { get; set; }
 		public double WorstConsumptionOfElectricity { get; set; }
 		public double WorstCO2Emission { get; set; }
+
+        //Average case properties
+		public double RandomHeat { get; set; }
+		public double RandomElectricity { get; set; }
+		public double RandomExpenses { get; set; }
+		public double RandomConsumptionOfGas { get; set; }
+		public double RandomConsumptionOfOil { get; set; }
+		public double RandomConsumptionOfElectricity { get; set; }
+		public double RandomCO2Emission { get; set; }
 
 
         //public void OnGet()
@@ -85,6 +96,16 @@ namespace heat_production_optimization.Pages
             WorstConsumptionOfOil = Math.Round(worstScenario.ConsumptionOfOil);
             WorstConsumptionOfElectricity = Math.Round(worstScenario.ConsumptionOfElectricity);
             WorstCO2Emission = Math.Round(worstScenario.ProducedCO2);
+
+            randomOptimizer.OptimizeHeatProduction(OptimizationOption.Cost);
+
+            RandomHeat = Math.Round(randomOptimizer.TotalHeatProduction);
+            RandomElectricity = Math.Round(randomOptimizer.TotalElectricityProduction);
+            RandomExpenses = Math.Round(randomOptimizer.Expenses);
+            RandomConsumptionOfGas = Math.Round(randomOptimizer.ConsumptionOfGas);
+            RandomConsumptionOfOil = Math.Round(randomOptimizer.ConsumptionOfOil);
+            RandomConsumptionOfElectricity = Math.Round(randomOptimizer.ConsumptionOfElectricity);
+            RandomCO2Emission = Math.Round(randomOptimizer.ProducedCO2);
         }
 
         public void OnPost()
