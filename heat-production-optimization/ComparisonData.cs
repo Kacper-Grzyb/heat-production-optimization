@@ -147,14 +147,7 @@ namespace heat_production_optimization
         {
             HeatDemandData = heatDemandData.ToArray().OrderBy(r => r.timeFrom).ToArray();
 			ProductionUnits = productionUnits.OrderByDescending(u => u.MaxHeat / u.ProductionCost).ToList(); // ordering the boilers based on the best heat to price ratio
-            Random rng = new Random(); 
-
-            int n = ProductionUnits.Count;  
-            while (n > 1) {  
-                n--;  
-                int k = rng.Next(n + 1);
-                (ProductionUnits[n], ProductionUnits[k]) = (ProductionUnits[k], ProductionUnits[n]);
-            }
+            
             foreach (var record in HeatDemandData)
             {
                 electricityPrices.Add(record.timeFrom, record.electricityPrice);
@@ -170,6 +163,14 @@ namespace heat_production_optimization
             {
                 Tuple<DateTime, DateTime> currentTimeFrame = new(record.timeFrom, record.timeTo);
                 currentHeatDemand += record.heatDemand;
+
+                Random rng = new Random(); 
+                int n = ProductionUnits.Count;  
+                while (n > 1) {  
+                    n--;  
+                    int k = rng.Next(n + 1);
+                    (ProductionUnits[n], ProductionUnits[k]) = (ProductionUnits[k], ProductionUnits[n]);
+                }
 
                 foreach(var unit in ProductionUnits)
                 {
