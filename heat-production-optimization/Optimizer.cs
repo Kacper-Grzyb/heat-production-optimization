@@ -5,6 +5,7 @@ using Google.OrTools.LinearSolver;
 
 namespace heat_production_optimization
 {
+    
     public interface IOptimizer
     {
 		public double TotalHeatProduction { get; set; }
@@ -145,14 +146,37 @@ namespace heat_production_optimization
             ConsumptionOfElectricity = Math.Round(ConsumptionOfElectricity, 2);
             ProducedCO2 = Math.Round(ProducedCO2, 2);
 
+
             foreach(var record in HeatDemandData)
             {
                 Tuple<DateTime, DateTime> timeFrame = new(record.timeFrom, record.timeTo);
                 Console.Write(timeFrame);
-                foreach(var unit in ProductionUnits)
+
+                HourlyOptimization newHour = new HourlyOptimization
+                {
+                    TimeFrame = timeFrame
+                };
+                foreach (var unit in ProductionUnits)
                 {
                     Console.Write($"{unit.Alias} {boilerActivations[timeFrame][unit]} ");
+                    switch(unit.Alias)
+                    {
+                        case "GB":
+                            newHour.GasBolier = boilerActivations[timeFrame][unit];
+                            break;
+                        case "OB":
+                            newHour.OilBoiler = boilerActivations[timeFrame][unit];
+                            break;
+                        case "GM":
+                            newHour.GasMotor = boilerActivations[timeFrame][unit];
+                            break;
+                        case "Ek":
+                            newHour.ElectricBoiler = boilerActivations[timeFrame][unit];
+                            break;
+                    }
                 }
+                HourlyOptimization.HourlyOptimizations?.Add(newHour);
+
                 Console.WriteLine();
             }
 	    }
