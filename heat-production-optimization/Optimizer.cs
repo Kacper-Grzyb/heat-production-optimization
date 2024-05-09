@@ -40,6 +40,7 @@ namespace heat_production_optimization
         public double ConsumptionOfElectricity { get; set; } = 0.0;
         public double ProducedCO2 { get; set; } = 0.0;
         public bool CanMeetHeatDemand { get; set; } = true;
+        private readonly SaveToCSV saveToCSV;
 
         /* Needed data: 
          *  Max heat production from result configuration 
@@ -154,7 +155,8 @@ namespace heat_production_optimization
 
                 HourlyOptimization newHour = new HourlyOptimization
                 {
-                    TimeFrame = timeFrame
+                    timeFrom = record.timeFrom,
+                    timeTo = record.timeTo,
                 };
                 foreach (var unit in ProductionUnits)
                 {
@@ -170,15 +172,20 @@ namespace heat_production_optimization
                         case "GM":
                             newHour.GasMotor = boilerActivations[timeFrame][unit];
                             break;
-                        case "Ek":
+                        case "EK":
                             newHour.ElectricBoiler = boilerActivations[timeFrame][unit];
                             break;
                     }
+
                 }
-                HourlyOptimization.HourlyOptimizations?.Add(newHour);
+                HourlyOptimization.HourlyOptimizations.Add(newHour);
+
 
                 Console.WriteLine();
+
             }
+            SaveToCSV.SaveOptimization();
+
 	    }
 
     }

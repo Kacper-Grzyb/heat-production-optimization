@@ -8,8 +8,9 @@ namespace heat_production_optimization
 {
     public class HourlyOptimization
     {
-        public Tuple<DateTime, DateTime>? TimeFrame { get; set; }
-        public static List<HourlyOptimization>? HourlyOptimizations{ get; set; }
+        public DateTime timeFrom { get; set; }
+        public DateTime timeTo { get; set; }
+        public static List<HourlyOptimization> HourlyOptimizations{ get; set; } = new List<HourlyOptimization> ();
         public double GasBolier { get; set; }
         public double OilBoiler { get; set; }
         public double GasMotor { get; set; }
@@ -19,9 +20,14 @@ namespace heat_production_optimization
     }
     public class SaveToCSV
     {
-        public int Nr {get; set; } = 0;
-        public void SaveOptimization()
+        public static int Nr {get; set; } = 0;
+        public static void SaveOptimization()
         {
+            if (HourlyOptimization.HourlyOptimizations == null || !HourlyOptimization.HourlyOptimizations.Any())
+            {
+                Console.WriteLine("No data available to write to CSV.");
+                return;
+            }
             string fileName = $"{Nr}_optimization";
             Nr++;
             using (var writer = new StreamWriter($"{fileName}.csv"))

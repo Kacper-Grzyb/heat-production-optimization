@@ -106,6 +106,7 @@ namespace heat_production_optimization.Pages
             RandomConsumptionOfOil = Math.Round(randomOptimizer.ConsumptionOfOil);
             RandomConsumptionOfElectricity = Math.Round(randomOptimizer.ConsumptionOfElectricity);
             RandomCO2Emission = Math.Round(randomOptimizer.ProducedCO2);
+
         }
 
         public void OnPost()
