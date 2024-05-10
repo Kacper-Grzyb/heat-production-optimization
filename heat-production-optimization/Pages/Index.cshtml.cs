@@ -17,7 +17,7 @@ namespace heat_production_optimization.Pages
         public IUnit electricBoiler;
 
 		[BindProperty]
-        public IFormFile formFile { get; set; }
+        public IFormFile? formFile { get; set; }
 
         public IndexModel(ILogger<IndexModel> logger, SourceDataDbContext context)
         {

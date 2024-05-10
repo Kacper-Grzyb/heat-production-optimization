@@ -63,6 +63,7 @@ namespace heat_production_optimization
                 Tuple<DateTime, DateTime> timeFrame = new(record.timeFrom, record.timeTo);
 				boilerActivations.Add(timeFrame, new Dictionary<IUnit, double>());
 			}
+            saveToCSV = new SaveToCSV();
         }
 
         private void SortProductionUnitsCost(DateTime timeKey)

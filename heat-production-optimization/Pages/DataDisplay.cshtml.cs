@@ -9,7 +9,7 @@ namespace heat_production_optimization.Pages
     public class DataDisplayModel : PageModel
     {
         private readonly SourceDataDbContext _context = new SourceDataDbContext();
-        public DbSet<HeatDemandDataModel> heatDemandData;
+        public DbSet<HeatDemandDataModel>? heatDemandData;
 
         public DataDisplayModel(SourceDataDbContext context)
         {
