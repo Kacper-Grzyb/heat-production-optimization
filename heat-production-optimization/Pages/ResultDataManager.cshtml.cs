@@ -9,7 +9,7 @@ namespace heat_production_optimization.Pages
     public class ResultDataManagerModel : PageModel
     {
         private readonly SourceDataDbContext _context;
-        private readonly KOptimizer kOptimizer;
+        private KOptimizer kOptimizer;
         private readonly SOptimizer sOptimizer;
         private readonly WorstScenario worstScenario;
         private readonly RandomOptimizer randomOptimizer;
@@ -110,22 +110,12 @@ namespace heat_production_optimization.Pages
 
         public void OnPost()
         {
-            Console.WriteLine();
-            // TODO
-            // Message for Peanutcho
-            // The List BoilersChecked is setup in such a way already that when you select the boiler on the page
-            // and click optimize the boiler names will appear in that list. What you have to do here is iterate through
-            // that list and match the names to the boilers in the context and add them into the productionUnits List in this class
-            // here, the rest i can set up in the boiler
-            // also there will be a failsafe so that if there are not enough boilers to meet the heat demand, the koptimizer will
-            // set the CanMeetHeatDemand bool to false, so you should account for that in the ui as well
-
             if (BoilersChecked != null && BoilersChecked.Any())
             {
-                // Clear the existing productionUnits list
-                productionUnits.Clear();
+                // Clearing the existing productionUnits list is unnecessary
 
                 // Iterate through the selected boiler names
+                productionUnits = new List<IUnit>(); // Reinitialize the productionUnits list
                 foreach (var boilerName in BoilersChecked)
                 {
                     // Find the boiler in the context based on the name
@@ -138,7 +128,10 @@ namespace heat_production_optimization.Pages
                     }
                 }
 
-                // Perform the optimization with the updated productionUnits list
+                // Recreate kOptimizer with updated productionUnits
+                kOptimizer = new KOptimizer(productionUnits, _context.HeatDemandData);
+
+                // Perform the optimization
                 kOptimizer.OptimizeHeatProduction(OptimizationOption.Cost);
 
                 // Update the UI with the optimized results
@@ -162,9 +155,12 @@ namespace heat_production_optimization.Pages
             {
                 // Handle case where no boilers are selected
                 // You can set a message or perform any necessary action
-                Console.WriteLine("No Boilder selected!");
+                Console.WriteLine("No Boiler selected!");
             }
         }
+
+
+
 
 
     }
