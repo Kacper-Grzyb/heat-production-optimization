@@ -39,9 +39,7 @@ namespace heat_production_optimization.Models
 
         public OptimizedResults GetOptimizedResults(string selectedUnit)
         {
-            // Your logic to fetch optimized results based on the selected unit
-            // Here, we'll return dummy data for demonstration
-
+            
             var unit = productionUnits.FirstOrDefault(u => u.Name == selectedUnit);
             if (unit != null)
             {
@@ -49,12 +47,16 @@ namespace heat_production_optimization.Models
                 {
                     TotalHeatProduced = unit.MaxHeat,
                     TotalElectricityProduced = unit.MaxElectricity,
-                    // Add other properties as needed
+                    TotalExpenses = unit.ProductionCost * unit.MaxHeat,
+                    TotalGasConsumption = unit.GasConsumption,
+                    TotalOilConsumption = unit.OilConsumption,
+                    TotalCO2Emission = unit.CO2Emission * unit.MaxHeat
+                    
                 };
             }
             else
             {
-                // Handle if the selected unit is not found
+                
                 return null;
             }
 
@@ -66,6 +68,10 @@ namespace heat_production_optimization.Models
     {
         public double TotalHeatProduced { get; set; }
         public double TotalElectricityProduced { get; set; }
-        // Add other properties as needed
+        public double TotalExpenses { get; set; }
+        public double TotalGasConsumption { get; set; }
+        public double TotalOilConsumption { get; set; }
+        public double TotalCO2Emission { get; set; }
+
     }
 }

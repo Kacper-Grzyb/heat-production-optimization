@@ -33,6 +33,9 @@ namespace heat_production_optimization.Pages
         public double ConsumptionOfElectricity { get; set; }
         public double CO2Emission { get; set; }
 
+        public bool ShowResults { get; set; } = false;
+        public string SelectedUnit { get; set; }
+
         [BindProperty]
         public List<string> BoilersChecked { get; set; }
 
@@ -112,29 +115,25 @@ namespace heat_production_optimization.Pages
         {
             if (BoilersChecked != null && BoilersChecked.Any())
             {
-                // Clearing the existing productionUnits list is unnecessary
+                SelectedUnit = BoilersChecked.First();
+                ShowResults = true;
+                Console.WriteLine("Sset to true");
 
-                // Iterate through the selected boiler names
-                productionUnits = new List<IUnit>(); // Reinitialize the productionUnits list
+                productionUnits = new List<IUnit>();
                 foreach (var boilerName in BoilersChecked)
                 {
-                    // Find the boiler in the context based on the name
+
                     var boiler = _context.productionUnits.FirstOrDefault(u => u.Name == boilerName);
 
-                    // Add the boiler to the productionUnits list if found
                     if (boiler != null)
-                    {
                         productionUnits.Add(boiler);
-                    }
+
                 }
 
-                // Recreate kOptimizer with updated productionUnits
-                kOptimizer = new KOptimizer(productionUnits, _context.HeatDemandData);
 
-                // Perform the optimization
+                kOptimizer = new KOptimizer(productionUnits, _context.HeatDemandData);
                 kOptimizer.OptimizeHeatProduction(OptimizationOption.Cost);
 
-                // Update the UI with the optimized results
                 TotalHeatProduction = Math.Round(kOptimizer.TotalHeatProduction);
                 TotalElectricityProduction = Math.Round(kOptimizer.TotalElectricityProduction);
                 Expenses = Math.Round(kOptimizer.Expenses);
@@ -143,20 +142,23 @@ namespace heat_production_optimization.Pages
                 ConsumptionOfElectricity = Math.Round(kOptimizer.ConsumptionOfElectricity);
                 CO2Emission = Math.Round(kOptimizer.ProducedCO2);
 
-                // Check if there are enough boilers to meet the heat demand
+                
+
+
                 if (!kOptimizer.CanMeetHeatDemand)
-                {
-                    // If not, set a message or perform any necessary action
-                    // For example, you can set a flag to display a warning in the UI
                     Console.WriteLine("Not able to meet demand!");
-                }
+                // Were you talking for something like this?
+                //i;ve left it a simple console writeline 
+                //or do i display it to the user?
+
             }
             else
             {
-                // Handle case where no boilers are selected
-                // You can set a message or perform any necessary action
                 Console.WriteLine("No Boiler selected!");
+                ShowResults = false;
+                // Same goes here?
             }
+
         }
 
 
