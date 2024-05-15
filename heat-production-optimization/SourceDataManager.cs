@@ -53,6 +53,7 @@ namespace heat_production_optimization
             }
 
 			_context.loadedDataPath = formFile.FileName;
+            _context.SaveChanges();
 			_context.errorMessage = string.Empty;
 			_context.SaveChanges();
 			return true;

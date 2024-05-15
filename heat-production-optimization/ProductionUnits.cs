@@ -140,7 +140,7 @@ namespace heat_production_optimization
 		}
     }
 
-    public class CustomBoiler : IUnit
+    public class ProductionUnit : IUnit
     {
 		public string Alias { get; }
 		public string Name { get; }
@@ -154,7 +154,7 @@ namespace heat_production_optimization
 		public double OilConsumption { get; }
 		public double PriceToHeatRatio { get; set; }
 
-		public CustomBoiler(string alias, string name, double maxHeat = 0, double maxElectricity = 0, int productionCost = 0, int cO2Emission = 0, double gasConsumption = 0, double oilConsumption = 0)
+		public ProductionUnit(string alias, string name, double maxHeat = 0, double maxElectricity = 0, int productionCost = 0, int cO2Emission = 0, double gasConsumption = 0, double oilConsumption = 0)
 		{
             if(maxHeat == 0) maxHeat = 0.01;
 			PriceToHeatRatio = productionCost / maxHeat;

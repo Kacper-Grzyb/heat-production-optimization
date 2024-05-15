@@ -18,7 +18,7 @@ namespace heat_production_optimization.Pages
         public ResultDataManagerModel(SourceDataDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
-            productionUnits = _context.productionUnits;
+            productionUnits = _context.productionUnits.ToList();
             kOptimizer = new KOptimizer(context.productionUnits, context.HeatDemandData);
             sOptimizer = new SOptimizer(context.productionUnits, context.HeatDemandData);
             worstScenario = new WorstScenario(context.productionUnits, context.HeatDemandData);

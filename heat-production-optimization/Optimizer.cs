@@ -51,9 +51,9 @@ namespace heat_production_optimization
          * Sort either by highest profit or lowest co2 emissions
          */
 
-        public KOptimizer(List<IUnit> productionUnits, DbSet<HeatDemandDataModel> heatDemandData)
+        public KOptimizer(DbSet<IUnit> productionUnits, DbSet<HeatDemandDataModel> heatDemandData)
         {
-            HeatDemandData = heatDemandData.ToArray().OrderBy(r => r.timeFrom).ToArray();
+            HeatDemandData = heatDemandData.OrderBy(r => r.timeFrom).ToArray();
 			ProductionUnits = productionUnits.OrderByDescending(u => u.MaxHeat / u.ProductionCost).ToList(); // ordering the boilers based on the best heat to price ratio
             foreach(var record in HeatDemandData)
             {
@@ -205,9 +205,9 @@ namespace heat_production_optimization
          * Sort either by highest profit or lowest co2 emissions
          */
 
-        public SOptimizer(List<IUnit> productionUnits, DbSet<HeatDemandDataModel> heatDemandData)
+        public SOptimizer(DbSet<IUnit> productionUnits, DbSet<HeatDemandDataModel> heatDemandData)
         {
-            HeatDemandData = heatDemandData.ToArray().OrderBy(r => r.timeFrom).ToArray();
+            HeatDemandData = heatDemandData.OrderBy(r => r.timeFrom).ToArray();
 			ProductionUnits = productionUnits.OrderByDescending(u => u.MaxHeat / u.ProductionCost).ToList(); // ordering the boilers based on the best heat to price ratio
             foreach(var record in HeatDemandData)
             {
