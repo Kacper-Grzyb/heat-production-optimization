@@ -114,6 +114,9 @@ namespace heat_production_optimization
             ConsumptionOfElectricity = Math.Round(ConsumptionOfElectricity, 2);
             ProducedCO2 = Math.Round(ProducedCO2, 2);
 
+
+            Console.WriteLine("The Worst Case has been calculated");
+            /*
             foreach(var record in HeatDemandData)
             {
                 Tuple<DateTime, DateTime> timeFrame = new(record.timeFrom, record.timeTo);
@@ -124,6 +127,7 @@ namespace heat_production_optimization
                 }
                 Console.WriteLine();
             }
+            */
 	    }
 
     }
@@ -216,6 +220,8 @@ namespace heat_production_optimization
             ConsumptionOfElectricity = Math.Round(ConsumptionOfElectricity, 2);
             ProducedCO2 = Math.Round(ProducedCO2, 2);
 
+            Console.WriteLine("The random case hase been generated");
+            /*
             foreach(var record in HeatDemandData)
             {
                 Tuple<DateTime, DateTime> timeFrame = new(record.timeFrom, record.timeTo);
@@ -226,6 +232,7 @@ namespace heat_production_optimization
                 }
                 Console.WriteLine();
             }
+            */
 	    }
 
     }

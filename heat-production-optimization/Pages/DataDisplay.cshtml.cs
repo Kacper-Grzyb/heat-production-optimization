@@ -15,6 +15,7 @@ namespace heat_production_optimization.Pages
         {
             if (context != null) _context = context;
         }
+
         public void OnGet()
         {
             heatDemandData = _context.HeatDemandData;

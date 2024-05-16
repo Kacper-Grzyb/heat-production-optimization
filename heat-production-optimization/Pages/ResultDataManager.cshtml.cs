@@ -34,7 +34,7 @@ namespace heat_production_optimization.Pages
 		public double CO2Emission { get; set; }
 
         [BindProperty]
-        public List<string> BoilersChecked { get; set; }
+        public List<string> BoilersChecked { get; set; } = new List<string>();
         
 
         //Worst case properties
@@ -106,6 +106,7 @@ namespace heat_production_optimization.Pages
             RandomConsumptionOfOil = Math.Round(randomOptimizer.ConsumptionOfOil);
             RandomConsumptionOfElectricity = Math.Round(randomOptimizer.ConsumptionOfElectricity);
             RandomCO2Emission = Math.Round(randomOptimizer.ProducedCO2);
+
         }
 
         public void OnPost()
