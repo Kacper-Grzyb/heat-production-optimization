@@ -3,6 +3,9 @@ using System;
 using System.Linq;
 using heat_production_optimization.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.JSInterop;
+using System.Threading.Tasks;
 
 namespace heat_production_optimization.Pages
 {
@@ -116,20 +119,14 @@ namespace heat_production_optimization.Pages
             if (BoilersChecked != null && BoilersChecked.Any())
             {
                 SelectedUnit = BoilersChecked.First();
-                ShowResults = true;
-                Console.WriteLine("Sset to true");
 
                 productionUnits = new List<IUnit>();
                 foreach (var boilerName in BoilersChecked)
                 {
-
                     var boiler = _context.productionUnits.FirstOrDefault(u => u.Name == boilerName);
-
                     if (boiler != null)
                         productionUnits.Add(boiler);
-
                 }
-
 
                 kOptimizer = new KOptimizer(productionUnits, _context.HeatDemandData);
                 kOptimizer.OptimizeHeatProduction(OptimizationOption.Cost);
@@ -142,27 +139,17 @@ namespace heat_production_optimization.Pages
                 ConsumptionOfElectricity = Math.Round(kOptimizer.ConsumptionOfElectricity);
                 CO2Emission = Math.Round(kOptimizer.ProducedCO2);
 
-                
-
-
                 if (!kOptimizer.CanMeetHeatDemand)
                     Console.WriteLine("Not able to meet demand!");
-                // Were you talking for something like this?
-                //i;ve left it a simple console writeline 
-                //or do i display it to the user?
 
+                ShowResults = true;
             }
             else
             {
                 Console.WriteLine("No Boiler selected!");
                 ShowResults = false;
-                // Same goes here?
             }
-
         }
-
-
-
 
 
     }

@@ -62,9 +62,11 @@
             transform: scale(0.95);
         }
     </style>
+    
 </head>
 
 <body>
+    
     <div class="d-flex justify-content-center">
         <div class="center-box">
             <h1>Choose Boilers to Include in Optimization</h1>
@@ -73,6 +75,7 @@
                 <button>Scenario Two</button>
                 <button>Custom Scenario</button>
             </div> *@
+
             <form method="post">
                 @foreach(IUnit unit in Model.productionUnits)
                 {
@@ -82,7 +85,7 @@
             </form>
             <script>
                 function selectUnit(unitName) {
-                    document.getElementById('selectUnit').value = unitName;
+                    document.getElementById('SelectedUnit').value = unitName;
                     }
             </script>
 
@@ -129,84 +132,89 @@
             </div>
 		</div>
 	</div>
-	<div class="d-flex justify-content-center mt-5 @(Model.ShowResults ? "hidden" : "")">
-		<div class="center-box">
-			<h1>Unoptimized Results</h1>
-            <div class="d-flex justify-content-center">
-                <p style="margin: 0px 5px 0px 0px">Total Heat Produced:</p>
-                <p style="margin: 0px 0px 5px 0px">@Model.WorstHeat</p>
-            </div>
 
-            <div class="d-flex justify-content-center">
-                <p style="margin: 0px 5px 0px 0px">Total Electricity Produced:</p>
-                <p style="margin: 0px 0px 5px 0px">@Model.WorstElectricity</p>
-            </div>
+    @if(string.IsNullOrEmpty(Model.SelectedUnit))
+    {
+        <div class="d-flex justify-content-center mt-5 result-box">
+            <div class="center-box">
+                <h1>Unoptimized Results</h1>
+                <div class="d-flex justify-content-center">
+                    <p style="margin: 0px 5px 0px 0px">Total Heat Produced:</p>
+                    <p style="margin: 0px 0px 5px 0px">@Model.WorstHeat</p>
+                </div>
 
-            <div class="d-flex justify-content-center">
-                <p style="margin: 0px 5px 0px 0px">Expenses:</p>
-                <p style="margin: 0px 0px 5px 0px">@Model.WorstExpenses</p>
-            </div>
+                <div class="d-flex justify-content-center">
+                    <p style="margin: 0px 5px 0px 0px">Total Electricity Produced:</p>
+                    <p style="margin: 0px 0px 5px 0px">@Model.WorstElectricity</p>
+                </div>
 
-            <div class="d-flex justify-content-center">
-                <p style="margin: 0px 5px 0px 0px">Consumption of Gas:</p>
-                <p style="margin: 0px 0px 5px 0px">@Model.WorstConsumptionOfGas</p>
-            </div>
+                <div class="d-flex justify-content-center">
+                    <p style="margin: 0px 5px 0px 0px">Expenses:</p>
+                    <p style="margin: 0px 0px 5px 0px">@Model.WorstExpenses</p>
+                </div>
 
-            <div class="d-flex justify-content-center">
-                <p style="margin: 0px 5px 0px 0px">Consumption of Oil:</p>
-                <p style="margin: 0px 0px 5px 0px">@Model.WorstConsumptionOfOil</p>
-            </div>
+                <div class="d-flex justify-content-center">
+                    <p style="margin: 0px 5px 0px 0px">Consumption of Gas:</p>
+                    <p style="margin: 0px 0px 5px 0px">@Model.WorstConsumptionOfGas</p>
+                </div>
 
-            <div class="d-flex justify-content-center">
-                <p style="margin: 0px 5px 0px 0px">Consumption of Electricity:</p>
-                <p style="margin: 0px 0px 5px 0px">@Model.WorstConsumptionOfElectricity</p>
-            </div>
+                <div class="d-flex justify-content-center">
+                    <p style="margin: 0px 5px 0px 0px">Consumption of Oil:</p>
+                    <p style="margin: 0px 0px 5px 0px">@Model.WorstConsumptionOfOil</p>
+                </div>
 
-            <div class="d-flex justify-content-center">
-                <p style="margin: 0px 5px 0px 0px">CO2 Produced:</p>
-                <p style="margin: 0px 0px 5px 0px">@Model.WorstCO2Emission</p>
-            </div>
-		</div>
-	</div>
-	<div class="d-flex justify-content-center mt-5 @(Model.ShowResults ? " " : "hidden")">
-		<div class="center-box ">
-			<h1>Randomized Results</h1>
-            <div class="d-flex justify-content-center">
-                <p style="margin: 0px 5px 0px 0px">Total Heat Produced:</p>
-                <p style="margin: 0px 0px 5px 0px">@Model.RandomHeat</p>
-            </div>
+                <div class="d-flex justify-content-center">
+                    <p style="margin: 0px 5px 0px 0px">Consumption of Electricity:</p>
+                    <p style="margin: 0px 0px 5px 0px">@Model.WorstConsumptionOfElectricity</p>
+                </div>
 
-            <div class="d-flex justify-content-center">
-                <p style="margin: 0px 5px 0px 0px">Total Electricity Produced:</p>
-                <p style="margin: 0px 0px 5px 0px">@Model.RandomElectricity</p>
-            </div>
+                <div class="d-flex justify-content-center">
+                    <p style="margin: 0px 5px 0px 0px">CO2 Produced:</p>
+                    <p style="margin: 0px 0px 5px 0px">@Model.WorstCO2Emission</p>
+                </div>
+		    </div>
+	    </div>
+	    <div class="d-flex justify-content-center mt-5 result-box">
+		    <div class="center-box ">
+			    <h1>Randomized Results</h1>
+                <div class="d-flex justify-content-center">
+                    <p style="margin: 0px 5px 0px 0px">Total Heat Produced:</p>
+                    <p style="margin: 0px 0px 5px 0px">@Model.RandomHeat</p>
+                </div>
 
-            <div class="d-flex justify-content-center">
-                <p style="margin: 0px 5px 0px 0px">Expenses:</p>
-                <p style="margin: 0px 0px 5px 0px">@Model.RandomExpenses</p>
-            </div>
+                <div class="d-flex justify-content-center">
+                    <p style="margin: 0px 5px 0px 0px">Total Electricity Produced:</p>
+                    <p style="margin: 0px 0px 5px 0px">@Model.RandomElectricity</p>
+                </div>
 
-            <div class="d-flex justify-content-center">
-                <p style="margin: 0px 5px 0px 0px">Consumption of Gas:</p>
-                <p style="margin: 0px 0px 5px 0px">@Model.RandomConsumptionOfGas</p>
-            </div>
+                <div class="d-flex justify-content-center">
+                    <p style="margin: 0px 5px 0px 0px">Expenses:</p>
+                    <p style="margin: 0px 0px 5px 0px">@Model.RandomExpenses</p>
+                </div>
 
-            <div class="d-flex justify-content-center">
-                <p style="margin: 0px 5px 0px 0px">Consumption of Oil:</p>
-                <p style="margin: 0px 0px 5px 0px">@Model.RandomConsumptionOfOil</p>
-            </div>
+                <div class="d-flex justify-content-center">
+                    <p style="margin: 0px 5px 0px 0px">Consumption of Gas:</p>
+                    <p style="margin: 0px 0px 5px 0px">@Model.RandomConsumptionOfGas</p>
+                </div>
 
-            <div class="d-flex justify-content-center">
-                <p style="margin: 0px 5px 0px 0px">Consumption of Electricity:</p>
-                <p style="margin: 0px 0px 5px 0px">@Model.RandomConsumptionOfElectricity</p>
-            </div>
+                <div class="d-flex justify-content-center">
+                    <p style="margin: 0px 5px 0px 0px">Consumption of Oil:</p>
+                    <p style="margin: 0px 0px 5px 0px">@Model.RandomConsumptionOfOil</p>
+                </div>
 
-            <div class="d-flex justify-content-center">
-                <p style="margin: 0px 5px 0px 0px">CO2 Produced:</p>
-                <p style="margin: 0px 0px 5px 0px">@Model.RandomCO2Emission</p>
-            </div>
-		</div>
-	</div>
+                <div class="d-flex justify-content-center">
+                    <p style="margin: 0px 5px 0px 0px">Consumption of Electricity:</p>
+                    <p style="margin: 0px 0px 5px 0px">@Model.RandomConsumptionOfElectricity</p>
+                </div>
+
+                <div class="d-flex justify-content-center">
+                    <p style="margin: 0px 5px 0px 0px">CO2 Produced:</p>
+                    <p style="margin: 0px 0px 5px 0px">@Model.RandomCO2Emission</p>
+                </div>
+		    </div>
+	    </div>
+    }
+	
 
 </body>
 
