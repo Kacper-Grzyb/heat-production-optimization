@@ -31,8 +31,7 @@
         }
 
         .button-container {
-            margin-top: 30px;
-            background-color: rgba(0, 0, 0, 0.1);
+            margin-top: 15px;
             border-radius: 10px;
             padding: 10px;
             display: flex;
@@ -61,6 +60,25 @@
         button:active {
             transform: scale(0.95);
         }
+
+        .checkbox-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 10px; 
+            margin-top: 10px; 
+        }
+
+        .checkbox-item {
+            margin-right: 20px; 
+            display: flex;
+            align-items: center;
+        }
+
+        
+
+                
+
     </style>
     
 </head>
@@ -79,9 +97,23 @@
             <form method="post">
                 @foreach(IUnit unit in Model.productionUnits)
                 {
-                    <input name="BoilersChecked" type="checkbox" value="@unit.Name" onclick="selectUnit('@unit.Name')"/> @unit.Alias<br/>
+                    //<input name="BoilersChecked" type="checkbox" value="@unit.Name" onclick="selectUnit('@unit.Name')"/> @unit.Alias<br/>
+                    <input id="@unit.Name" name="BoilersChecked" type="checkbox" value="@unit.Name" onclick="selectUnit('@unit.Name')" />
+                    <label for="@unit.Name">@unit.Alias</label>
                 }
-                <button type="submit">Optimize</button>
+                
+                <div class="button-container">
+                    @if (Model.ShowResults)
+                    {
+                        <button type="submit">Select New Unit</button>
+                    }
+                    else
+                    {
+                        <button type="submit">Optimize</button>
+                    }
+                </div>
+                
+
             </form>
             <script>
                 function selectUnit(unitName) {
