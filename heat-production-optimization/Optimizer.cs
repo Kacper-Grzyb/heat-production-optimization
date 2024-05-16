@@ -162,21 +162,7 @@ namespace heat_production_optimization
                 foreach (var unit in ProductionUnits)
                 {
                     Console.Write($"{unit.Alias} {boilerActivations[timeFrame][unit]} ");
-                    switch(unit.Alias)
-                    {
-                        case "GB":
-                            newHour.GasBolier = boilerActivations[timeFrame][unit];
-                            break;
-                        case "OB":
-                            newHour.OilBoiler = boilerActivations[timeFrame][unit];
-                            break;
-                        case "GM":
-                            newHour.GasMotor = boilerActivations[timeFrame][unit];
-                            break;
-                        case "EK":
-                            newHour.ElectricBoiler = boilerActivations[timeFrame][unit];
-                            break;
-                    }
+                    newHour[unit] = boilerActivations[timeFrame][unit];
 
                 }
                 HourlyOptimization.HourlyOptimizations.Add(newHour);
