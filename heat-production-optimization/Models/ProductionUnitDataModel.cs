@@ -3,10 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace heat_production_optimization.Models
 {
-    [PrimaryKey("Alias")]
     public class ProductionUnitDataModel : IUnit
     {
-        [Key]
+        public Guid Id { get; set; }
         public string Alias { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public double MaxHeat { get; set; }

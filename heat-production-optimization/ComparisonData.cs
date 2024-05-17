@@ -21,10 +21,10 @@ namespace heat_production_optimization
         public double ProducedCO2 { get; set; } = 0.0;
         public bool CanMeetHeatDemand { get; set; } = true;
 
-        public WorstScenario(DbSet<ProductionUnitDataModel> productionUnits, DbSet<HeatDemandDataModel> heatDemandData)
+        public WorstScenario(List<IUnit> productionUnits, DbSet<HeatDemandDataModel> heatDemandData)
         {
             HeatDemandData = heatDemandData.OrderBy(r => r.timeFrom).ToArray();
-			ProductionUnits = new List<IUnit> (productionUnits.OrderByDescending(u => u.MaxHeat / u.ProductionCost).ToList()); // ordering the boilers based on the best heat to price ratio
+			ProductionUnits = productionUnits.OrderByDescending(u => u.MaxHeat / u.ProductionCost).ToList(); // ordering the boilers based on the best heat to price ratio
             foreach(var record in HeatDemandData)
             {
                 electricityPrices.Add(record.timeFrom, record.electricityPrice);
@@ -147,10 +147,10 @@ namespace heat_production_optimization
         public double ProducedCO2 { get; set; } = 0.0;
         public bool CanMeetHeatDemand { get; set; } = true;
 
-        public RandomOptimizer(DbSet<ProductionUnitDataModel> productionUnits, DbSet<HeatDemandDataModel> heatDemandData)
+        public RandomOptimizer(List<IUnit> productionUnits, DbSet<HeatDemandDataModel> heatDemandData)
         {
             HeatDemandData = heatDemandData.OrderBy(r => r.timeFrom).ToArray();
-			ProductionUnits = new List<IUnit> (productionUnits.OrderByDescending(u => u.MaxHeat / u.ProductionCost).ToList()); // ordering the boilers based on the best heat to price ratio
+			ProductionUnits = productionUnits.OrderByDescending(u => u.MaxHeat / u.ProductionCost).ToList(); // ordering the boilers based on the best heat to price ratio
             
             foreach (var record in HeatDemandData)
             {

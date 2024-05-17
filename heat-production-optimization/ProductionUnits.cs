@@ -6,6 +6,7 @@ namespace heat_production_optimization
 {
     public interface IUnit
     {
+        public Guid Id { get; set; }
         public string Alias { get; }
         public string Name { get;}
         public double MaxHeat { get;}
@@ -22,21 +23,9 @@ namespace heat_production_optimization
 
     public class GasBoiler : ProductionUnitDataModel, IUnit
     {
-  //      public string Alias { get; }
-  //      public string Name { get;}
-  //      public double MaxHeat { get;}
-  //      public double ProductionCost { get;}
-		//public double ProductionCostMWh { get; }
-		//public double CO2Emission { get;}
-		//public double CO2EmissionMWh { get; }
-		//public double GasConsumption { get;}
-		//public double PriceToHeatRatio { get; set; }
-
-  //      public double OilConsumption { get; } = 0;
-  //      public double MaxElectricity { get; } = 0;
-
-		public GasBoiler(double maxHeat, int productionCost, int cO2Emission, double gasConsumption, string alias = "GB", string name = "Gas Boiler")
+		public GasBoiler(Guid id, double maxHeat, int productionCost, int cO2Emission, double gasConsumption, string alias = "GB", string name = "Gas Boiler")
         {
+            Id = id;
 			if (maxHeat == 0) maxHeat = 0.01;
 			PriceToHeatRatio = productionCost / maxHeat;
 			Alias = alias;
@@ -52,21 +41,10 @@ namespace heat_production_optimization
 
     public class OilBoiler : ProductionUnitDataModel, IUnit
     {
-  //      public string Alias { get; }
-  //      public string Name { get;}
-  //      public double MaxHeat { get;}
-		//public double ProductionCost { get;}
-		//public double ProductionCostMWh { get; }
-  //      public double CO2Emission { get;}
-  //      public double CO2EmissionMWh { get;}
-  //      public double OilConsumption { get;}
-		//public double PriceToHeatRatio { get; set; }
 
-  //      public double GasConsumption { get; } = 0;
-  //      public double MaxElectricity { get; } = 0;
-
-		public OilBoiler(double maxHeat, int productionCost, int cO2Emission, double oilConsumption, string alias = "OB", string name = "Oil Boiler")
+		public OilBoiler(Guid id, double maxHeat, int productionCost, int cO2Emission, double oilConsumption, string alias = "OB", string name = "Oil Boiler")
         {
+            Id = id;
 			if (maxHeat == 0) maxHeat = 0.01;
 			PriceToHeatRatio = productionCost / maxHeat;
 			Alias = alias;
@@ -82,21 +60,10 @@ namespace heat_production_optimization
 
     public class GasMotor : ProductionUnitDataModel, IUnit
     {
-  //      public string Alias { get; }
-  //      public string Name { get;}
-  //      public double MaxHeat { get;}
-  //      public double MaxElectricity { get;}
-  //      public double ProductionCost { get;}
-		//public double ProductionCostMWh { get; }
-		//public double CO2Emission { get;}
-  //      public double CO2EmissionMWh { get; } 
-  //      public double GasConsumption { get;}
-		//public double PriceToHeatRatio { get; set; }
 
-  //      public double OilConsumption { get; } = 0;
-
-		public GasMotor(double maxHeat, double maxElectricity, int productionCost, int cO2Emission, double gasConsumption, string alias = "GM", string name = "Gas Motor")
+		public GasMotor(Guid id, double maxHeat, double maxElectricity, int productionCost, int cO2Emission, double gasConsumption, string alias = "GM", string name = "Gas Motor")
         {
+            Id = id;
 			if (maxHeat == 0) maxHeat = 0.01;
 			PriceToHeatRatio = productionCost / maxHeat;
 			Alias = alias;
@@ -113,21 +80,10 @@ namespace heat_production_optimization
 
     public class ElectricBoiler : ProductionUnitDataModel, IUnit
     {
-  //      public string Alias { get; }
-  //      public string Name { get;}
-  //      public double MaxHeat { get;}
-  //      public double MaxElectricity { get;}
-  //      public double ProductionCost { get;}
-		//public double ProductionCostMWh { get; }
-		//public double CO2Emission { get;}
-  //      public double CO2EmissionMWh { get; }
-		//public double PriceToHeatRatio { get; set; }
 
-		//public double GasConsumption { get; } = 0;
-  //      public double OilConsumption { get; } = 0;
-
-        public ElectricBoiler(double maxHeat, double maxElectricity, int productionCost, int cO2Emission, string alias = "EK", string name = "Electric Boiler")
+        public ElectricBoiler(Guid id, double maxHeat, double maxElectricity, int productionCost, int cO2Emission, string alias = "EK", string name = "Electric Boiler")
         {
+            Id = id;
 			if (maxHeat == 0) maxHeat = 0.01;
 			PriceToHeatRatio = productionCost / maxHeat;
 			Alias = alias;
@@ -155,8 +111,9 @@ namespace heat_production_optimization
 		//public double OilConsumption { get; }
 		//public double PriceToHeatRatio { get; set; }
 
-		public CustomUnit(string alias, string name, double maxHeat = 0, double maxElectricity = 0, int productionCost = 0, int cO2Emission = 0, double gasConsumption = 0, double oilConsumption = 0)
+		public CustomUnit(Guid id,string alias, string name, double maxHeat = 0, double maxElectricity = 0, int productionCost = 0, int cO2Emission = 0, double gasConsumption = 0, double oilConsumption = 0)
 		{
+            Id = id;
             if(maxHeat == 0) maxHeat = 0.01;
 			PriceToHeatRatio = productionCost / maxHeat;
 			Alias = alias;

@@ -7,10 +7,9 @@ namespace heat_production_optimization.Models
 {
     public class SourceDataDbContext : DbContext
     {
-        // TODO add user input to save here
         public DbSet<HeatDemandDataModel> HeatDemandData { get; set; }
         public DbSet<ProductionUnitDataModel> productionUnits { get; set; }
-        public DbSet<ProductionUnitDataModel> productionUnitsForOptimization { get; set; }
+        public DbSet<OptimizerUnitNamesDataModel> productionUnitNamesForOptimization { get; set; }
         public DbSet<UiMessagesDataModel> uiMessages { get; set; }
         public string loadedDataPath 
         { 
@@ -51,7 +50,7 @@ namespace heat_production_optimization.Models
         { 
             get
             {
-                IUnit? findResult = productionUnits.Find("GB");
+                IUnit? findResult = productionUnits.FirstOrDefault(u => u.Alias == "GB");
                 if (findResult != null) return findResult;
                 else throw new Exception("Could not find a value in the productionUnits table with the key 'GB'!");
             }
@@ -60,7 +59,7 @@ namespace heat_production_optimization.Models
         { 
             get
             {
-                IUnit? findResult = productionUnits.Find("OB");
+                IUnit? findResult = productionUnits.FirstOrDefault(u => u.Alias == "OB");
                 if (findResult != null) return findResult;
                 else throw new Exception("Could not find a value in the productionUnits table with the key 'OB'!");
             }
@@ -69,7 +68,7 @@ namespace heat_production_optimization.Models
         { 
             get
             {
-                IUnit? findResult = productionUnits.Find("GM");
+                IUnit? findResult = productionUnits.FirstOrDefault(u => u.Alias == "GM");
                 if (findResult != null) return findResult;
                 else throw new Exception("Could not find a value in the productionUnits table with the key 'GM'!");
             } 
@@ -78,7 +77,7 @@ namespace heat_production_optimization.Models
         { 
             get
             {
-                IUnit? findResult = productionUnits.Find("EK");
+                IUnit? findResult = productionUnits.FirstOrDefault(u => u.Alias == "EK");
                 if (findResult != null) return findResult;
                 else throw new Exception("Could not find a value in the productionUnits table with the key 'EK'!");
             } 
@@ -86,18 +85,15 @@ namespace heat_production_optimization.Models
 
         public SourceDataDbContext()
         {
-            if(productionUnits!=null && productionUnits.Count() == 0)
+            if (productionUnits != null && productionUnits.Count() == 0)
             {
-                // TODO Check why this does not save the gasboiler correctly, instead creates an empty field
-                productionUnits.Add(new GasBoiler(5, 500, 215, 1.1, "GB", "Gas Boiler"));
-                productionUnits.Add(new OilBoiler(4, 700, 265, 1.2, "OB", "Oil Boiler"));
-                productionUnits.Add(new GasMotor(3.6, 2.7, 1100, 640, 1.9, "GM", "Gas Motor"));
-                productionUnits.Add(new ElectricBoiler(8, -8, 50, 0, "EK", "Electric Boiler"));
-
-                productionUnitsForOptimization = productionUnits;
+                productionUnits.Add(new GasBoiler(Guid.NewGuid(), 5, 500, 215, 1.1, "GB", "Gas Boiler"));
+                productionUnits.Add(new OilBoiler(Guid.NewGuid(), 4, 700, 265, 1.2, "OB", "Oil Boiler"));
+                productionUnits.Add(new GasMotor(Guid.NewGuid(), 3.6, 2.7, 1100, 640, 1.9, "GM", "Gas Motor"));
+                productionUnits.Add(new ElectricBoiler(Guid.NewGuid(), 8, -8, 50, 0, "EK", "Electric Boiler"));
             }
 
-            if(uiMessages!=null && uiMessages.Count() == 0)
+            if(uiMessages != null && uiMessages.Count() == 0)
             {
                 uiMessages.Add(new UiMessagesDataModel(MessageType.DataUploadError, string.Empty));
                 uiMessages.Add(new UiMessagesDataModel(MessageType.DataUploadPath, string.Empty));
@@ -116,5 +112,41 @@ namespace heat_production_optimization.Models
             if (HeatDemandData == null) return false;
             else return HeatDemandData.Count() > 0;
         }
+
+        public OptimizedResults? GetOptimizedResults(string selectedUnit)
+        {
+            
+            var unit = productionUnits.FirstOrDefault(u => u.Name == selectedUnit);
+            if (unit != null)
+            {
+                return new OptimizedResults
+                {
+                    TotalHeatProduced = unit.MaxHeat,
+                    TotalElectricityProduced = unit.MaxElectricity,
+                    TotalExpenses = unit.ProductionCost * unit.MaxHeat,
+                    TotalGasConsumption = unit.GasConsumption,
+                    TotalOilConsumption = unit.OilConsumption,
+                    TotalCO2Emission = unit.CO2Emission * unit.MaxHeat
+                    
+                };
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
+    }
+
+    public class OptimizedResults
+    {
+        public double TotalHeatProduced { get; set; }
+        public double TotalElectricityProduced { get; set; }
+        public double TotalExpenses { get; set; }
+        public double TotalGasConsumption { get; set; }
+        public double TotalOilConsumption { get; set; }
+        public double TotalCO2Emission { get; set; }
+
     }
 }
