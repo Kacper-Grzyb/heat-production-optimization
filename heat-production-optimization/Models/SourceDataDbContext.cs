@@ -7,7 +7,6 @@ namespace heat_production_optimization.Models
 {
     public class SourceDataDbContext : DbContext
     {
-        // TODO add user input to save here
         public DbSet<HeatDemandDataModel> HeatDemandData { get; set; }
         public DbSet<ProductionUnitDataModel> productionUnits { get; set; }
         public DbSet<ProductionUnitDataModel> productionUnitsForOptimization { get; set; }
@@ -88,7 +87,6 @@ namespace heat_production_optimization.Models
         {
             if(productionUnits!=null && productionUnits.Count() == 0)
             {
-                // TODO Check why this does not save the gasboiler correctly, instead creates an empty field
                 productionUnits.Add(new GasBoiler(5, 500, 215, 1.1, "GB", "Gas Boiler"));
                 productionUnits.Add(new OilBoiler(4, 700, 265, 1.2, "OB", "Oil Boiler"));
                 productionUnits.Add(new GasMotor(3.6, 2.7, 1100, 640, 1.9, "GM", "Gas Motor"));
@@ -136,7 +134,6 @@ namespace heat_production_optimization.Models
             }
             else
             {
-                
                 return null;
             }
 

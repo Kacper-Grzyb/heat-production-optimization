@@ -24,10 +24,10 @@ namespace heat_production_optimization.Pages
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             productionUnits = new List<IUnit>(_context.productionUnits.ToList().Cast<IUnit>());
-            kOptimizer = new KOptimizer(context.productionUnits, context.HeatDemandData);
-            sOptimizer = new SOptimizer(context.productionUnits, context.HeatDemandData);
-            worstScenario = new WorstScenario(context.productionUnits, context.HeatDemandData);
-            randomOptimizer = new RandomOptimizer(context.productionUnits, context.HeatDemandData);
+            kOptimizer = new KOptimizer(context.productionUnitsForOptimization, context.HeatDemandData);
+            sOptimizer = new SOptimizer(context.productionUnitsForOptimization, context.HeatDemandData);
+            worstScenario = new WorstScenario(context.productionUnitsForOptimization, context.HeatDemandData);
+            randomOptimizer = new RandomOptimizer(context.productionUnitsForOptimization, context.HeatDemandData);
         }
 
         public double TotalHeatProduction { get; set; }
@@ -122,16 +122,17 @@ namespace heat_production_optimization.Pages
             if (BoilersChecked != null && BoilersChecked.Any())
             {
                 SelectedUnit = BoilersChecked.First();
-
-                productionUnits = new List<IUnit>();
+                _context.productionUnitsForOptimization.RemoveRange(_context.productionUnitsForOptimization);
+                _context.SaveChanges();
+                
                 foreach (var boilerName in BoilersChecked)
                 {
                     var boiler = _context.productionUnits.FirstOrDefault(u => u.Name == boilerName);
-                    if (boiler != null)
-                        productionUnits.Add(boiler);
+                    if (boiler != null) _context.productionUnitsForOptimization.Add(boiler);
                 }
 
-                kOptimizer = new KOptimizer(productionUnits, _context.HeatDemandData);
+                _context.SaveChanges();
+                kOptimizer = new KOptimizer(_context.productionUnitsForOptimization, _context.HeatDemandData);
                 kOptimizer.OptimizeHeatProduction(OptimizationOption.Cost);
 
                 TotalHeatProduction = Math.Round(kOptimizer.TotalHeatProduction);
