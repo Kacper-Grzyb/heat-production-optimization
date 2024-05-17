@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace heat_production_optimization
 {
+    
     public interface IOptimizer
     {
 		public double TotalHeatProduction { get; set; }
@@ -40,6 +41,7 @@ namespace heat_production_optimization
         public double ConsumptionOfElectricity { get; set; } = 0.0;
         public double ProducedCO2 { get; set; } = 0.0;
         public bool CanMeetHeatDemand { get; set; } = true;
+        private readonly SaveToCSV saveToCSV;
 
         /* Needed data: 
          *  Max heat production from result configuration 
@@ -63,6 +65,7 @@ namespace heat_production_optimization
                 Tuple<DateTime, DateTime> timeFrame = new(record.timeFrom, record.timeTo);
 				boilerActivations.Add(timeFrame, new Dictionary<IUnit, double>());
 			}
+            saveToCSV = new SaveToCSV();
         }
 
         private void SortProductionUnitsCost(DateTime timeKey)
@@ -147,16 +150,31 @@ namespace heat_production_optimization
             ConsumptionOfElectricity = Math.Round(ConsumptionOfElectricity, 2);
             ProducedCO2 = Math.Round(ProducedCO2, 2);
 
+
             foreach(var record in HeatDemandData)
             {
                 Tuple<DateTime, DateTime> timeFrame = new(record.timeFrom, record.timeTo);
                 Console.Write(timeFrame);
-                foreach(var unit in ProductionUnits)
+
+                HourlyOptimization newHour = new HourlyOptimization
+                {
+                    timeFrom = record.timeFrom,
+                    timeTo = record.timeTo,
+                };
+                foreach (var unit in ProductionUnits)
                 {
                     Console.Write($"{unit.Alias} {boilerActivations[timeFrame][unit]} ");
+                    newHour[unit] = boilerActivations[timeFrame][unit];
+
                 }
+                HourlyOptimization.HourlyOptimizations.Add(newHour);
+
+
                 Console.WriteLine();
+
             }
+            SaveToCSV.SaveOptimization();
+
 	    }
 
     }
