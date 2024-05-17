@@ -116,5 +116,42 @@ namespace heat_production_optimization.Models
             if (HeatDemandData == null) return false;
             else return HeatDemandData.Count() > 0;
         }
+
+        public OptimizedResults GetOptimizedResults(string selectedUnit)
+        {
+            
+            var unit = productionUnits.FirstOrDefault(u => u.Name == selectedUnit);
+            if (unit != null)
+            {
+                return new OptimizedResults
+                {
+                    TotalHeatProduced = unit.MaxHeat,
+                    TotalElectricityProduced = unit.MaxElectricity,
+                    TotalExpenses = unit.ProductionCost * unit.MaxHeat,
+                    TotalGasConsumption = unit.GasConsumption,
+                    TotalOilConsumption = unit.OilConsumption,
+                    TotalCO2Emission = unit.CO2Emission * unit.MaxHeat
+                    
+                };
+            }
+            else
+            {
+                
+                return null;
+            }
+
+        }
+
+    }
+
+    public class OptimizedResults
+    {
+        public double TotalHeatProduced { get; set; }
+        public double TotalElectricityProduced { get; set; }
+        public double TotalExpenses { get; set; }
+        public double TotalGasConsumption { get; set; }
+        public double TotalOilConsumption { get; set; }
+        public double TotalCO2Emission { get; set; }
+
     }
 }

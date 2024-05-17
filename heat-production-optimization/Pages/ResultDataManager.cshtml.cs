@@ -3,6 +3,9 @@ using System;
 using System.Linq;
 using heat_production_optimization.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.JSInterop;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,7 +14,7 @@ namespace heat_production_optimization.Pages
     public class ResultDataManagerModel : PageModel
     {
         private readonly SourceDataDbContext _context;
-        private readonly KOptimizer kOptimizer;
+        private KOptimizer kOptimizer;
         private readonly SOptimizer sOptimizer;
         private readonly WorstScenario worstScenario;
         private readonly RandomOptimizer randomOptimizer;
@@ -27,35 +30,38 @@ namespace heat_production_optimization.Pages
             randomOptimizer = new RandomOptimizer(context.productionUnits, context.HeatDemandData);
         }
 
-		public double TotalHeatProduction { get; set; }
-		public double TotalElectricityProduction { get; set; }
-		public double Expenses { get; set; }
-		public double ConsumptionOfGas { get; set; }
-		public double ConsumptionOfOil { get; set; }
-		public double ConsumptionOfElectricity { get; set; }
-		public double CO2Emission { get; set; }
+        public double TotalHeatProduction { get; set; }
+        public double TotalElectricityProduction { get; set; }
+        public double Expenses { get; set; }
+        public double ConsumptionOfGas { get; set; }
+        public double ConsumptionOfOil { get; set; }
+        public double ConsumptionOfElectricity { get; set; }
+        public double CO2Emission { get; set; }
+
+        public bool ShowResults { get; set; } = false;
+        public string SelectedUnit { get; set; }
 
         [BindProperty]
-        public List<string> BoilersChecked { get; set; } = new List<string>();
-        
+        public List<string> BoilersChecked { get; set; }
+
 
         //Worst case properties
-		public double WorstHeat { get; set; }
-		public double WorstElectricity { get; set; }
-		public double WorstExpenses { get; set; }
-		public double WorstConsumptionOfGas { get; set; }
-		public double WorstConsumptionOfOil { get; set; }
-		public double WorstConsumptionOfElectricity { get; set; }
-		public double WorstCO2Emission { get; set; }
+        public double WorstHeat { get; set; }
+        public double WorstElectricity { get; set; }
+        public double WorstExpenses { get; set; }
+        public double WorstConsumptionOfGas { get; set; }
+        public double WorstConsumptionOfOil { get; set; }
+        public double WorstConsumptionOfElectricity { get; set; }
+        public double WorstCO2Emission { get; set; }
 
         //Average case properties
-		public double RandomHeat { get; set; }
-		public double RandomElectricity { get; set; }
-		public double RandomExpenses { get; set; }
-		public double RandomConsumptionOfGas { get; set; }
-		public double RandomConsumptionOfOil { get; set; }
-		public double RandomConsumptionOfElectricity { get; set; }
-		public double RandomCO2Emission { get; set; }
+        public double RandomHeat { get; set; }
+        public double RandomElectricity { get; set; }
+        public double RandomExpenses { get; set; }
+        public double RandomConsumptionOfGas { get; set; }
+        public double RandomConsumptionOfOil { get; set; }
+        public double RandomConsumptionOfElectricity { get; set; }
+        public double RandomCO2Emission { get; set; }
 
 
         //public void OnGet()
@@ -113,15 +119,39 @@ namespace heat_production_optimization.Pages
 
         public void OnPost()
         {
-            Console.WriteLine();
-            // TODO
-            // Message for Peanutcho
-            // The List BoilersChecked is setup in such a way already that when you select the boiler on the page
-            // and click optimize the boiler names will appear in that list. What you have to do here is iterate through
-            // that list and match the names to the boilers in the context and add them into the productionUnits List in this class
-            // here, the rest i can set up in the boiler
-            // also there will be a failsafe so that if there are not enough boilers to meet the heat demand, the koptimizer will
-            // set the CanMeetHeatDemand bool to false, so you should account for that in the ui as well
+            if (BoilersChecked != null && BoilersChecked.Any())
+            {
+                SelectedUnit = BoilersChecked.First();
+
+                productionUnits = new List<IUnit>();
+                foreach (var boilerName in BoilersChecked)
+                {
+                    var boiler = _context.productionUnits.FirstOrDefault(u => u.Name == boilerName);
+                    if (boiler != null)
+                        productionUnits.Add(boiler);
+                }
+
+                kOptimizer = new KOptimizer(productionUnits, _context.HeatDemandData);
+                kOptimizer.OptimizeHeatProduction(OptimizationOption.Cost);
+
+                TotalHeatProduction = Math.Round(kOptimizer.TotalHeatProduction);
+                TotalElectricityProduction = Math.Round(kOptimizer.TotalElectricityProduction);
+                Expenses = Math.Round(kOptimizer.Expenses);
+                ConsumptionOfGas = Math.Round(kOptimizer.ConsumptionOfGas);
+                ConsumptionOfOil = Math.Round(kOptimizer.ConsumptionOfOil);
+                ConsumptionOfElectricity = Math.Round(kOptimizer.ConsumptionOfElectricity);
+                CO2Emission = Math.Round(kOptimizer.ProducedCO2);
+
+                if (!kOptimizer.CanMeetHeatDemand)
+                    Console.WriteLine("Not able to meet demand!");
+
+                ShowResults = true;
+            }
+            else
+            {
+                Console.WriteLine("No Boiler selected!");
+                ShowResults = false;
+            }
         }
 
 
