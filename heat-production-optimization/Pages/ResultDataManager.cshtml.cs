@@ -18,16 +18,31 @@ namespace heat_production_optimization.Pages
         private readonly SOptimizer sOptimizer;
         private readonly WorstScenario worstScenario;
         private readonly RandomOptimizer randomOptimizer;
-        public List<IUnit> productionUnits { get; set; }
+        public List<IUnit> optimizerProductionUnits { get; set; } = new List<IUnit>();
+        public List<IUnit> displayProductionUnits { get; set; }
 
         public ResultDataManagerModel(SourceDataDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
-            productionUnits = new List<IUnit>(_context.productionUnits.ToList().Cast<IUnit>());
-            kOptimizer = new KOptimizer(context.productionUnitsForOptimization, context.HeatDemandData);
-            sOptimizer = new SOptimizer(context.productionUnitsForOptimization, context.HeatDemandData);
-            worstScenario = new WorstScenario(context.productionUnitsForOptimization, context.HeatDemandData);
-            randomOptimizer = new RandomOptimizer(context.productionUnitsForOptimization, context.HeatDemandData);
+            displayProductionUnits = new List<IUnit>(context.productionUnits);
+            if(context.productionUnitNamesForOptimization != null && context.productionUnitNamesForOptimization.Count() != 0)
+            {
+                foreach(OptimizerUnitNamesDataModel record in context.productionUnitNamesForOptimization)
+                {
+                    var unit = context.productionUnits.FirstOrDefault(u => u.Name == record.Name);
+                    if (unit == null) throw new Exception("The productionUnitNamesForOptimization table had a production unit name that does not exist!");
+                    else optimizerProductionUnits.Add(unit);
+
+                }
+            }
+            else
+            {
+                optimizerProductionUnits = new List<IUnit>(context.productionUnits);
+            }
+            kOptimizer = new KOptimizer(optimizerProductionUnits, context.HeatDemandData);
+            sOptimizer = new SOptimizer(optimizerProductionUnits, context.HeatDemandData);
+            worstScenario = new WorstScenario(optimizerProductionUnits, context.HeatDemandData);
+            randomOptimizer = new RandomOptimizer(optimizerProductionUnits, context.HeatDemandData);
         }
 
         public double TotalHeatProduction { get; set; }
@@ -122,17 +137,23 @@ namespace heat_production_optimization.Pages
             if (BoilersChecked != null && BoilersChecked.Any())
             {
                 SelectedUnit = BoilersChecked.First();
-                _context.productionUnitsForOptimization.RemoveRange(_context.productionUnitsForOptimization);
+
+                optimizerProductionUnits = new List<IUnit>();
+                _context.productionUnitNamesForOptimization.RemoveRange(_context.productionUnitNamesForOptimization);
                 _context.SaveChanges();
-                
+
                 foreach (var boilerName in BoilersChecked)
                 {
                     var boiler = _context.productionUnits.FirstOrDefault(u => u.Name == boilerName);
-                    if (boiler != null) _context.productionUnitsForOptimization.Add(boiler);
+                    if (boiler != null)
+                    {
+                        optimizerProductionUnits.Add(boiler);
+                        _context.productionUnitNamesForOptimization.Add(new OptimizerUnitNamesDataModel(Guid.NewGuid(), boilerName));
+                    }
                 }
 
                 _context.SaveChanges();
-                kOptimizer = new KOptimizer(_context.productionUnitsForOptimization, _context.HeatDemandData);
+                kOptimizer = new KOptimizer(optimizerProductionUnits, _context.HeatDemandData);
                 kOptimizer.OptimizeHeatProduction(OptimizationOption.Cost);
 
                 TotalHeatProduction = Math.Round(kOptimizer.TotalHeatProduction);

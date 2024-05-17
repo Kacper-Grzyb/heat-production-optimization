@@ -55,10 +55,10 @@ namespace heat_production_optimization
          */
 
         #region Kacper's Optimizer
-        public KOptimizer(DbSet<ProductionUnitDataModel> productionUnits, DbSet<HeatDemandDataModel> heatDemandData)
+        public KOptimizer(List<IUnit> productionUnits, DbSet<HeatDemandDataModel> heatDemandData)
         {
             HeatDemandData = heatDemandData.OrderBy(r => r.timeFrom).ToArray();
-			ProductionUnits = new List<IUnit> (productionUnits.OrderByDescending(u => u.MaxHeat / u.ProductionCost).ToList()); // ordering the boilers based on the best heat to price ratio
+			ProductionUnits = productionUnits.OrderByDescending(u => u.MaxHeat / u.ProductionCost).ToList(); // ordering the boilers based on the best heat to price ratio
             foreach(var record in HeatDemandData)
             {
                 electricityPrices.Add(record.timeFrom, record.electricityPrice);
@@ -173,7 +173,7 @@ namespace heat_production_optimization
                 Console.WriteLine();
 
             }
-            SaveToCSV.SaveOptimization();
+            //SaveToCSV.SaveOptimization();
 
 	    }
 
@@ -221,10 +221,10 @@ namespace heat_production_optimization
          * Sort either by highest profit or lowest co2 emissions
          */
 
-        public SOptimizer(DbSet<ProductionUnitDataModel> productionUnits, DbSet<HeatDemandDataModel> heatDemandData)
+        public SOptimizer(List<IUnit> productionUnits, DbSet<HeatDemandDataModel> heatDemandData)
         {
             HeatDemandData = heatDemandData.OrderBy(r => r.timeFrom).ToArray();
-			ProductionUnits = new List<IUnit> (productionUnits.OrderByDescending(u => u.MaxHeat / u.ProductionCost).ToList()); // ordering the boilers based on the best heat to price ratio
+			ProductionUnits = productionUnits.OrderByDescending(u => u.MaxHeat / u.ProductionCost).ToList(); // ordering the boilers based on the best heat to price ratio
             foreach(var record in HeatDemandData)
             {
                 electricityPrices.Add(record.timeFrom, record.electricityPrice);

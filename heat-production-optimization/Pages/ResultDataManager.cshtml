@@ -95,7 +95,7 @@
             </div> *@
 
             <form method="post">
-                @foreach(IUnit unit in Model.productionUnits)
+                @foreach(IUnit unit in Model.displayProductionUnits)
                 {
                     //<input name="BoilersChecked" type="checkbox" value="@unit.Name" onclick="selectUnit('@unit.Name')"/> @unit.Alias<br/>
                     <input id="@unit.Name" name="BoilersChecked" type="checkbox" value="@unit.Name" onclick="selectUnit('@unit.Name')" />
