@@ -3,6 +3,8 @@ using System;
 using System.Linq;
 using heat_production_optimization.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace heat_production_optimization.Pages
 {
@@ -18,7 +20,7 @@ namespace heat_production_optimization.Pages
         public ResultDataManagerModel(SourceDataDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
-            productionUnits = _context.productionUnits.ToList();
+            productionUnits = new List<IUnit>(_context.productionUnits.ToList().Cast<IUnit>());
             kOptimizer = new KOptimizer(context.productionUnits, context.HeatDemandData);
             sOptimizer = new SOptimizer(context.productionUnits, context.HeatDemandData);
             worstScenario = new WorstScenario(context.productionUnits, context.HeatDemandData);

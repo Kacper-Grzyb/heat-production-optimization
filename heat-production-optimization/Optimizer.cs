@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using heat_production_optimization.Models;
 using Google.OrTools.LinearSolver;
+using Microsoft.AspNetCore.Mvc;
 
 namespace heat_production_optimization
 {
@@ -51,10 +52,11 @@ namespace heat_production_optimization
          * Sort either by highest profit or lowest co2 emissions
          */
 
-        public KOptimizer(DbSet<IUnit> productionUnits, DbSet<HeatDemandDataModel> heatDemandData)
+        #region Kacper's Optimizer
+        public KOptimizer(DbSet<ProductionUnitDataModel> productionUnits, DbSet<HeatDemandDataModel> heatDemandData)
         {
             HeatDemandData = heatDemandData.OrderBy(r => r.timeFrom).ToArray();
-			ProductionUnits = productionUnits.OrderByDescending(u => u.MaxHeat / u.ProductionCost).ToList(); // ordering the boilers based on the best heat to price ratio
+			ProductionUnits = new List<IUnit> (productionUnits.OrderByDescending(u => u.MaxHeat / u.ProductionCost).ToList()); // ordering the boilers based on the best heat to price ratio
             foreach(var record in HeatDemandData)
             {
                 electricityPrices.Add(record.timeFrom, record.electricityPrice);
@@ -160,6 +162,7 @@ namespace heat_production_optimization
     }
 
 
+    #endregion
 
 
 
@@ -170,12 +173,7 @@ namespace heat_production_optimization
 
 
 
-
-
-
-
-
-
+    #region Sebi's Optimizer
 
     public class SOptimizer : IOptimizer
     {
@@ -205,10 +203,10 @@ namespace heat_production_optimization
          * Sort either by highest profit or lowest co2 emissions
          */
 
-        public SOptimizer(DbSet<IUnit> productionUnits, DbSet<HeatDemandDataModel> heatDemandData)
+        public SOptimizer(DbSet<ProductionUnitDataModel> productionUnits, DbSet<HeatDemandDataModel> heatDemandData)
         {
             HeatDemandData = heatDemandData.OrderBy(r => r.timeFrom).ToArray();
-			ProductionUnits = productionUnits.OrderByDescending(u => u.MaxHeat / u.ProductionCost).ToList(); // ordering the boilers based on the best heat to price ratio
+			ProductionUnits = new List<IUnit> (productionUnits.OrderByDescending(u => u.MaxHeat / u.ProductionCost).ToList()); // ordering the boilers based on the best heat to price ratio
             foreach(var record in HeatDemandData)
             {
                 electricityPrices.Add(record.timeFrom, record.electricityPrice);
@@ -311,5 +309,7 @@ namespace heat_production_optimization
         
 
     }
+
+    #endregion
 
 }
