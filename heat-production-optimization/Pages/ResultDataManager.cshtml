@@ -1,5 +1,4 @@
 ﻿@page
-
 @model heat_production_optimization.Pages.ResultDataManagerModel
 @{
 }
@@ -65,43 +64,33 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            margin-bottom: 10px; 
-            margin-top: 10px; 
+            margin-bottom: 10px;
+            margin-top: 10px;
         }
 
         .checkbox-item {
-            margin-right: 20px; 
+            margin-right: 20px;
             display: flex;
             align-items: center;
         }
 
-        
-
-                
-
     </style>
-    
 </head>
 
 <body>
-    
     <div class="d-flex justify-content-center">
         <div class="center-box">
             <h1>Choose Boilers to Include in Optimization</h1>
-@*             <div class="button-container">
-                <button>Scenario One</button>
-                <button>Scenario Two</button>
-                <button>Custom Scenario</button>
-            </div> *@
-
             <form method="post">
-                @foreach(IUnit unit in Model.displayProductionUnits)
-                {
-                    //<input name="BoilersChecked" type="checkbox" value="@unit.Name" onclick="selectUnit('@unit.Name')"/> @unit.Alias<br/>
-                    <input id="@unit.Name" name="BoilersChecked" type="checkbox" value="@unit.Name" onclick="selectUnit('@unit.Name')" />
-                    <label for="@unit.Name">@unit.Alias</label>
-                }
-                
+                <div class="checkbox-container">
+                    @foreach (IUnit unit in Model.displayProductionUnits)
+                    {
+                        <div class="checkbox-item">
+                            <input id="@unit.Name" name="BoilersChecked" type="checkbox" value="@unit.Name" checked onclick="toggleOptimizeButton()" />
+                            <label for="@unit.Name">@unit.Alias</label>
+                        </div>
+                    }
+                </div>
                 <div class="button-container">
                     @if (Model.ShowResults)
                     {
@@ -109,63 +98,48 @@
                     }
                     else
                     {
-                        <button type="submit">Optimize</button>
+                        <button id="optimizeButton" type="submit" disabled>Optimize</button>
                     }
                 </div>
-                
-
             </form>
-            <script>
-                function selectUnit(unitName) {
-                    document.getElementById('SelectedUnit').value = unitName;
-                    }
-            </script>
-
         </div>
     </div>
 
-	<div class="d-flex justify-content-center mt-5">
-		<div class="center-box">
-			<h1>@(string.IsNullOrEmpty(Model.SelectedUnit) ? "Optimized Results" : Model.SelectedUnit + " Optimized Results")</h1>
-
+    <div class="d-flex justify-content-center mt-5">
+        <div class="center-box">
+            <h1>@(string.IsNullOrEmpty(Model.SelectedUnit) ? "Optimized Results" : Model.SelectedUnit + " Optimized Results")</h1>
             <div class="d-flex justify-content-center">
                 <p style="margin: 0px 5px 0px 0px">Total Heat Produced:</p>
                 <p style="margin: 0px 0px 5px 0px">@Model.TotalHeatProduction</p>
             </div>
-
             <div class="d-flex justify-content-center">
                 <p style="margin: 0px 5px 0px 0px">Total Electricity Produced:</p>
                 <p style="margin: 0px 0px 5px 0px">@Model.TotalElectricityProduction</p>
             </div>
-
             <div class="d-flex justify-content-center">
                 <p style="margin: 0px 5px 0px 0px">Expenses:</p>
                 <p style="margin: 0px 0px 5px 0px">@Model.Expenses</p>
             </div>
-
             <div class="d-flex justify-content-center">
                 <p style="margin: 0px 5px 0px 0px">Consumption of Gas:</p>
                 <p style="margin: 0px 0px 5px 0px">@Model.ConsumptionOfGas</p>
             </div>
-
             <div class="d-flex justify-content-center">
                 <p style="margin: 0px 5px 0px 0px">Consumption of Oil:</p>
                 <p style="margin: 0px 0px 5px 0px">@Model.ConsumptionOfOil</p>
             </div>
-
             <div class="d-flex justify-content-center">
                 <p style="margin: 0px 5px 0px 0px">Consumption of Electricity:</p>
                 <p style="margin: 0px 0px 5px 0px">@Model.ConsumptionOfElectricity</p>
             </div>
-
             <div class="d-flex justify-content-center">
                 <p style="margin: 0px 5px 0px 0px">CO2 Produced:</p>
                 <p style="margin: 0px 0px 5px 0px">@Model.CO2Emission</p>
             </div>
-		</div>
-	</div>
+        </div>
+    </div>
 
-    @if(string.IsNullOrEmpty(Model.SelectedUnit))
+    @if (string.IsNullOrEmpty(Model.SelectedUnit))
     {
         <div class="d-flex justify-content-center mt-5 result-box">
             <div class="center-box">
@@ -174,106 +148,87 @@
                     <p style="margin: 0px 5px 0px 0px">Total Heat Produced:</p>
                     <p style="margin: 0px 0px 5px 0px">@Model.WorstHeat</p>
                 </div>
-
                 <div class="d-flex justify-content-center">
                     <p style="margin: 0px 5px 0px 0px">Total Electricity Produced:</p>
                     <p style="margin: 0px 0px 5px 0px">@Model.WorstElectricity</p>
                 </div>
-
                 <div class="d-flex justify-content-center">
                     <p style="margin: 0px 5px 0px 0px">Expenses:</p>
                     <p style="margin: 0px 0px 5px 0px">@Model.WorstExpenses</p>
                 </div>
-
                 <div class="d-flex justify-content-center">
                     <p style="margin: 0px 5px 0px 0px">Consumption of Gas:</p>
                     <p style="margin: 0px 0px 5px 0px">@Model.WorstConsumptionOfGas</p>
                 </div>
-
                 <div class="d-flex justify-content-center">
                     <p style="margin: 0px 5px 0px 0px">Consumption of Oil:</p>
                     <p style="margin: 0px 0px 5px 0px">@Model.WorstConsumptionOfOil</p>
                 </div>
-
                 <div class="d-flex justify-content-center">
                     <p style="margin: 0px 5px 0px 0px">Consumption of Electricity:</p>
                     <p style="margin: 0px 0px 5px 0px">@Model.WorstConsumptionOfElectricity</p>
                 </div>
-
                 <div class="d-flex justify-content-center">
                     <p style="margin: 0px 5px 0px 0px">CO2 Produced:</p>
                     <p style="margin: 0px 0px 5px 0px">@Model.WorstCO2Emission</p>
                 </div>
-		    </div>
-	    </div>
-	    <div class="d-flex justify-content-center mt-5 result-box">
-		    <div class="center-box ">
-			    <h1>Randomized Results</h1>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center mt-5 result-box">
+            <div class="center-box ">
+                <h1>Randomized Results</h1>
                 <div class="d-flex justify-content-center">
                     <p style="margin: 0px 5px 0px 0px">Total Heat Produced:</p>
                     <p style="margin: 0px 0px 5px 0px">@Model.RandomHeat</p>
                 </div>
-
                 <div class="d-flex justify-content-center">
                     <p style="margin: 0px 5px 0px 0px">Total Electricity Produced:</p>
                     <p style="margin: 0px 0px 5px 0px">@Model.RandomElectricity</p>
                 </div>
-
                 <div class="d-flex justify-content-center">
                     <p style="margin: 0px 5px 0px 0px">Expenses:</p>
                     <p style="margin: 0px 0px 5px 0px">@Model.RandomExpenses</p>
                 </div>
-
                 <div class="d-flex justify-content-center">
                     <p style="margin: 0px 5px 0px 0px">Consumption of Gas:</p>
                     <p style="margin: 0px 0px 5px 0px">@Model.RandomConsumptionOfGas</p>
                 </div>
-
                 <div class="d-flex justify-content-center">
                     <p style="margin: 0px 5px 0px 0px">Consumption of Oil:</p>
                     <p style="margin: 0px 0px 5px 0px">@Model.RandomConsumptionOfOil</p>
                 </div>
-
                 <div class="d-flex justify-content-center">
                     <p style="margin: 0px 5px 0px 0px">Consumption of Electricity:</p>
                     <p style="margin: 0px 0px 5px 0px">@Model.RandomConsumptionOfElectricity</p>
                 </div>
-
                 <div class="d-flex justify-content-center">
                     <p style="margin: 0px 5px 0px 0px">CO2 Produced:</p>
                     <p style="margin: 0px 0px 5px 0px">@Model.RandomCO2Emission</p>
                 </div>
-		    </div>
-	    </div>
+            </div>
+        </div>
     }
-	
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const checkboxes = document.querySelectorAll('input[name="BoilersChecked"]');
+            const optimizeButton = document.getElementById('optimizeButton');
 
+            function areAllCheckboxesChecked() {
+                return Array.from(checkboxes).every(checkbox => checkbox.checked);
+            }
+
+            function toggleOptimizeButton() {
+                optimizeButton.disabled = areAllCheckboxesChecked();
+            }
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', toggleOptimizeButton);
+            });
+
+            // Initial check
+            toggleOptimizeButton();
+        });
+    </script>
 </body>
 
 </html>
-
-@* 			<div class="table-container d-flex justify-content-center">
-				<table>
-					<thead>
-						<tr>
-							<th>Total Heat Produced  </th>
-							<th>Total Electricity Produced  </th>
-							<th>Turnover </th>
-                            <th>Consumption of Gas </th>
-                            <th>Consumption of Oil </th>
-                            <th>Consumption of Electricity </th>
-                            <th>CO2 Emissions (kg) </th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>@Model.TotalHeatProduction</td>
-							<td>@Model.TotalElectricityProduction</td>
-							<td>@Model.Turnover</td>
-                            <td>@Model.ConsumptionOfGas</td>
-                            <td>@Model.ConsumptionOfOil</td>
-                            <td>@Model.ConsumptionOfElectricity</td>
-                            <td>@Model.CO2Emission</td>
-						</tr>
-				</table>
-			</div> *@
