@@ -107,6 +107,7 @@
                     {
                         <button id="optimizeButton" type="submit" disabled>Optimize</button>
                     }
+                    <button id="saveToCSVButton" type="button">Save to CSV</button>
                 </div>
             </form>
         </div>
@@ -215,10 +216,12 @@
             </div>
         </div>
     }
+
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
             const checkboxes = document.querySelectorAll('input[name="BoilersChecked"]');
             const optimizeButton = document.getElementById('optimizeButton');
+            const saveToCSVButton = document.getElementById('saveToCSVButton');
             const selectedUnitsInput = document.getElementById('selectedUnits');
 
             function updateSelectedUnits() {
@@ -229,8 +232,13 @@
             }
 
             function toggleOptimizeButton() {
-                let anyUnchecked = Array.from(checkboxes).some(checkbox => !checkbox.checked);
-                
+                let anyUnchecked = false;
+                checkboxes.forEach(checkbox => {
+                    if (!checkbox.checked && checkbox.getAttribute('checked') !== 'checked') {
+                        anyUnchecked = true;
+                    }
+                });
+
                 optimizeButton.disabled = !anyUnchecked;
                 if (anyUnchecked) {
                     optimizeButton.style.backgroundColor = '#e60000';
@@ -242,9 +250,32 @@
                     optimizeButton.style.cursor = 'not-allowed';
                 }
 
-                // Update the hidden field with selected units
+                
                 updateSelectedUnits();
             }
+
+            @* function saveToCSV() {
+                const headers = ["Total Heat Produced", "Total Electricity Produced", "Expenses", "Consumption of Gas", "Consumption of Oil", "Consumption of Electricity", "CO2 Produced"];
+                const data = [
+                    ["@Model.TotalHeatProduction", "@Model.TotalElectricityProduction", "@Model.Expenses", "@Model.ConsumptionOfGas", "@Model.ConsumptionOfOil", "@Model.ConsumptionOfElectricity", "@Model.CO2Emission"]
+                ];
+
+                let csvContent = "data:text/csv;charset=utf-8,"
+                    + headers.join(",") + "\n"
+                    + data.map(e => e.join(",")).join("\n");
+
+                const encodedUri = encodeURI(csvContent);
+                const link = document.createElement("a");
+                link.setAttribute("href", encodedUri);
+                link.setAttribute("download", "optimized_results.csv");
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }*@
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', toggleOptimizeButton);
+            });
 
             // Restore the state of checkboxes from hidden field
             const savedSelectedUnits = selectedUnitsInput.value.split(",");
@@ -255,13 +286,15 @@
                 }
             });
 
-            // Add event listeners and initial check after restoring state
-            checkboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', toggleOptimizeButton);
-            });
-
             // Initial check
             toggleOptimizeButton();
+
+            saveToCSVButton.addEventListener('click', saveToCSV);
+
+            // Preserve the original button functionality
+            optimizeButton.addEventListener('click', (event) => {
+                // Ensure the original functionality here
+            });
         });
     </script>
 </body>
