@@ -59,8 +59,8 @@ namespace heat_production_optimization.Pages
         public string SelectedUnit { get; set; }
         public bool IsInitialLoad { get; private set; }
 
-        [BindProperty]
-        public List<string> BoilersChecked { get; set; }
+		[BindProperty]
+        public List<string> BoilersChecked { get; set; } = new List<string>();
 
 
         //Worst case properties

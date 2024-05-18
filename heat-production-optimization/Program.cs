@@ -1,12 +1,15 @@
 using heat_production_optimization;
 using heat_production_optimization.Models;
 using System.Globalization;
+using OfficeOpenXml;
 
 CultureInfo customCulture = new CultureInfo("da-DK");
 CultureInfo.DefaultThreadCurrentCulture = customCulture;
 CultureInfo.DefaultThreadCurrentUICulture = customCulture;
 
 var builder = WebApplication.CreateBuilder(args);
+
+ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
 // Add services to the container.
 builder.Services.AddRazorPages();

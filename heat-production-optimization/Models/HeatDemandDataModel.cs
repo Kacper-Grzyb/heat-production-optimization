@@ -10,6 +10,5 @@ namespace heat_production_optimization.Models
         public DateTime timeTo { get; set; }
         public double heatDemand { get; set; } // in MWh
         public double electricityPrice { get; set; } // in DKK/MWh (el)
-
     }
 }

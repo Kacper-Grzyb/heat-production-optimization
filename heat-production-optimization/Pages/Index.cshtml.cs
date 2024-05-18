@@ -40,7 +40,7 @@ namespace heat_production_optimization.Pages
             switch (buttonAction)
 			{
 				case "uploadData":
-                    if (uploadedFile == null || (uploadedFile.ContentType != "text/csv" && uploadedFile.ContentType != "application/vnd.ms-excel") || uploadedFile.Length == 0)
+                    if (uploadedFile == null || (uploadedFile.ContentType != "text/csv" && uploadedFile.ContentType != "application/vnd.ms-excel" && uploadedFile.ContentType != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") || uploadedFile.Length == 0)
                     {
                         _context.errorMessage = "Wrong file format uploaded!";
 						_context.SaveChanges();
