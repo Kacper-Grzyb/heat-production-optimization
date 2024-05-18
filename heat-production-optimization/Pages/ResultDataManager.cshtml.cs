@@ -55,9 +55,9 @@ namespace heat_production_optimization.Pages
         public double ConsumptionOfElectricity { get; set; }
         public double CO2Emission { get; set; }
 
-		public bool ShowResults { get; set; } = false;
-		public string SelectedUnit { get; set; }
-		public bool IsInitialLoad { get; private set; }
+        public bool ShowResults { get; set; } = false;
+        public string SelectedUnit { get; set; }
+        public bool IsInitialLoad { get; private set; }
 
 		[BindProperty]
         public List<string> BoilersChecked { get; set; } = new List<string>();
