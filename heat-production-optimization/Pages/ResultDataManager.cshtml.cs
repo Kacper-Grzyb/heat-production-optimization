@@ -54,10 +54,10 @@ namespace heat_production_optimization.Pages
         public double CO2Emission { get; set; }
 
         public bool ShowResults { get; set; } = false;
-        public string SelectedUnit { get; set; }
+        public string SelectedUnit { get; set; } = string.Empty;
 
         [BindProperty]
-        public List<string> BoilersChecked { get; set; }
+        public List<string> BoilersChecked { get; set; } = new List<string>();
 
 
         //Worst case properties
