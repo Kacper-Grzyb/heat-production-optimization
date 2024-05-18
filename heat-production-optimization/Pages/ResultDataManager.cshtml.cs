@@ -1,4 +1,4 @@
- using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Linq;
 using heat_production_optimization.Models;
@@ -8,6 +8,7 @@ using Microsoft.JSInterop;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace heat_production_optimization.Pages
 {
@@ -26,9 +27,9 @@ namespace heat_production_optimization.Pages
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             displayProductionUnits = new List<IUnit>(context.productionUnits);
-            if(context.productionUnitNamesForOptimization != null && context.productionUnitNamesForOptimization.Count() != 0)
+            if (context.productionUnitNamesForOptimization != null && context.productionUnitNamesForOptimization.Count() != 0)
             {
-                foreach(OptimizerUnitNamesDataModel record in context.productionUnitNamesForOptimization)
+                foreach (OptimizerUnitNamesDataModel record in context.productionUnitNamesForOptimization)
                 {
                     var unit = context.productionUnits.FirstOrDefault(u => u.Name == record.Name);
                     if (unit == null) throw new Exception("The productionUnitNamesForOptimization table had a production unit name that does not exist!");
@@ -102,6 +103,8 @@ namespace heat_production_optimization.Pages
         {
             IsInitialLoad = true;
 
+            
+
             double heatDemand = _context.HeatDemandData.Sum(data => data.heatDemand);
             kOptimizer.OptimizeHeatProduction(OptimizationOption.Cost);
 
@@ -136,9 +139,12 @@ namespace heat_production_optimization.Pages
 
         }
 
+
+
         public void OnPost()
         {
             IsInitialLoad = false;
+
 
             if (BoilersChecked != null && BoilersChecked.Any())
             {

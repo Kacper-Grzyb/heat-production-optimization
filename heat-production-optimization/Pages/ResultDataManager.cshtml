@@ -60,6 +60,12 @@
             transform: scale(0.95);
         }
 
+        button:disabled {
+            background-color: #ccc;
+            color: #999;
+            cursor: not-allowed;
+        }
+
         .checkbox-container {
             display: flex;
             flex-wrap: wrap;
@@ -86,30 +92,29 @@
                     @foreach (IUnit unit in Model.displayProductionUnits)
                     {
                         <div class="checkbox-item">
-                            <input id="@unit.Name" name="BoilersChecked" type="checkbox" value="@unit.Name" checked onclick="toggleOptimizeButton()" />
+                            <input id="@unit.Name" name="BoilersChecked" type="checkbox" value="@unit.Name" @(Model.optimizerProductionUnits.Any(u => u.Name == unit.Name) ? "checked" : "") />
                             <label for="@unit.Name">@unit.Alias</label>
                         </div>
                     }
                 </div>
+                <input type="hidden" id="selectedUnits" name="selectedUnits" value="@string.Join(",", Model.optimizerProductionUnits.Select(u => u.Name))" />
                 <div class="button-container">
                     @if (Model.ShowResults)
                     {
-                        <button type="submit">Select Units</button>
+                        <button type="submit">Optimize</button>
                     }
                     else
                     {
-                        <!-- Add the condition to disable the button on initial load -->
-                        <button id="optimizeButton" type="submit" disabled style="background-color: #ccc; color: #999; cursor: not-allowed;">Optimize</button>
+                        <button id="optimizeButton" type="submit" disabled>Optimize</button>
                     }
                 </div>
             </form>
         </div>
     </div>
 
-
     <div class="d-flex justify-content-center mt-5">
         <div class="center-box">
-            <h1>@(string.IsNullOrEmpty(Model.SelectedUnit) ? "Optimized Results" : Model.SelectedUnit + " Optimized Results")</h1>
+            <h1>Optimized Results</h1>
             <div class="d-flex justify-content-center">
                 <p style="margin: 0px 5px 0px 0px">Total Heat Produced:</p>
                 <p style="margin: 0px 0px 5px 0px">@Model.TotalHeatProduction</p>
@@ -210,20 +215,22 @@
             </div>
         </div>
     }
-    
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
             const checkboxes = document.querySelectorAll('input[name="BoilersChecked"]');
             const optimizeButton = document.getElementById('optimizeButton');
+            const selectedUnitsInput = document.getElementById('selectedUnits');
+
+            function updateSelectedUnits() {
+                const selectedUnits = Array.from(checkboxes)
+                    .filter(checkbox => checkbox.checked)
+                    .map(checkbox => checkbox.value);
+                selectedUnitsInput.value = selectedUnits.join(",");
+            }
 
             function toggleOptimizeButton() {
-                let anyUnchecked = false;
-                checkboxes.forEach(checkbox => {
-                    if (!checkbox.checked && checkbox.getAttribute('checked') !== 'checked') {
-                        anyUnchecked = true;
-                    }
-                });
-
+                let anyUnchecked = Array.from(checkboxes).some(checkbox => !checkbox.checked);
+                
                 optimizeButton.disabled = !anyUnchecked;
                 if (anyUnchecked) {
                     optimizeButton.style.backgroundColor = '#e60000';
@@ -234,8 +241,21 @@
                     optimizeButton.style.color = '#999';
                     optimizeButton.style.cursor = 'not-allowed';
                 }
+
+                // Update the hidden field with selected units
+                updateSelectedUnits();
             }
 
+            // Restore the state of checkboxes from hidden field
+            const savedSelectedUnits = selectedUnitsInput.value.split(",");
+            savedSelectedUnits.forEach(unit => {
+                const checkbox = document.getElementById(unit);
+                if (checkbox) {
+                    checkbox.checked = true;
+                }
+            });
+
+            // Add event listeners and initial check after restoring state
             checkboxes.forEach(checkbox => {
                 checkbox.addEventListener('change', toggleOptimizeButton);
             });
@@ -244,11 +264,6 @@
             toggleOptimizeButton();
         });
     </script>
-
-
-
-
-
 </body>
 
 </html>
