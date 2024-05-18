@@ -21,6 +21,7 @@ namespace heat_production_optimization.Pages
         public List<IUnit> optimizerProductionUnits { get; set; } = new List<IUnit>();
         public List<IUnit> displayProductionUnits { get; set; }
 
+
         public ResultDataManagerModel(SourceDataDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
@@ -55,6 +56,7 @@ namespace heat_production_optimization.Pages
 
         public bool ShowResults { get; set; } = false;
         public string SelectedUnit { get; set; }
+        public bool IsInitialLoad { get; private set; }
 
         [BindProperty]
         public List<string> BoilersChecked { get; set; }
@@ -98,6 +100,8 @@ namespace heat_production_optimization.Pages
 
         public void OnGet()
         {
+            IsInitialLoad = true;
+
             double heatDemand = _context.HeatDemandData.Sum(data => data.heatDemand);
             kOptimizer.OptimizeHeatProduction(OptimizationOption.Cost);
 
@@ -134,6 +138,8 @@ namespace heat_production_optimization.Pages
 
         public void OnPost()
         {
+            IsInitialLoad = false;
+
             if (BoilersChecked != null && BoilersChecked.Any())
             {
                 SelectedUnit = BoilersChecked.First();

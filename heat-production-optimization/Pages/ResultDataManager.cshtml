@@ -94,16 +94,18 @@
                 <div class="button-container">
                     @if (Model.ShowResults)
                     {
-                        <button type="submit">Select New Unit</button>
+                        <button type="submit">Select Units</button>
                     }
                     else
                     {
-                        <button id="optimizeButton" type="submit" disabled>Optimize</button>
+                        <!-- Add the condition to disable the button on initial load -->
+                        <button id="optimizeButton" type="submit" disabled style="background-color: #ccc; color: #999; cursor: not-allowed;">Optimize</button>
                     }
                 </div>
             </form>
         </div>
     </div>
+
 
     <div class="d-flex justify-content-center mt-5">
         <div class="center-box">
@@ -208,17 +210,30 @@
             </div>
         </div>
     }
+    
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
             const checkboxes = document.querySelectorAll('input[name="BoilersChecked"]');
             const optimizeButton = document.getElementById('optimizeButton');
 
-            function areAllCheckboxesChecked() {
-                return Array.from(checkboxes).every(checkbox => checkbox.checked);
-            }
-
             function toggleOptimizeButton() {
-                optimizeButton.disabled = areAllCheckboxesChecked();
+                let anyUnchecked = false;
+                checkboxes.forEach(checkbox => {
+                    if (!checkbox.checked && checkbox.getAttribute('checked') !== 'checked') {
+                        anyUnchecked = true;
+                    }
+                });
+
+                optimizeButton.disabled = !anyUnchecked;
+                if (anyUnchecked) {
+                    optimizeButton.style.backgroundColor = '#e60000';
+                    optimizeButton.style.color = '#fff';
+                    optimizeButton.style.cursor = 'pointer';
+                } else {
+                    optimizeButton.style.backgroundColor = '#ccc';
+                    optimizeButton.style.color = '#999';
+                    optimizeButton.style.cursor = 'not-allowed';
+                }
             }
 
             checkboxes.forEach(checkbox => {
@@ -229,6 +244,11 @@
             toggleOptimizeButton();
         });
     </script>
+
+
+
+
+
 </body>
 
 </html>
