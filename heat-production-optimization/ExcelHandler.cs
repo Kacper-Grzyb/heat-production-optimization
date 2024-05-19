@@ -1,5 +1,9 @@
 ﻿using heat_production_optimization.Models;
 using OfficeOpenXml;
+using Excel = Microsoft.Office.Interop.Excel;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace heat_production_optimization
 {
@@ -65,6 +69,76 @@ namespace heat_production_optimization
 
     public class ExcelWriter
     {
+        public byte[] Write(List<UnitUsageDataModel> unitUsages, OptimizerResultsDataModel results)
+        {
+            ExcelPackage package = new ExcelPackage();
+            ExcelWorkbook workbook = package.Workbook;
+            ExcelWorksheet worksheet = workbook.Worksheets.Add("Optimized Results");
 
+            int rowIndex = 1;
+            int columnIndex = 1;
+
+            try
+            {
+                // Adding column headers
+                worksheet.Cells[rowIndex, columnIndex++].Value = "Time from";
+                worksheet.Cells[rowIndex, columnIndex++].Value = "Time to";
+                foreach(var record in unitUsages[0].ActivationPercentages)
+                {
+                    worksheet.Cells[rowIndex, columnIndex++].Value = record.Unit.Name;
+                }
+
+                rowIndex = 2;
+                columnIndex = 1;
+
+                // Adding production unit usage data
+                foreach(UnitUsageDataModel item in unitUsages)
+                {
+                    worksheet.Cells[rowIndex, columnIndex++].Value = item.DateInterval.TimeFrom;
+                    worksheet.Cells[rowIndex, columnIndex++].Value = item.DateInterval.TimeTo;
+                    foreach(UnitActivationPercentage activation in  item.ActivationPercentages)
+                    {
+                        worksheet.Cells[rowIndex, columnIndex++].Value = activation.ActivationPercentage;
+                    }
+                    rowIndex++;
+                    columnIndex = 1;
+                }
+
+                // Adding optimization results data
+                rowIndex++;
+                columnIndex = 1;
+
+                worksheet.Cells[rowIndex, columnIndex++].Value = "Total heat production";
+				worksheet.Cells[rowIndex, columnIndex++].Value = "Total electricity production";
+				worksheet.Cells[rowIndex, columnIndex++].Value = "Expenses";
+				worksheet.Cells[rowIndex, columnIndex++].Value = "Consumption of gas";
+				worksheet.Cells[rowIndex, columnIndex++].Value = "Consumption of oil";
+				worksheet.Cells[rowIndex, columnIndex++].Value = "Consumption of electricity";
+				worksheet.Cells[rowIndex, columnIndex++].Value = "Produced CO2";
+
+				rowIndex++;
+				columnIndex = 1;
+
+                worksheet.Cells[rowIndex, columnIndex++].Value = results.TotalHeatProduction;
+                worksheet.Cells[rowIndex, columnIndex++].Value = results.TotalElectricityProduction;
+                worksheet.Cells[rowIndex, columnIndex++].Value = results.Expenses;
+                worksheet.Cells[rowIndex, columnIndex++].Value = results.ConsumptionOfGas;
+                worksheet.Cells[rowIndex, columnIndex++].Value = results.ConsumptionOfOil;
+                worksheet.Cells[rowIndex, columnIndex++].Value = results.ConsumptionOfElectricity;
+                worksheet.Cells[rowIndex, columnIndex++].Value = results.ProducedCO2;
+
+
+				using (MemoryStream stream  = new MemoryStream())
+                {
+                    package.SaveAs(stream);
+                    byte[] content = stream.ToArray();
+                    return content;
+				}
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

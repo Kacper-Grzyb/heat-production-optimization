@@ -9,6 +9,7 @@ CultureInfo.DefaultThreadCurrentUICulture = customCulture;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// This must stay for the excel reading and writing to work in debug mode
 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
 // Add services to the container.

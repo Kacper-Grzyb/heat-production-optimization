@@ -25,13 +25,14 @@ namespace heat_production_optimization
         Emission
     }
 
-    public class KOptimizer : IOptimizer
+	#region Kacper's Optimizer
+	public class KOptimizer : IOptimizer
     {
-        //private SourceDataDbContext _context;
         private List<IUnit> ProductionUnits;
         private HeatDemandDataModel[] HeatDemandData;
         private Dictionary<DateTime, double> electricityPrices = new();
 
+        public List<UnitUsageDataModel> unitUsages = new();
         public Dictionary<Tuple<DateTime, DateTime>, Dictionary<IUnit, double>> boilerActivations = new();
         public double TotalHeatProduction { get; set; } = 0.0;
         public double TotalElectricityProduction { get; set; } = 0.0;
@@ -43,18 +44,6 @@ namespace heat_production_optimization
         public bool CanMeetHeatDemand { get; set; } = true;
         private readonly SaveToCSV saveToCSV;
 
-        /* Needed data: 
-         *  Max heat production from result configuration 
-         *  Max electricity production
-         *  Max electricity consumption
-         *  Expenses and profit
-         *  Consumption of primary energy
-         *  Produced C02
-         *  
-         * Sort either by highest profit or lowest co2 emissions
-         */
-
-        #region Kacper's Optimizer
         public KOptimizer(List<IUnit> productionUnits, DbSet<HeatDemandDataModel> heatDemandData)
         {
             HeatDemandData = heatDemandData.OrderBy(r => r.timeFrom).ToArray();
@@ -106,6 +95,7 @@ namespace heat_production_optimization
                         break;
                 }
 
+                List<UnitActivationPercentage> unitActivations = new List<UnitActivationPercentage>();
                 foreach(var unit in ProductionUnits)
                 {
                     if(currentHeatDemand > TotalHeatProduction)
@@ -129,12 +119,17 @@ namespace heat_production_optimization
                         ProducedCO2 += unit.CO2EmissionMWh * heatProducedActual;
 
                         boilerActivations[currentTimeFrame].Add(unit, activationPercentage);
+                        unitActivations.Add(new UnitActivationPercentage() { ActivationPercentage = activationPercentage, Unit = (ProductionUnitDataModel)unit });
                     }
                     else
                     {
 						boilerActivations[currentTimeFrame].Add(unit, 0.00);
+						unitActivations.Add(new UnitActivationPercentage() { Id = Guid.NewGuid(), ActivationPercentage = 0.0, Unit = (ProductionUnitDataModel)unit });
 					}
                 }
+
+                unitUsages.Add(new UnitUsageDataModel() { Id = Guid.NewGuid(), DateInterval = new DateInterval() { Id = Guid.NewGuid(), TimeFrom = record.timeFrom, TimeTo = record.timeTo }, ActivationPercentages = unitActivations });
+
                 if(currentHeatDemand > TotalHeatProduction)
                 {
                     CanMeetHeatDemand = false;

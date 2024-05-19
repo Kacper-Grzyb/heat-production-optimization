@@ -11,6 +11,8 @@ namespace heat_production_optimization.Models
         public DbSet<ProductionUnitDataModel> productionUnits { get; set; }
         public DbSet<OptimizerUnitNamesDataModel> productionUnitNamesForOptimization { get; set; }
         public DbSet<UiMessagesDataModel> uiMessages { get; set; }
+        public DbSet<UnitUsageDataModel> unitUsage { get; set; }
+        public DbSet<OptimizerResultsDataModel> optimizerResults { get; set; }
         public string loadedDataPath 
         { 
             get
