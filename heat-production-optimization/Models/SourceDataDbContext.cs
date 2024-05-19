@@ -99,6 +99,7 @@ namespace heat_production_optimization.Models
             {
                 uiMessages.Add(new UiMessagesDataModel(MessageType.DataUploadError, string.Empty));
                 uiMessages.Add(new UiMessagesDataModel(MessageType.DataUploadPath, string.Empty));
+                uiMessages.Add(new UiMessagesDataModel(MessageType.OptimizerError, string.Empty));
             }
 
             SaveChanges();

@@ -88,6 +88,10 @@
         <div class="center-box">
             <h1>Choose Boilers to Include in Optimization</h1>
             <form method="post">
+                @if(Model.errorMessage != string.Empty)
+                {
+                    <p>@Model.errorMessage</p>
+                }
                 <div class="checkbox-container">
                     @foreach (IUnit unit in Model.displayProductionUnits)
                     {
