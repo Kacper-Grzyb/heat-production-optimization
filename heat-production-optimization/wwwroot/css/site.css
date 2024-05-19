@@ -4,11 +4,15 @@ html {
 
 @media (min-width: 768px) {
   html {
-    font-size: 16px;
+      font-size: 16px;
   }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
   box-shadow: 0 0 0 0.1rem black, 0 0 0 0.25rem #ffa31a;
 }
 
@@ -30,6 +34,14 @@ body {
   padding: 20px;
 }
 
+.btn {
+  font-size: 1rem;
+  padding: 10px 15px;
+  width: auto;
+  flex: 1;
+  margin: 5px; /* Space to breathe */
+}
+
 .unit {
   flex: 0 1 45%;
   text-align: center;
@@ -41,11 +53,13 @@ body {
   cursor: pointer;
   transition: transform 0.2s, max-height 0.2s ease-out;
   overflow: hidden;
-  max-height: 300px; /* Initial max-height */
+  max-height: 300px;
+  /* Initial max-height */
 }
 
 .unit.active {
-  max-height: 800px; /* Adjust based on content length */
+  max-height: 800px;
+  /* Adjust based on content length */
 }
 
 .unit img {
@@ -79,21 +93,6 @@ body {
   border-color: #e8961b;
 }
 
-.message {
-  padding: 15px;
-  margin: 20px 0;
-  border: 1px solid transparent;
-  border-radius: 4px;
-}
-
-.message.success {
-  color: #155724;
-  background-color: #d4edda;
-  border-color: #c3e6cb;
-}
-
-.message.error {
-  color: #721c24;
-  background-color: #f8d7da;
-  border-color: #f5c6cb;
+.btn-primary:hover {
+  background-color: #e8961b;
 }

@@ -1,33 +1,36 @@
 ﻿@model Models.SourceDataDbContext
 
+@{
+    string currentPage = Context.Request.RouteValues["page"].ToString(); // Get the current page
+}
 
-<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3" style="height: 70px;">
     <div class="container">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-            <ul class="navbar-nav flex-grow-1">
+            <ul class="navbar-nav flex-grow-1 justify-content-center" id="menu">
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                    <a class="nav-link text-dark @(currentPage == "Index" ? "active" : "")" asp-area="" asp-page="/Index" style="font-size: 1.5rem;">Home</a>
                 </li>
                 @if(Model.IsDataLoaded())
                 {
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/ResultDataManager">Result Data Manager</a>
+                        <a class="nav-link text-dark @(currentPage == "ResultDataManager" ? "active" : "")" asp-area="" asp-page="/ResultDataManager" style="font-size: 1.5rem;">Result Data Manager</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/DataDisplay">Database Preview</a>
+                        <a class="nav-link text-dark @(currentPage == "DataDisplay" ? "active" : "")" asp-area="" asp-page="/DataDisplay" style="font-size: 1.5rem;">Database</a>
                     </li>
                 }
                 else
                 {
                     <li class="nav-item">
-                        <p class="nav-link" style="color: lightgrey">Result Data Manager</p>
+                        <p class="nav-link" style="color: lightgrey; font-size: 1.5rem;">Result Data Manager</p>
                     </li>
                     <li class="nav-item">
-                        <p class="nav-link" style="color: lightgrey">Database Preview</p>
+                        <p class="nav-link" style="color: lightgrey; font-size: 1.5rem;">Database Preview</p>
                     </li>
                 }
 
@@ -35,3 +38,50 @@
         </div>
     </div>
 </nav>
+
+<style>
+    .navbar-nav .nav-link {
+        margin: 0 15px; /* Space out the buttons */
+        position: relative;
+        transition: color 0.3s;
+    }
+
+    .navbar-nav .nav-link::before {
+        position: absolute;
+        display: block;
+        content: '';
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        transition: 0.4s;
+        background-color: orange;
+        transform: scaleX(0);
+    }
+
+    .navbar-nav .nav-link.active::before,
+    .navbar-nav .nav-link:hover::before {
+        transform: scaleX(1);
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const menu = document.getElementById('menu');
+        const links = menu.querySelectorAll('.nav-link');
+
+        // Mark the active link on page load
+        links.forEach(link => {
+            if (link.href === window.location.href) {
+                link.classList.add('active');
+            }
+        });
+
+        menu.addEventListener('click', function (e) {
+            if (e.target.tagName.toLowerCase() === 'a') {
+                links.forEach(link => link.classList.remove('active')); 
+                e.target.classList.add('active'); 
+            }
+        });
+    });
+</script>
