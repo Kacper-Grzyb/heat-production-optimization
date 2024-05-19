@@ -228,16 +228,16 @@
 
                     function drawChart() {
                         var data = google.visualization.arrayToDataTable([
-                        ['Name', 'Expenses', 'Expenses', 'Profit'],
-                        ['KOptimizer', @Model.Expenses, 400, 200],
-                        ['Worst', @Model.WorstExpenses, 460, 250],
-                        ['Random', @Model.RandomExpenses, 1120, 300],
+                        ['Name', 'Total Electricity Produced', 'Consumption of Gas', 'Consumption of Oil', 'Consumption of Electricty'],
+                        ['KOptimizer', @Model.TotalElectricityProduction, @Model.ConsumptionOfGas, @Model.ConsumptionOfOil, @Model.ConsumptionOfElectricity],
+                        ['Worst', @Model.WorstElectricity, @Model.WorstConsumptionOfGas, @Model.WorstConsumptionOfOil, @Model.WorstConsumptionOfElectricity],
+                        ['Random', @Model.RandomElectricity, @Model.RandomConsumptionOfGas, @Model.RandomConsumptionOfOil, @Model.RandomConsumptionOfElectricity],
                         ]);
 
                         var options = {
                         chart: {
-                            title: 'Company Performance',
-                            subtitle: 'Sales, Expenses, and Profit: 2014-2017',
+                            title: 'Total Heat Prodced', 
+                            subtitle: 'Optimized, Unoptimized, and Random',
                         }
                         };
 
