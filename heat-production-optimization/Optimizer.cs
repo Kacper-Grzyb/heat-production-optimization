@@ -139,7 +139,7 @@ namespace heat_production_optimization
 
             TotalHeatProduction = Math.Round(TotalHeatProduction, 2);
             TotalElectricityProduction = Math.Round(TotalElectricityProduction, 2);
-            Expenses = Math.Round(Expenses, 2);
+            Expenses = Math.Abs(Math.Round(Expenses, 2));
             ConsumptionOfGas = Math.Round(ConsumptionOfGas, 2);
             ConsumptionOfOil = Math.Round(ConsumptionOfOil, 2);
             ConsumptionOfElectricity = Math.Round(ConsumptionOfElectricity, 2);
