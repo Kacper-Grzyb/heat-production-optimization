@@ -39,13 +39,17 @@ namespace heat_production_optimization.Pages
 
         public IActionResult OnPost(PUCButtonRequest request)
         {
-            if (request == null || formProductionUnit == null) throw new Exception("The post request lacked arguments!");
-
-
-
+            Console.WriteLine();
+            if (request == null) throw new Exception("The post request lacked arguments!");
+            Console.WriteLine();
 			switch (request.action)
             {
                 case "update":
+                    if(formProductionUnit==null)
+                    {
+                        throw new Exception("The post request did not give any data to update the unit with!");
+                    }
+
 					CustomUnit updatedUnit = new CustomUnit(
 	                    Guid.NewGuid(),
 	                    formProductionUnit.Alias,

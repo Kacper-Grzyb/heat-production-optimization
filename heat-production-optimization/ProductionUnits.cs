@@ -99,17 +99,6 @@ namespace heat_production_optimization
 
     public class CustomUnit : ProductionUnitDataModel, IUnit
     {
-		//public string Alias { get; }
-		//public string Name { get; }
-		//public double MaxHeat { get; }
-		//public double MaxElectricity { get; }
-		//public double ProductionCost { get; }
-		//public double ProductionCostMWh { get; }
-		//public double CO2Emission { get; }
-  //      public double CO2EmissionMWh { get; }
-		//public double GasConsumption { get; }
-		//public double OilConsumption { get; }
-		//public double PriceToHeatRatio { get; set; }
 
 		public CustomUnit(Guid id,string alias, string name, double maxHeat = 0, double maxElectricity = 0, double productionCost = 0, double cO2Emission = 0, double gasConsumption = 0, double oilConsumption = 0)
 		{

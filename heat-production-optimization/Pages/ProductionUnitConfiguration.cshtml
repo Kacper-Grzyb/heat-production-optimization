@@ -48,10 +48,25 @@
 			padding: 5px 0px 5px 0px;
 		}
 
+		.unit-form-button-delete {
+			margin-top: 10px;
+			margin-bottom: 10px;
+			width: 10%;
+			border: solid red;
+			background-color: transparent;
+			padding: 5px 0px 5px 0px;
+		}
+
 		.unit-form-button:hover, .create-button:hover {
 			background-color: grey;
 			color: white;
 		}
+
+		.unit-form-button-delete:hover {
+			background-color: red;
+			color:white;
+		}
+
 
 		.tab {
 			display: inline-block;
@@ -72,92 +87,96 @@
 
 	<h1 class="page-title">Configure Production Units</h1>
 
+	@*The .ToString(...) next to the number values is so that they get recognized by html and not set to 0*@
+
 	@foreach (var unit in Model.productionUnits)
 	{
 		<div class="unit-form">
-			<form method="post">
-				<p class="unit-title">@unit.Name</p>
 
-				@if (unit.Alias != "GB" && unit.Alias != "OB" && unit.Alias != "GM" && unit.Alias != "EK")
-				{
-					<div class="row">
-						<p class="property-name"><span class="tab" />Alias</p>
-						<input type="text" name="Alias" value="@unit.Alias" class="property-input" />
-					</div>
-				}
-				else
-				{
-					<input type="hidden" name="Alias" value="@unit.Alias" class="property-input" />
-				}
+			<p class="unit-title">@unit.Name</p>
 
+			@if (unit.Alias != "GB" && unit.Alias != "OB" && unit.Alias != "GM" && unit.Alias != "EK")
+			{
 				<div class="row">
-					<p class="property-name"><span class="tab" />Name</p>
-					<input type="text" name="Name" value="@unit.Name" class="property-input" />
+					<p class="property-name"><span class="tab" />Alias</p>
+					<input type="text" name="Alias" value="@unit.Alias" class="property-input" />
 				</div>
+			}
+			else
+			{
+				<input type="hidden" name="Alias" value="@unit.Alias" class="property-input" />
+			}
 
+			<div class="row">
+				<p class="property-name"><span class="tab" />Name</p>
+				<input type="text" name="Name" value="@unit.Name" class="property-input" />
+			</div>
+
+			<div class="row">
+				<p class="property-name"><span class="tab" />Max Heat</p>
+				<input type="number" name="MaxHeat" value="@unit.MaxHeat.ToString(System.Globalization.CultureInfo.InvariantCulture)" class="property-input" step=".1" />
+			</div>
+
+			@if (unit.Alias != "GB" && unit.Alias != "OB")
+			{
 				<div class="row">
-					<p class="property-name"><span class="tab" />Max Heat</p>
-					<input type="number" name="MaxHeat" value="@unit.MaxHeat" class="property-input" />
+					<p class="property-name"><span class="tab" />Max Electricity</p>
+					<input type="number" name="MaxElectricity" value="@unit.MaxElectricity.ToString(System.Globalization.CultureInfo.InvariantCulture)" class="property-input" step=".1" />
 				</div>
+			}
+			else
+			{
+				<input type="hidden" name="MaxElectricity" value="@unit.MaxElectricity.ToString(System.Globalization.CultureInfo.InvariantCulture)" class="property-input" />
+			}
 
-				@if(unit.Alias != "GB" && unit.Alias != "OB")
-				{
-					<div class="row">
-						<p class="property-name"><span class="tab" />Max Electricity</p>
-						<input type="number" name="MaxElectricity" value="@unit.MaxElectricity" class="property-input" />
-					</div>
-				}
-				else
-				{
-					<input type="hidden" name="MaxElectricity" value="@unit.MaxElectricity" class="property-input" />
-				}
+			<div class="row">
+				<p class="property-name"><span class="tab" />Production Costs</p>
+				<input type="number" name="ProductionCostMWh" value="@unit.ProductionCostMWh.ToString(System.Globalization.CultureInfo.InvariantCulture)" class="property-input" step=".1" />
+			</div>
 
+			<div class="row">
+				<p class="property-name"><span class="tab" />CO2 Emissions</p>
+				<input type="number" name="CO2EmissionMWh" value="@unit.CO2EmissionMWh.ToString(System.Globalization.CultureInfo.InvariantCulture)" class="property-input" step=".1" />
+			</div>
+
+			@if (unit.Alias != "OB" && unit.Alias != "EK")
+			{
 				<div class="row">
-					<p class="property-name"><span class="tab" />Production Costs</p>
-					<input type="number" name="ProductionCostMWh" value="@unit.ProductionCostMWh" class="property-input" />
+					<p class="property-name"><span class="tab" />Gas Consumption</p>
+					<input type="number" name="GasConsumption" value="@unit.GasConsumption.ToString(System.Globalization.CultureInfo.InvariantCulture)" class="property-input" step=".1" />
 				</div>
+			}
+			else
+			{
+				<input type="hidden" name="GasConsumption" value="@unit.GasConsumption.ToString(System.Globalization.CultureInfo.InvariantCulture)" class="property-input" />
+			}
 
+			@if (unit.Alias != "GB" && unit.Alias != "GM" && unit.Alias != "EK")
+			{
 				<div class="row">
-					<p class="property-name"><span class="tab" />CO2 Emissions</p>
-					<input type="number" name="CO2EmissionMWh" value="@unit.CO2EmissionMWh" class="property-input" />
+					<p class="property-name"><span class="tab" />Oil Consumption</p>
+					<input type="number" name="OilConsumption" value="@unit.OilConsumption.ToString(System.Globalization.CultureInfo.InvariantCulture)" class="property-input" step=".1" />
 				</div>
+			}
+			else
+			{
+				<input type="hidden" name="OilConsumption" value="@unit.OilConsumption.ToString(System.Globalization.CultureInfo.InvariantCulture)" class="property-input" />
+			}
 
-				@if(unit.Alias != "OB" && unit.Alias != "GM" && unit.Alias != "EK")
-				{
-					<div class="row">
-						<p class="property-name"><span class="tab" />Gas Consumption</p>
-						<input type="number" name="GasConsumption" value="@unit.GasConsumption" class="property-input" />
-					</div>
-				}
-				else
-				{
-					<input type="hidden" name="GasConsumption" value="@unit.GasConsumption" class="property-input" />
-				}
-
-				@if(unit.Alias != "GB" && unit.Alias != "GM" && unit.Alias != "EK")
-				{
-					<div class="row">
-						<p class="property-name"><span class="tab" />Oil Consumption</p>
-						<input type="number" name="OilConsumption" value="@unit.OilConsumption" class="property-input" />
-					</div>
-				}
-				else
-				{
-					<input type="hidden" name="OilConsumption" value="@unit.OilConsumption" class="property-input" />
-				}
-
-				<input type="hidden" name="action" value="update"/>
-				<input type="hidden" name="unitId" value="@unit.Id"/>
+			<form method="post" class="d-inline">
+				<input type="hidden" name="action" value="update" />
+				<input type="hidden" name="unitId" value="@unit.Id" />
 				<button type="submit" class="unit-form-button" name="buttonAction">Save</button>
+			</form>
 
-				@if(unit.Alias != "GB" && unit.Alias != "OB" && unit.Alias != "GM" && unit.Alias != "EK")
-				{
+			@if (unit.Alias != "GB" && unit.Alias != "OB" && unit.Alias != "GM" && unit.Alias != "EK")
+			{
+				<form method="post" class=" = d-inline">
 					<input type="hidden" name="action" value="delete" />
 					<input type="hidden" name="unitId" value="@unit.Id" />
-					<button type="submit" class="btn btn-danger" name="buttonAction">Delete</button>
-				}
-
-			</form>
+					<button type="submit" class="unit-form-button-delete" name="buttonAction">Delete</button>
+				</form>
+			}
 		</div>
 	}
 
