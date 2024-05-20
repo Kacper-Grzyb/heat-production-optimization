@@ -21,6 +21,7 @@ namespace heat_production_optimization.Pages
         private readonly RandomOptimizer randomOptimizer;
         public List<IUnit> optimizerProductionUnits { get; set; } = new List<IUnit>();
         public List<IUnit> displayProductionUnits { get; set; }
+        public string errorMessage { get; set; } = string.Empty;
 
 
         public ResultDataManagerModel(SourceDataDbContext context)
@@ -45,6 +46,7 @@ namespace heat_production_optimization.Pages
             sOptimizer = new SOptimizer(optimizerProductionUnits, context.HeatDemandData);
             worstScenarioOptimizer = new WorstScenarioOptimizer(optimizerProductionUnits, context.HeatDemandData);
             randomOptimizer = new RandomOptimizer(optimizerProductionUnits, context.HeatDemandData);
+            //errorMessage = _context.uiMessages.Find(MessageType.OptimizerError)?.Message ?? string.Empty;
         }
 
         public double TotalHeatProduction { get; set; }
@@ -102,7 +104,8 @@ namespace heat_production_optimization.Pages
         public void OnGet()
         {
             IsInitialLoad = true;
-            
+
+            errorMessage = _context.uiMessages.Find(MessageType.OptimizerError)?.Message ?? string.Empty;
 
             double heatDemand = _context.HeatDemandData.Sum(data => data.heatDemand);
             kOptimizer.OptimizeHeatProduction(OptimizationOption.Cost);
@@ -204,13 +207,38 @@ namespace heat_production_optimization.Pages
                 CO2Emission = Math.Round(kOptimizer.ProducedCO2);
 
                 if (!kOptimizer.CanMeetHeatDemand)
-                    Console.WriteLine("Not able to meet demand!");
+                {
+                    if (_context.uiMessages.Find(MessageType.OptimizerError) == null)
+                    {
+                        throw new Exception("The database does not have a record for an optimizer error message!");
+                    }
+                    errorMessage = "Not able to meet heat demand with chosen boiler configuration!"; 
+                    _context.uiMessages.Find(MessageType.OptimizerError).Message = errorMessage;
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    if (_context.uiMessages.Find(MessageType.OptimizerError) == null)
+                    {
+                        throw new Exception("The database does not have a record for an optimizer error message!");
+                    }
+                    errorMessage = string.Empty;
+                    _context.uiMessages.Find(MessageType.OptimizerError).Message = string.Empty;
+                    _context.SaveChanges();
+                }
 
                 ShowResults = true;
             }
             else
             {
-                Console.WriteLine("No Boiler selected!");
+                if (_context.uiMessages.Find(MessageType.OptimizerError) == null)
+                {
+                    throw new Exception("The database does not have a record for an optimizer error message!");
+                }
+                errorMessage = "No boilers were selected!";
+                _context.uiMessages.Find(MessageType.OptimizerError).Message = errorMessage;
+                _context.SaveChanges();
+
                 ShowResults = false;
             }
         }

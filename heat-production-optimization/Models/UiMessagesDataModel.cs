@@ -20,6 +20,7 @@ namespace heat_production_optimization.Models
     public enum MessageType
     {
         DataUploadError,
-        DataUploadPath
+        DataUploadPath,
+        OptimizerError
     }
 }

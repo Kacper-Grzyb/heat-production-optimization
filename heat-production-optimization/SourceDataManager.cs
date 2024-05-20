@@ -124,12 +124,8 @@ namespace heat_production_optimization
         public void ClearDatabase()
         {
 			if (_context.IsDataLoaded())
-			{
-				foreach (var item in _context.HeatDemandData)
-				{
-					_context.HeatDemandData.Remove(item);
-				}
-
+            {
+                _context.HeatDemandData.RemoveRange(_context.HeatDemandData);
                 _context.loadedDataPath = "";
                 _context.SaveChanges();
 			}
