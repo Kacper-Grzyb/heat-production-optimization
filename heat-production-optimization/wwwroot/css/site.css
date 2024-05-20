@@ -4,12 +4,16 @@ html {
 
 @media (min-width: 768px) {
   html {
-    font-size: 16px;
+      font-size: 16px;
   }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem black, 0 0 0 0.25rem #ffa31a;
 }
 
 html {
@@ -19,4 +23,76 @@ html {
 
 body {
   margin-bottom: 60px;
+  background-color: #f8f9fa;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+.btn {
+  font-size: 1rem;
+  padding: 10px 15px;
+  width: auto;
+  flex: 1;
+  margin: 5px; /* Space to breathe */
+}
+
+.unit {
+  flex: 0 1 45%;
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  margin: 20px;
+  cursor: pointer;
+  transition: transform 0.2s, max-height 0.2s ease-out;
+  overflow: hidden;
+  max-height: 300px;
+  /* Initial max-height */
+}
+
+.unit.active {
+  max-height: 800px;
+  /* Adjust based on content length */
+}
+
+.unit img {
+  max-height: 230px;
+  max-width: 100%;
+}
+
+.unit-name {
+  font-weight: bold;
+}
+
+.unit-hint {
+  color: #777;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
+.unit-info {
+  display: none;
+  margin-top: 10px;
+  text-align: left;
+}
+
+.unit.active .unit-info {
+  display: block;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #ffa31a;
+  border-color: #e8961b;
+}
+
+.btn-primary:hover {
+  background-color: #e8961b;
 }
