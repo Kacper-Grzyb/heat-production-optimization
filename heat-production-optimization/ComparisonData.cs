@@ -5,7 +5,7 @@ using heat_production_optimization.Models;
 
 namespace heat_production_optimization
 {
-    public class WorstScenario : IOptimizer
+    public class WorstScenarioOptimizer : IOptimizer
     {
         private List<IUnit> ProductionUnits;
         private HeatDemandDataModel[] HeatDemandData;
@@ -21,7 +21,7 @@ namespace heat_production_optimization
         public double ProducedCO2 { get; set; } = 0.0;
         public bool CanMeetHeatDemand { get; set; } = true;
 
-        public WorstScenario(List<IUnit> productionUnits, DbSet<HeatDemandDataModel> heatDemandData)
+        public WorstScenarioOptimizer(List<IUnit> productionUnits, DbSet<HeatDemandDataModel> heatDemandData)
         {
             HeatDemandData = heatDemandData.OrderBy(r => r.timeFrom).ToArray();
 			ProductionUnits = productionUnits.OrderByDescending(u => u.MaxHeat / u.ProductionCost).ToList(); // ordering the boilers based on the best heat to price ratio
@@ -114,20 +114,7 @@ namespace heat_production_optimization
             ConsumptionOfElectricity = Math.Round(ConsumptionOfElectricity, 2);
             ProducedCO2 = Math.Round(ProducedCO2, 2);
 
-
             Console.WriteLine("The Worst Case has been calculated");
-            /*
-            foreach(var record in HeatDemandData)
-            {
-                Tuple<DateTime, DateTime> timeFrame = new(record.timeFrom, record.timeTo);
-                Console.Write(timeFrame);
-                foreach(var unit in ProductionUnits)
-                {
-                    Console.Write($"{unit.Alias} {boilerActivations[timeFrame][unit]} ");
-                }
-                Console.WriteLine();
-            }
-            */
 	    }
 
     }
@@ -221,18 +208,6 @@ namespace heat_production_optimization
             ProducedCO2 = Math.Round(ProducedCO2, 2);
 
             Console.WriteLine("The random case hase been generated");
-            /*
-            foreach(var record in HeatDemandData)
-            {
-                Tuple<DateTime, DateTime> timeFrame = new(record.timeFrom, record.timeTo);
-                Console.Write(timeFrame);
-                foreach(var unit in ProductionUnits)
-                {
-                    Console.Write($"{unit.Alias} {boilerActivations[timeFrame][unit]} ");
-                }
-                Console.WriteLine();
-            }
-            */
 	    }
 
     }

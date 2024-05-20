@@ -17,7 +17,7 @@ namespace heat_production_optimization.Pages
         private readonly SourceDataDbContext _context;
         private KOptimizer kOptimizer;
         private readonly SOptimizer sOptimizer;
-        private readonly WorstScenario worstScenario;
+        private readonly WorstScenarioOptimizer worstScenarioOptimizer;
         private readonly RandomOptimizer randomOptimizer;
         public List<IUnit> optimizerProductionUnits { get; set; } = new List<IUnit>();
         public List<IUnit> displayProductionUnits { get; set; }
@@ -43,7 +43,7 @@ namespace heat_production_optimization.Pages
             }
             kOptimizer = new KOptimizer(optimizerProductionUnits, context.HeatDemandData);
             sOptimizer = new SOptimizer(optimizerProductionUnits, context.HeatDemandData);
-            worstScenario = new WorstScenario(optimizerProductionUnits, context.HeatDemandData);
+            worstScenarioOptimizer = new WorstScenarioOptimizer(optimizerProductionUnits, context.HeatDemandData);
             randomOptimizer = new RandomOptimizer(optimizerProductionUnits, context.HeatDemandData);
         }
 
@@ -102,7 +102,6 @@ namespace heat_production_optimization.Pages
         public void OnGet()
         {
             IsInitialLoad = true;
-
             
 
             double heatDemand = _context.HeatDemandData.Sum(data => data.heatDemand);
@@ -117,15 +116,15 @@ namespace heat_production_optimization.Pages
             CO2Emission = Math.Round(kOptimizer.ProducedCO2);
 
 
-            worstScenario.OptimizeHeatProduction(OptimizationOption.Cost);
+            worstScenarioOptimizer.OptimizeHeatProduction(OptimizationOption.Cost);
 
-            WorstHeat = Math.Round(worstScenario.TotalHeatProduction);
-            WorstElectricity = Math.Round(worstScenario.TotalElectricityProduction);
-            WorstExpenses = Math.Round(worstScenario.Expenses);
-            WorstConsumptionOfGas = Math.Round(worstScenario.ConsumptionOfGas);
-            WorstConsumptionOfOil = Math.Round(worstScenario.ConsumptionOfOil);
-            WorstConsumptionOfElectricity = Math.Round(worstScenario.ConsumptionOfElectricity);
-            WorstCO2Emission = Math.Round(worstScenario.ProducedCO2);
+            WorstHeat = Math.Round(worstScenarioOptimizer.TotalHeatProduction);
+            WorstElectricity = Math.Round(worstScenarioOptimizer.TotalElectricityProduction);
+            WorstExpenses = Math.Round(worstScenarioOptimizer.Expenses);
+            WorstConsumptionOfGas = Math.Round(worstScenarioOptimizer.ConsumptionOfGas);
+            WorstConsumptionOfOil = Math.Round(worstScenarioOptimizer.ConsumptionOfOil);
+            WorstConsumptionOfElectricity = Math.Round(worstScenarioOptimizer.ConsumptionOfElectricity);
+            WorstCO2Emission = Math.Round(worstScenarioOptimizer.ProducedCO2);
 
             randomOptimizer.OptimizeHeatProduction(OptimizationOption.Cost);
 
@@ -137,11 +136,39 @@ namespace heat_production_optimization.Pages
             RandomConsumptionOfElectricity = Math.Round(randomOptimizer.ConsumptionOfElectricity);
             RandomCO2Emission = Math.Round(randomOptimizer.ProducedCO2);
 
+			// Saving optimizer results to the database
+
+			_context.optimizerResults.RemoveRange(_context.optimizerResults);
+            _context.SaveChanges();
+            _context.unitUsage.RemoveRange(_context.unitUsage);
+            _context.SaveChanges();
+
+            OptimizerResultsDataModel results = new OptimizerResultsDataModel() {
+                Id = Guid.NewGuid(),
+                TotalHeatProduction = kOptimizer.TotalHeatProduction,
+                TotalElectricityProduction = kOptimizer.TotalElectricityProduction,
+                Expenses = kOptimizer.Expenses,
+                ConsumptionOfGas = kOptimizer.ConsumptionOfGas,
+                ConsumptionOfOil = kOptimizer.ConsumptionOfOil,
+                ConsumptionOfElectricity = kOptimizer.ConsumptionOfElectricity,
+                ProducedCO2 = kOptimizer.ProducedCO2
+            }; 
+
+            _context.optimizerResults.Add(results);
+            _context.SaveChanges();
+
+            foreach (var entry in kOptimizer.unitUsages)
+            {
+                _context.unitUsage.Add(entry);
+                _context.SaveChanges();
+            }
+
+            _context.SaveChanges();
         }
 
 
 
-        public void OnPost()
+		public void OnPost()
         {
             IsInitialLoad = false;
 
