@@ -13,6 +13,9 @@
         <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
             <ul class="navbar-nav flex-grow-1 justify-content-center" id="menu">
                 <li class="nav-item">
+                    <a class="nav-link text-dark @(currentPage == "ProductionUnitConfiguration" ? "active" : "")" asp-area="" asp-page="/ProductionUnitConfiguration" style="font-size: 1.5rem;">Production Unit Configuration</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link text-dark @(currentPage == "Index" ? "active" : "")" asp-area="" asp-page="/Index" style="font-size: 1.5rem;">Home</a>
                 </li>
                 @if(Model.IsDataLoaded())

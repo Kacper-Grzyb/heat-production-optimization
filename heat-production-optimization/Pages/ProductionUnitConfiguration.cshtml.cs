@@ -16,7 +16,7 @@ namespace heat_production_optimization.Pages
         public Guid unitId { get; set; }
     }
 
-    public class CustomProductionUnitsModel : PageModel
+    public class ProductionUnitConfigurationModel : PageModel
     {
         readonly SourceDataDbContext _context;
         public DbSet<ProductionUnitDataModel> productionUnits { get; set; }
@@ -27,7 +27,7 @@ namespace heat_production_optimization.Pages
         [BindProperty]
         public ProductionUnitDataModel formProductionUnit { get; set; }
 
-        public CustomProductionUnitsModel(SourceDataDbContext context)
+        public ProductionUnitConfigurationModel(SourceDataDbContext context)
         {
             _context = context;
             productionUnits = context.productionUnits;
