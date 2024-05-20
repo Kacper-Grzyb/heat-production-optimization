@@ -147,79 +147,10 @@
         </div>
     </div>
 
-    @if (string.IsNullOrEmpty(Model.SelectedUnit))
-    {
-        <div class="d-flex justify-content-center mt-5 result-box">
-            <div class="center-box">
-                <h1>Unoptimized Results</h1>
-                <div class="d-flex justify-content-center">
-                    <p style="margin: 0px 5px 0px 0px">Total Heat Produced:</p>
-                    <p style="margin: 0px 0px 5px 0px">@Model.WorstHeat</p>
-                </div>
-                <div class="d-flex justify-content-center">
-                    <p style="margin: 0px 5px 0px 0px">Total Electricity Produced:</p>
-                    <p style="margin: 0px 0px 5px 0px">@Model.WorstElectricity</p>
-                </div>
-                <div class="d-flex justify-content-center">
-                    <p style="margin: 0px 5px 0px 0px">Expenses:</p>
-                    <p style="margin: 0px 0px 5px 0px">@Model.WorstExpenses</p>
-                </div>
-                <div class="d-flex justify-content-center">
-                    <p style="margin: 0px 5px 0px 0px">Consumption of Gas:</p>
-                    <p style="margin: 0px 0px 5px 0px">@Model.WorstConsumptionOfGas</p>
-                </div>
-                <div class="d-flex justify-content-center">
-                    <p style="margin: 0px 5px 0px 0px">Consumption of Oil:</p>
-                    <p style="margin: 0px 0px 5px 0px">@Model.WorstConsumptionOfOil</p>
-                </div>
-                <div class="d-flex justify-content-center">
-                    <p style="margin: 0px 5px 0px 0px">Consumption of Electricity:</p>
-                    <p style="margin: 0px 0px 5px 0px">@Model.WorstConsumptionOfElectricity</p>
-                </div>
-                <div class="d-flex justify-content-center">
-                    <p style="margin: 0px 5px 0px 0px">CO2 Produced:</p>
-                    <p style="margin: 0px 0px 5px 0px">@Model.WorstCO2Emission</p>
-                </div>
-            </div>
-        </div>
-        <div class="d-flex justify-content-center mt-5 result-box">
-            <div class="center-box ">
-                <h1>Randomized Results</h1>
-                <div class="d-flex justify-content-center">
-                    <p style="margin: 0px 5px 0px 0px">Total Heat Produced:</p>
-                    <p style="margin: 0px 0px 5px 0px">@Model.RandomHeat</p>
-                </div>
-                <div class="d-flex justify-content-center">
-                    <p style="margin: 0px 5px 0px 0px">Total Electricity Produced:</p>
-                    <p style="margin: 0px 0px 5px 0px">@Model.RandomElectricity</p>
-                </div>
-                <div class="d-flex justify-content-center">
-                    <p style="margin: 0px 5px 0px 0px">Expenses:</p>
-                    <p style="margin: 0px 0px 5px 0px">@Model.RandomExpenses</p>
-                </div>
-                <div class="d-flex justify-content-center">
-                    <p style="margin: 0px 5px 0px 0px">Consumption of Gas:</p>
-                    <p style="margin: 0px 0px 5px 0px">@Model.RandomConsumptionOfGas</p>
-                </div>
-                <div class="d-flex justify-content-center">
-                    <p style="margin: 0px 5px 0px 0px">Consumption of Oil:</p>
-                    <p style="margin: 0px 0px 5px 0px">@Model.RandomConsumptionOfOil</p>
-                </div>
-                <div class="d-flex justify-content-center">
-                    <p style="margin: 0px 5px 0px 0px">Consumption of Electricity:</p>
-                    <p style="margin: 0px 0px 5px 0px">@Model.RandomConsumptionOfElectricity</p>
-                </div>
-                <div class="d-flex justify-content-center">
-                    <p style="margin: 0px 5px 0px 0px">CO2 Produced:</p>
-                    <p style="margin: 0px 0px 5px 0px">@Model.RandomCO2Emission</p>
-                </div>
-            </div>
-        </div>
-    }
 
     <div class="d-flex justify-content-center mt-5">
         <div class="center-box">
-            <h1>Graph 1</h1>
+            <h1>Expenses and CO2 Emission</h1>
             <div class="d-flex justify-content-center">
                 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
                 <script type="text/javascript">
@@ -228,10 +159,10 @@
 
                     function drawChart1() {
                         var data = google.visualization.arrayToDataTable([
-                            ['Name', 'Total Electricity Produced', 'Consumption of Gas', 'Consumption of Oil', 'Consumption of Electricty'],
-                            ['KOptimizer', @Model.TotalElectricityProduction, @Model.ConsumptionOfGas, @Model.ConsumptionOfOil, @Model.ConsumptionOfElectricity],
-                            ['Worst', @Model.WorstElectricity, @Model.WorstConsumptionOfGas, @Model.WorstConsumptionOfOil, @Model.WorstConsumptionOfElectricity],
-                            ['Random', @Model.RandomElectricity, @Model.RandomConsumptionOfGas, @Model.RandomConsumptionOfOil, @Model.RandomConsumptionOfElectricity],
+                            ['Name', 'Expenses', 'CO2 Emission'],
+                            ['KOptimizer', Math.abs(@Model.Expenses), @Model.CO2Emission],
+                            ['Worst', Math.abs(@Model.WorstExpenses), @Model.WorstCO2Emission],
+                            ['Random', Math.abs(@Model.RandomExpenses), @Model.RandomCO2Emission],
                         ]);
 
                         var options = {
@@ -252,7 +183,7 @@
 
     <div class="d-flex justify-content-center mt-5">
         <div class="center-box">
-            <h1>Graph 2</h1>
+            <h1>Consumption Graph</h1>
             <div class="d-flex justify-content-center">
                 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
                 <script type="text/javascript">
