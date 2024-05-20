@@ -1,0 +1,173 @@
+﻿@page
+@model heat_production_optimization.Pages.CustomProductionUnitsModel
+@{
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<style>
+		.property-name {
+			width: 50%;
+			float: left;
+		}
+
+		.property-input {
+			width: 50%;
+			float: right;
+		}
+
+		.page-title {
+			margin-bottom: 25px;
+		}
+
+		.unit-title {
+			font-size: 20px;
+			font-weight: bold
+		}
+
+		.unit-form {
+			border-top: solid black;
+			width: 80vw;
+			margin: 25px;
+			padding-top: 20px
+		}
+
+		.unit-form-row {
+			width:100%;
+			margin: 10px;
+		}
+
+		.unit-form-button {
+			margin-top: 10px;
+			margin-bottom: 10px;
+			width: 10%;
+			border: solid grey;
+			background-color: transparent;
+			padding: 5px 0px 5px 0px;
+		}
+
+		.unit-form-button:hover, .create-button:hover {
+			background-color: grey;
+			color: white;
+		}
+
+		.tab {
+			display: inline-block;
+			margin-left: 30px;
+		}
+
+		.create-button {
+			padding: 10px;
+			border: solid grey;
+			background-color: transparent;
+			margin-top: 10px
+		}
+
+	</style>
+</head>
+
+<body>
+
+	<h1 class="page-title">Configure Production Units</h1>
+
+	@foreach (var unit in Model.productionUnits)
+	{
+		<div class="unit-form">
+			<form method="post">
+				<p class="unit-title">@unit.Name</p>
+
+				@if (unit.Alias != "GB" && unit.Alias != "OB" && unit.Alias != "GM" && unit.Alias != "EK")
+				{
+					<div class="row">
+						<p class="property-name"><span class="tab" />Alias</p>
+						<input type="text" name="Alias" value="@unit.Alias" class="property-input" />
+					</div>
+				}
+				else
+				{
+					<input type="hidden" name="Alias" value="@unit.Alias" class="property-input" />
+				}
+
+				<div class="row">
+					<p class="property-name"><span class="tab" />Name</p>
+					<input type="text" name="Name" value="@unit.Name" class="property-input" />
+				</div>
+
+				<div class="row">
+					<p class="property-name"><span class="tab" />Max Heat</p>
+					<input type="number" name="MaxHeat" value="@unit.MaxHeat" class="property-input" />
+				</div>
+
+				@if(unit.Alias != "GB" && unit.Alias != "OB")
+				{
+					<div class="row">
+						<p class="property-name"><span class="tab" />Max Electricity</p>
+						<input type="number" name="MaxElectricity" value="@unit.MaxElectricity" class="property-input" />
+					</div>
+				}
+				else
+				{
+					<input type="hidden" name="MaxElectricity" value="@unit.MaxElectricity" class="property-input" />
+				}
+
+				<div class="row">
+					<p class="property-name"><span class="tab" />Production Costs</p>
+					<input type="number" name="ProductionCostMWh" value="@unit.ProductionCostMWh" class="property-input" />
+				</div>
+
+				<div class="row">
+					<p class="property-name"><span class="tab" />CO2 Emissions</p>
+					<input type="number" name="CO2EmissionMWh" value="@unit.CO2EmissionMWh" class="property-input" />
+				</div>
+
+				@if(unit.Alias != "OB" && unit.Alias != "GM" && unit.Alias != "EK")
+				{
+					<div class="row">
+						<p class="property-name"><span class="tab" />Gas Consumption</p>
+						<input type="number" name="GasConsumption" value="@unit.GasConsumption" class="property-input" />
+					</div>
+				}
+				else
+				{
+					<input type="hidden" name="GasConsumption" value="@unit.GasConsumption" class="property-input" />
+				}
+
+				@if(unit.Alias != "GB" && unit.Alias != "GM" && unit.Alias != "EK")
+				{
+					<div class="row">
+						<p class="property-name"><span class="tab" />Oil Consumption</p>
+						<input type="number" name="OilConsumption" value="@unit.OilConsumption" class="property-input" />
+					</div>
+				}
+				else
+				{
+					<input type="hidden" name="OilConsumption" value="@unit.OilConsumption" class="property-input" />
+				}
+
+				<input type="hidden" name="action" value="update"/>
+				<input type="hidden" name="unitId" value="@unit.Id"/>
+				<button type="submit" class="unit-form-button" name="buttonAction">Save</button>
+
+				@if(unit.Alias != "GB" && unit.Alias != "OB" && unit.Alias != "GM" && unit.Alias != "EK")
+				{
+					<input type="hidden" name="action" value="delete" />
+					<input type="hidden" name="unitId" value="@unit.Id" />
+					<button type="submit" class="btn btn-danger" name="buttonAction">Delete</button>
+				}
+
+			</form>
+		</div>
+	}
+
+	<form method="post" class="unit-form">
+		<input type="hidden" name="action" value="create" />
+		<input type="hidden" name="unitId" value="@Guid.NewGuid()" />
+		<button type="submit" class="create-button" name="buttonAction">+ Create a new production unit</button>
+	</form>
+
+
+</body>
+
+</html>
