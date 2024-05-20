@@ -165,8 +165,9 @@ namespace heat_production_optimization.Pages
                 _context.unitUsage.Add(entry);
                 _context.SaveChanges();
             }
-
+        
             _context.SaveChanges();
+            SaveToCSV.SaveOptimization();
         }
 
 
