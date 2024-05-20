@@ -219,40 +219,70 @@
 
     <div class="d-flex justify-content-center mt-5">
         <div class="center-box">
-            <h1>Graph</h1>
+            <h1>Graph 1</h1>
             <div class="d-flex justify-content-center">
                 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
                 <script type="text/javascript">
-                    google.charts.load('current', {'packages':[ 'bar']});
-                    google.charts.setOnLoadCallback(drawChart);
+                    google.charts.load('current', {'packages':['bar']});
+                    google.charts.setOnLoadCallback(drawChart1);
 
-                    function drawChart() {
+                    function drawChart1() {
                         var data = google.visualization.arrayToDataTable([
-                        ['Name', 'Total Electricity Produced', 'Consumption of Gas', 'Consumption of Oil', 'Consumption of Electricty'],
-                        ['KOptimizer', @Model.TotalElectricityProduction, @Model.ConsumptionOfGas, @Model.ConsumptionOfOil, @Model.ConsumptionOfElectricity],
-                        ['Worst', @Model.WorstElectricity, @Model.WorstConsumptionOfGas, @Model.WorstConsumptionOfOil, @Model.WorstConsumptionOfElectricity],
-                        ['Random', @Model.RandomElectricity, @Model.RandomConsumptionOfGas, @Model.RandomConsumptionOfOil, @Model.RandomConsumptionOfElectricity],
+                            ['Name', 'Total Electricity Produced', 'Consumption of Gas', 'Consumption of Oil', 'Consumption of Electricty'],
+                            ['KOptimizer', @Model.TotalElectricityProduction, @Model.ConsumptionOfGas, @Model.ConsumptionOfOil, @Model.ConsumptionOfElectricity],
+                            ['Worst', @Model.WorstElectricity, @Model.WorstConsumptionOfGas, @Model.WorstConsumptionOfOil, @Model.WorstConsumptionOfElectricity],
+                            ['Random', @Model.RandomElectricity, @Model.RandomConsumptionOfGas, @Model.RandomConsumptionOfOil, @Model.RandomConsumptionOfElectricity],
                         ]);
 
                         var options = {
-                        chart: {
-                            title: 'Total Heat Prodced', 
-                            subtitle: 'Optimized, Unoptimized, and Random',
-                        }
+                            chart: {
+                                title: 'Total Heat Produced', 
+                                subtitle: 'Optimized, Unoptimized, and Random',
+                            }
                         };
 
-                        var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
-
+                        var chart = new google.charts.Bar(document.getElementById('columnchart_material_1'));
                         chart.draw(data, google.charts.Bar.convertOptions(options));
                     }
-                    </script>
                 </script>
             </div>
-            <body>
-                <div id="columnchart_material" style="width: 800px; height: 500px;"></div>
-            </body>
+            <div id="columnchart_material_1" style="width: 800px; height: 500px;"></div>
         </div>
     </div>
+
+    <div class="d-flex justify-content-center mt-5">
+        <div class="center-box">
+            <h1>Graph 2</h1>
+            <div class="d-flex justify-content-center">
+                <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+                <script type="text/javascript">
+                    google.charts.load('current', {'packages':['bar']});
+                    google.charts.setOnLoadCallback(drawChart2);
+
+                    function drawChart2() {
+                        var data = google.visualization.arrayToDataTable([
+                            ['Name', 'Total Electricity Produced', 'Consumption of Gas', 'Consumption of Oil', 'Consumption of Electricty'],
+                            ['KOptimizer', @Model.TotalElectricityProduction, @Model.ConsumptionOfGas, @Model.ConsumptionOfOil, @Model.ConsumptionOfElectricity],
+                            ['Worst', @Model.WorstElectricity, @Model.WorstConsumptionOfGas, @Model.WorstConsumptionOfOil, @Model.WorstConsumptionOfElectricity],
+                            ['Random', @Model.RandomElectricity, @Model.RandomConsumptionOfGas, @Model.RandomConsumptionOfOil, @Model.RandomConsumptionOfElectricity],
+                        ]);
+
+                        var options = {
+                            chart: {
+                                title: 'Total Heat Produced', 
+                                subtitle: 'Optimized, Unoptimized, and Random',
+                            }
+                        };
+
+                        var chart = new google.charts.Bar(document.getElementById('columnchart_material_2'));
+                        chart.draw(data, google.charts.Bar.convertOptions(options));
+                    }
+                </script>
+            </div>
+            <div id="columnchart_material_2" style="width: 800px; height: 500px;"></div>
+        </div>
+    </div>
+
 
   
     <script>
