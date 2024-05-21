@@ -2,6 +2,7 @@ using heat_production_optimization;
 using CsvHelper;
 using System.Globalization;
 using heat_production_optimization.Models;
+using System.Text;
 
 
 
@@ -103,5 +104,47 @@ namespace heat_production_optimization
 
             Console.WriteLine("CSV file created successfully.");
         }   
+    }
+
+    public class CSVWriter
+    {
+        public string Write(List<UnitUsageDataModel> unitUsages, OptimizerResultsDataModel results)
+        {
+            StringBuilder csvContent = new StringBuilder();
+
+            try
+            {
+                // Adding column headers
+                csvContent.Append("Time from;Time to");
+                foreach (var record in unitUsages[0].ActivationPercentages)
+                {
+                    csvContent.Append($";{record.Unit.Name}");
+                }
+                csvContent.AppendLine();
+
+                // Adding production unit usage data
+                foreach (UnitUsageDataModel item in unitUsages)
+                {
+                    csvContent.Append($"{item.DateInterval.TimeFrom};{item.DateInterval.TimeTo}");
+                    foreach (UnitActivationPercentage activation in item.ActivationPercentages)
+                    {
+                        csvContent.Append($";{activation.ActivationPercentage}");
+                    }
+                    csvContent.AppendLine();
+                }
+
+                // Adding optimization results data
+                csvContent.AppendLine();
+                csvContent.AppendLine("Total heat production;Total electricity production;Expenses;Consumption of gas;Consumption of oil;Consumption of electricity;Produced CO2");
+                csvContent.AppendLine($"{results.TotalHeatProduction};{results.TotalElectricityProduction};{results.Expenses};{results.ConsumptionOfGas};{results.ConsumptionOfOil};{results.ConsumptionOfElectricity};{results.ProducedCO2}");
+
+                string content = csvContent.ToString();
+                return content;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
