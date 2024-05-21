@@ -1,0 +1,53 @@
+﻿@page
+@model heat_production_optimization.Pages.UnitActivationsModel
+@{
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Production Unit Activations</title>
+	<link rel="stylesheet" href="~/css/styles.css">
+</head>
+
+<body>
+	@if (Model.unitUsageData.Count() > 0)
+	{
+		<div class="row">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Time from</th>
+						<th>Time to</th>
+						@foreach (var record in Model.unitUsageData[0].ActivationPercentages)
+						{
+							<th>@record.Unit.Name</th>
+						}
+					</tr>
+				</thead>
+
+				<tbody>
+					@foreach (var item in Model.unitUsageData)
+					{
+						<tr>
+							<td>@item.DateInterval.TimeFrom</td>
+							<td>@item.DateInterval.TimeTo</td>
+							@foreach(var unit in item.ActivationPercentages)
+							{
+								<th>@Math.Round(unit.ActivationPercentage*100) %</th>
+							}
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	}
+	else
+	{
+		<h1>There is no data to display yet</h1>
+	}
+</body>
+
