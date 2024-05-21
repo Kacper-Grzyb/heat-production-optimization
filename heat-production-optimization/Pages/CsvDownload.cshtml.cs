@@ -36,7 +36,7 @@ namespace heat_production_optimization.Pages
 
             byte[] byteArray = Encoding.UTF8.GetBytes(csvContent);
 
-            return File(byteArray, "text/csv", "data.csv");
+            return File(byteArray, "text/csv", "OptimizationData.csv");
         }
 
     }
