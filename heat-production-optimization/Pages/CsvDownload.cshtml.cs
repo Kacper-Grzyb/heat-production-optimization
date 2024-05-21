@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
+using CsvHelper;
+using System.Globalization;
 
 namespace heat_production_optimization.Pages
 {
@@ -25,18 +27,17 @@ namespace heat_production_optimization.Pages
 
         public List<HourlyOptimization> hourlyOptimizations{ get; set; }=HourlyOptimization.HourlyOptimizations;
         public int numberOfHours = HourlyOptimization.HourlyOptimizations.Count;
+        
         public IActionResult OnGet()
         {
+            var csvWriter = new CSVWriter();
 
-            var csvBuilder = new StringBuilder();
-            foreach (var item in HourlyOptimization.HourlyOptimizations)
-            {
-                csvBuilder.AppendLine($"{item.timeFrom},{item.timeTo},{item.properties}");
-            }
+            string csvContent = csvWriter.Write(unitUsageData, _context.optimizerResults.First());
 
-            byte[] buffer = Encoding.UTF8.GetBytes(csvBuilder.ToString());
-            return File(buffer, "text/csv", "optimized_results.csv");
-        }  
+            byte[] byteArray = Encoding.UTF8.GetBytes(csvContent);
+
+            return File(byteArray, "text/csv", "data.csv");
+        }
 
     }
 }
