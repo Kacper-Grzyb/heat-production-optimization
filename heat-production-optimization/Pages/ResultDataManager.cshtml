@@ -140,7 +140,7 @@
                     {
                         <button id="optimizeButton" type="submit" disabled>Optimize</button>
                     }
-                    <button id="saveToCSVButton" type="button">Save to CSV</button>
+                    <a class="LinkButton nav-link" asp-area="" asp-page="/CsvDownload">Save to CSV</a>
                     <a class="LinkButton nav-link" asp-area="" asp-page="/ExcelDownload">Save to Excel</a>
                 </div>
             </form>
@@ -286,7 +286,6 @@
         document.addEventListener('DOMContentLoaded', (event) => {
             const checkboxes = document.querySelectorAll('input[name="BoilersChecked"]');
             const optimizeButton = document.getElementById('optimizeButton');
-            const saveToCSVButton = document.getElementById('saveToCSVButton');
             const selectedUnitsInput = document.getElementById('selectedUnits');
 
             function updateSelectedUnits() {
@@ -319,24 +318,6 @@
                 updateSelectedUnits();
             }
 
-            @* function saveToCSV() {
-                const headers = ["Total Heat Produced", "Total Electricity Produced", "Expenses", "Consumption of Gas", "Consumption of Oil", "Consumption of Electricity", "CO2 Produced"];
-                const data = [
-                    ["@Model.TotalHeatProduction", "@Model.TotalElectricityProduction", "@Model.Expenses", "@Model.ConsumptionOfGas", "@Model.ConsumptionOfOil", "@Model.ConsumptionOfElectricity", "@Model.CO2Emission"]
-                ];
-
-                let csvContent = "data:text/csv;charset=utf-8,"
-                    + headers.join(",") + "\n"
-                    + data.map(e => e.join(",")).join("\n");
-
-                const encodedUri = encodeURI(csvContent);
-                const link = document.createElement("a");
-                link.setAttribute("href", encodedUri);
-                link.setAttribute("download", "optimized_results.csv");
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }*@
 
             checkboxes.forEach(checkbox => {
                 checkbox.addEventListener('change', toggleOptimizeButton);
@@ -354,7 +335,6 @@
             // Initial check
             toggleOptimizeButton();
 
-            saveToCSVButton.addEventListener('click', saveToCSV);
 
             // Preserve the original button functionality
             optimizeButton.addEventListener('click', (event) => {
