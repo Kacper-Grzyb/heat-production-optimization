@@ -52,6 +52,20 @@
             width: 48%;
         }
 
+        .LinkButton {
+            flex: 1;
+            padding: 15px 0;
+            margin: 0 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #ffa31a;
+            color: #fff;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: 48%;
+        }
+
         button:hover {
             background-color: #d98e1e;
         }
@@ -61,6 +75,21 @@
         }
 
         button:disabled {
+            background-color: #ccc;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        .LinkButton:hover {
+            background-color: #d98e1e;
+            color: #fff;
+        }
+
+        .LinkButton:active {
+            transform: scale(0.95);
+        }
+
+        .LinkButton:disabled {
             background-color: #ccc;
             color: #999;
             cursor: not-allowed;
@@ -111,8 +140,8 @@
                     {
                         <button id="optimizeButton" type="submit" disabled>Optimize</button>
                     }
-                    <a class="nav-link text-dark" asp-area="" asp-page="/CsvDownload">Save to CSV</a>
-                    <a class="nav-link text-dark" asp-area="" asp-page="/ExcelDownload">Save to Excel</a>
+                    <a class="LinkButton nav-link" asp-area="" asp-page="/CsvDownload">Save to CSV</a>
+                    <a class="LinkButton nav-link" asp-area="" asp-page="/ExcelDownload">Save to Excel</a>
                 </div>
             </form>
         </div>

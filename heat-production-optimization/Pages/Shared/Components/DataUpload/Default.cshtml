@@ -7,7 +7,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Heating Demand Data</title>
-    <link rel="stylesheet" href="~/css/styles.css">
+    <style>
+        .inputContainer {
+            text-align: center;
+            border-radius: 10px;
+            background-color: lightgrey;
+            width: 80vw;
+            max-width: 1200px;
+            font-family: Arial, sans-serif;
+            height:100%;
+        }
+
+        .fileInput {
+            margin-top: 5px;
+            height: 100%;
+            width: 70%;
+            border: none;
+            background-color: lightgray;
+            max-height:35px;
+        }
+
+        .fileSubmitButton {
+            height: 100%;
+            width: 30%;
+            max-height: 35px;
+        }
+
+
+    </style>
 </head>
 
 <body>
@@ -28,11 +55,17 @@
                 <p>@Model.errorMessage</p>
                 }
 
-                <input type="file" name="uploadedFile" class="form-control" accept=".csv, .vnd.ms-excel, .xlsx" style="display: none;" onchange="uploadFile(this.files[0])" id="fileInput" />
-                <label for="fileInput" class="btn btn-primary">Upload Custom</label>
+                <div class="row justify-content-center">
+                    <div class="d-flex justify-content-start inputContainer">
+                        <input type="file" name="uploadedFile" class="form-control fileInput" accept=".csv, .vnd.ms-excel, .xlsx" onchange="uploadFile(this.files[0])" id="fileInput" />
+                        <button type="submit" class="btn btn-primary fileSubmitButton" name="buttonAction" value="uploadData">Upload Custom</button>
+                    </div>
+                </div>
 
-                <button type="submit" class="btn btn-primary" name="buttonAction" value="loadDataSummer">Use Pre-Provided Summer Period Data</button>
-                <button type="submit" class="btn btn-primary" name="buttonAction" value="loadDataWinter">Use Pre-Provided Winter Period Data</button>
+                <div class="d-flex justify-content-start mt-3">
+                    <button type="submit" class="btn btn-primary" name="buttonAction" value="loadDataSummer">Use Pre-Provided Summer Period Data</button>
+                    <button type="submit" class="btn btn-primary" name="buttonAction" value="loadDataWinter">Use Pre-Provided Winter Period Data</button>
+                </div>
             </div>
         </div>
     </form>
@@ -43,10 +76,10 @@
 
 			if (file) {
 				if (file.size > 0) {
-					uploadButton.innerText = 'Upload Successfully';
+					//uploadButton.innerText = 'Upload Successfull';
 					uploadButton.style.backgroundColor = 'green';
 				} else {
-					uploadButton.innerText = 'Upload Failed';
+					//uploadButton.innerText = 'Upload Failed';
 					uploadButton.style.backgroundColor = 'red';
 				}
 			}

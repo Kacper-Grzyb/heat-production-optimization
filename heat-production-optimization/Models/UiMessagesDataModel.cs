@@ -21,6 +21,7 @@ namespace heat_production_optimization.Models
     {
         DataUploadError,
         DataUploadPath,
-        OptimizerError
+        OptimizerError,
+        AddUnitError
     }
 }

@@ -100,6 +100,7 @@ namespace heat_production_optimization.Models
                 uiMessages.Add(new UiMessagesDataModel(MessageType.DataUploadError, string.Empty));
                 uiMessages.Add(new UiMessagesDataModel(MessageType.DataUploadPath, string.Empty));
                 uiMessages.Add(new UiMessagesDataModel(MessageType.OptimizerError, string.Empty));
+                uiMessages.Add(new UiMessagesDataModel(MessageType.AddUnitError, string.Empty));
             }
 
             SaveChanges();
@@ -114,6 +115,12 @@ namespace heat_production_optimization.Models
         {
             if (HeatDemandData == null) return false;
             else return HeatDemandData.Count() > 0;
+        }
+
+        public bool IsOptimzerDataCalculated()
+        {
+            if(optimizerResults == null) return false;
+            else return optimizerResults.Count() > 0;
         }
 
         public OptimizedResults? GetOptimizedResults(string selectedUnit)
