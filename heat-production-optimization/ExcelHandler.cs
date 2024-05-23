@@ -69,7 +69,7 @@ namespace heat_production_optimization
 
     public class ExcelWriter
     {
-        public byte[] Write(List<UnitUsageDataModel> unitUsages, OptimizerResultsDataModel results)
+        public byte[] Write(List<UnitUsageDataModel> unitUsages, OptimizerResultsDataModel results, List<ProductionUnitDataModel> productionUnits)
         {
             ExcelPackage package = new ExcelPackage();
             ExcelWorkbook workbook = package.Workbook;
@@ -83,9 +83,9 @@ namespace heat_production_optimization
                 // Adding column headers
                 worksheet.Cells[rowIndex, columnIndex++].Value = "Time from";
                 worksheet.Cells[rowIndex, columnIndex++].Value = "Time to";
-                foreach(var record in unitUsages[0].ActivationPercentages)
+                foreach(var unit in productionUnits)
                 {
-                    worksheet.Cells[rowIndex, columnIndex++].Value = record.Unit.Name;
+                    worksheet.Cells[rowIndex, columnIndex++].Value = unit.Name;
                 }
 
                 rowIndex = 2;
@@ -96,9 +96,9 @@ namespace heat_production_optimization
                 {
                     worksheet.Cells[rowIndex, columnIndex++].Value = item.DateInterval.TimeFrom;
                     worksheet.Cells[rowIndex, columnIndex++].Value = item.DateInterval.TimeTo;
-                    foreach(UnitActivationPercentage activation in  item.ActivationPercentages)
+                    foreach(var unit in productionUnits)
                     {
-                        worksheet.Cells[rowIndex, columnIndex++].Value = activation.ActivationPercentage;
+                        worksheet.Cells[rowIndex, columnIndex++].Value = item.activationsDictionary[unit];
                     }
                     rowIndex++;
                     columnIndex = 1;
