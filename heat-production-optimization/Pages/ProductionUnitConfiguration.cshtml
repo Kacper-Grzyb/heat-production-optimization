@@ -129,14 +129,14 @@
 
 				<div class="row">
 					<p class="property-name"><span class="tab" />Max Heat</p>
-					<input type="number" name="MaxHeat" value="@unit.MaxHeat.ToString(System.Globalization.CultureInfo.InvariantCulture)" class="property-input" step=".1" />
+					<input type="number" name="MaxHeat" value="@unit.MaxHeat.ToString(System.Globalization.CultureInfo.InvariantCulture)" class="property-input" />
 				</div>
 
 				@if (unit.Alias != "GB" && unit.Alias != "OB")
 				{
 					<div class="row">
 						<p class="property-name"><span class="tab" />Max Electricity</p>
-						<input type="number" name="MaxElectricity" value="@unit.MaxElectricity.ToString(System.Globalization.CultureInfo.InvariantCulture)" class="property-input" step=".1" />
+						<input type="number" name="MaxElectricity" value="@unit.MaxElectricity.ToString(System.Globalization.CultureInfo.InvariantCulture)" class="property-input" />
 					</div>
 				}
 				else

@@ -18,6 +18,7 @@ namespace heat_production_optimization.Pages
                 .Include(i => i.ActivationPercentages)
                     .ThenInclude(a => a.Unit)
                 .ToList();
+            unitUsageData = unitUsageData.OrderBy(unit => unit.DateInterval.TimeFrom).ToList();
         }
 
         public void OnGet()
