@@ -32,7 +32,7 @@ namespace heat_production_optimization.Pages
         {
             var csvWriter = new CSVWriter();
 
-            string csvContent = csvWriter.Write(unitUsageData, _context.optimizerResults.First());
+            string csvContent = csvWriter.Write(unitUsageData, _context.optimizerResults.First(), _context.productionUnits.ToList());
 
             byte[] byteArray = Encoding.UTF8.GetBytes(csvContent);
 
