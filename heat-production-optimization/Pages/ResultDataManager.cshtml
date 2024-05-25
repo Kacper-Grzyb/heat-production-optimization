@@ -27,6 +27,13 @@
             width: 80vw;
             max-width: 1000px;
             font-family: Arial, sans-serif;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .results-display {
+            max-width: 400px;
+            margin-top: 10px;
         }
 
         .button-container {
@@ -148,37 +155,42 @@
     </div>
 
     <div class="d-flex justify-content-center mt-5">
-        <div class="center-box">
+		<div class="center-box">
             <h1>Optimized Results</h1>
-            <div class="d-flex justify-content-center">
-                <p style="margin: 0px 5px 0px 0px">Total Heat Produced:</p>
-                <p style="margin: 0px 0px 5px 0px">@Model.TotalHeatProduction</p>
-            </div>
-            <div class="d-flex justify-content-center">
-                <p style="margin: 0px 5px 0px 0px">Total Electricity Produced:</p>
-                <p style="margin: 0px 0px 5px 0px">@Model.TotalElectricityProduction</p>
-            </div>
-            <div class="d-flex justify-content-center">
-                <p style="margin: 0px 5px 0px 0px">Expenses:</p>
-                <p style="margin: 0px 0px 5px 0px">@Model.Expenses</p>
-            </div>
-            <div class="d-flex justify-content-center">
-                <p style="margin: 0px 5px 0px 0px">Consumption of Gas:</p>
-                <p style="margin: 0px 0px 5px 0px">@Model.ConsumptionOfGas</p>
-            </div>
-            <div class="d-flex justify-content-center">
-                <p style="margin: 0px 5px 0px 0px">Consumption of Oil:</p>
-                <p style="margin: 0px 0px 5px 0px">@Model.ConsumptionOfOil</p>
-            </div>
-            <div class="d-flex justify-content-center">
-                <p style="margin: 0px 5px 0px 0px">Consumption of Electricity:</p>
-                <p style="margin: 0px 0px 5px 0px">@Model.ConsumptionOfElectricity</p>
-            </div>
-            <div class="d-flex justify-content-center">
-                <p style="margin: 0px 5px 0px 0px">CO2 Produced:</p>
-                <p style="margin: 0px 0px 5px 0px">@Model.CO2Emission</p>
-            </div>
-        </div>
+
+			<div class="d-flex justify-content-center">
+				<div class="results-display">
+					<div class="d-flex">
+						<p style="margin: 0px 5px 0px 0px">Total Heat Produced:</p>
+						<p style="margin: 0px 0px 5px 0px">@Model.TotalHeatProduction [MW]</p>
+					</div>
+					<div class="d-flex">
+						<p style="margin: 0px 5px 0px 0px">Total Electricity Produced:</p>
+						<p style="margin: 0px 0px 5px 0px">@Model.TotalElectricityProduction [MW]</p>
+					</div>
+					<div class="d-flex">
+						<p style="margin: 0px 5px 0px 0px">Expenses:</p>
+						<p style="margin: 0px 0px 5px 0px">@Model.Expenses [DKK]</p>
+					</div>
+					<div class="d-flex">
+						<p style="margin: 0px 5px 0px 0px">Consumption of Gas:</p>
+						<p style="margin: 0px 0px 5px 0px">@Model.ConsumptionOfGas [MWh(gas)]</p>
+					</div>
+					<div class="d-flex">
+						<p style="margin: 0px 5px 0px 0px">Consumption of Oil:</p>
+						<p style="margin: 0px 0px 5px 0px">@Model.ConsumptionOfOil [MWh(oil)]</p>
+					</div>
+					<div class="d-flex">
+						<p style="margin: 0px 5px 0px 0px">Consumption of Electricity:</p>
+						<p style="margin: 0px 0px 5px 0px">@Model.ConsumptionOfElectricity [MWh]</p>
+					</div>
+					<div class="d-flex">
+						<p style="margin: 0px 5px 0px 0px">CO2 Produced:</p>
+						<p style="margin: 0px 0px 5px 0px">@Model.CO2Emission [kg]</p>
+					</div>
+				</div>
+			</div>
+		</div>
     </div>
 
 

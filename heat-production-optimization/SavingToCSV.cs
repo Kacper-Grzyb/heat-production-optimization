@@ -108,7 +108,7 @@ namespace heat_production_optimization
 
     public class CSVWriter
     {
-        public string Write(List<UnitUsageDataModel> unitUsages, OptimizerResultsDataModel results)
+        public string Write(List<UnitUsageDataModel> unitUsages, OptimizerResultsDataModel results, List<ProductionUnitDataModel> productionUnits)
         {
             StringBuilder csvContent = new StringBuilder();
 
@@ -116,9 +116,9 @@ namespace heat_production_optimization
             {
                 // Adding column headers
                 csvContent.Append("Time from;Time to");
-                foreach (var record in unitUsages[0].ActivationPercentages)
+                foreach (var unit in productionUnits)
                 {
-                    csvContent.Append($";{record.Unit.Name}");
+                    csvContent.Append($";{unit.Name}");
                 }
                 csvContent.AppendLine();
 
@@ -126,9 +126,9 @@ namespace heat_production_optimization
                 foreach (UnitUsageDataModel item in unitUsages)
                 {
                     csvContent.Append($"{item.DateInterval.TimeFrom};{item.DateInterval.TimeTo}");
-                    foreach (UnitActivationPercentage activation in item.ActivationPercentages)
+                    foreach (var unit in productionUnits)
                     {
-                        csvContent.Append($";{activation.ActivationPercentage}");
+                        csvContent.Append($";{item.activationsDictionary[unit]}");
                     }
                     csvContent.AppendLine();
                 }

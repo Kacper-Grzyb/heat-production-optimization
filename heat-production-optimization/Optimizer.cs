@@ -114,8 +114,8 @@ namespace heat_production_optimization
                         }
 
                         Expenses -= unit.ProductionCostMWh * heatProducedActual;
-                        ConsumptionOfGas += unit.GasConsumption;
-                        ConsumptionOfOil += unit.OilConsumption;
+                        ConsumptionOfGas += unit.GasConsumption * heatProducedActual;
+                        ConsumptionOfOil += unit.OilConsumption * heatProducedActual;
                         ProducedCO2 += unit.CO2EmissionMWh * heatProducedActual;
 
                         boilerActivations[currentTimeFrame].Add(unit, activationPercentage);

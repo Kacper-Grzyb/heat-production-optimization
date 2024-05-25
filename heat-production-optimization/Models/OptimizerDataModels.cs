@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace heat_production_optimization.Models
 {
@@ -21,6 +22,19 @@ namespace heat_production_optimization.Models
 		public Guid Id { get; set; }
 		public DateInterval DateInterval { get; set; }
 		public List<UnitActivationPercentage> ActivationPercentages { get; set; }
+		[NotMapped]
+		public Dictionary<ProductionUnitDataModel, double> activationsDictionary
+		{
+			get
+			{
+				var tempDict = new Dictionary<ProductionUnitDataModel, double>();
+				foreach(UnitActivationPercentage value in ActivationPercentages)
+				{
+					tempDict[value.Unit] = value.ActivationPercentage;
+				}
+				return tempDict;
+			}
+		}
 	}
 
 	public class OptimizerResultsDataModel

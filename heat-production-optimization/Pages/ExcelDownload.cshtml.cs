@@ -25,7 +25,7 @@ namespace heat_production_optimization.Pages
         {
 			ExcelWriter writer = new ExcelWriter();
 
-			var content = writer.Write(unitUsageData, _context.optimizerResults.First());
+			var content = writer.Write(unitUsageData, _context.optimizerResults.First(), _context.productionUnits.ToList());
 			string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 			string fileName = "OptimizationData.xlsx";
 			return File(content, contentType, fileName);
