@@ -17,6 +17,11 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<SourceDataDbContext>();
 
+builder.Services.AddControllers(options =>
+{
+    options.ModelBinderProviders.Insert(0, new DoubleModelBinderProvider());
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
