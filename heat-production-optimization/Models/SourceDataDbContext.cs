@@ -93,6 +93,14 @@ namespace heat_production_optimization.Models
                 productionUnits.Add(new OilBoiler(Guid.NewGuid(), 4, 700, 265, 1.2, "OB", "Oil Boiler"));
                 productionUnits.Add(new GasMotor(Guid.NewGuid(), 3.6, 2.7, 1100, 640, 1.9, "GM", "Gas Motor"));
                 productionUnits.Add(new ElectricBoiler(Guid.NewGuid(), 8, -8, 50, 0, "EK", "Electric Boiler"));
+
+                if (productionUnitNamesForOptimization != null && productionUnitNamesForOptimization.Count() == 0)
+                {
+                    productionUnitNamesForOptimization.Add(new OptimizerUnitNamesDataModel(Guid.NewGuid(), "gas boiler"));
+                    productionUnitNamesForOptimization.Add(new OptimizerUnitNamesDataModel(Guid.NewGuid(), "oil boiler"));
+                    productionUnitNamesForOptimization.Add(new OptimizerUnitNamesDataModel(Guid.NewGuid(), "gas motor"));
+                    productionUnitNamesForOptimization.Add(new OptimizerUnitNamesDataModel(Guid.NewGuid(), "electric boiler"));
+                }
             }
 
             if(uiMessages != null && uiMessages.Count() == 0)

@@ -21,19 +21,17 @@ namespace heat_production_optimization.Pages
                 .ToList();
             unitUsageData = unitUsageData.OrderBy(unit => unit.DateInterval.TimeFrom).ToList();
 
-            productionUnits = _context.productionUnits.ToList();
+            productionUnits = new();
+            List<OptimizerUnitNamesDataModel> productionUnitNames = _context.productionUnitNamesForOptimization.ToList();
 
-            // There is an error here if you do these actions:
-            // 1) You optimize the data
-            // 2) You change the optimization to only use one boiler
-            // 3) You click optimize
-            // 4) You change some of the properties for that boiler
-            // 5) You re-optimize
-            // 6) You go to the unit activations page
-        }
-
-        public void OnGet()
-        {
+            foreach(var record in productionUnitNames)
+            {
+				var boiler = _context.productionUnits.FirstOrDefault(u => u.Name.ToLower() == record.Name.ToLower());
+                if(boiler != null)
+                {
+                    productionUnits.Add(boiler);
+                }
+			}
         }
     }
 }
