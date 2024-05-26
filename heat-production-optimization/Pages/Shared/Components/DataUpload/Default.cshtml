@@ -11,29 +11,57 @@
         .inputContainer {
             text-align: center;
             border-radius: 10px;
-            background-color: lightgrey;
-            width: 80vw;
+            width: 72vw; /* Adjusted width */
             max-width: 1200px;
             font-family: Arial, sans-serif;
             height:100%;
         }
 
+        .fileInputContainer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: whitesmoke;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
         .fileInput {
-            margin-top: 5px;
-            height: 100%;
-            width: 70%;
-            border: none;
-            background-color: lightgray;
-            max-height:35px;
+            display: none;
         }
 
+        .fileLabel,
         .fileSubmitButton {
-            height: 100%;
-            width: 30%;
-            max-height: 35px;
+            background-color: #ff9800; /* Orange */
+            color: white;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border: none;
+            font-size: 16px;
+            flex-grow: 1.5; /* Take up available space */
+            margin: 0 5px; /* Add some margin between the elements */
+            max-width: calc(50% - 1px); /* Limit the maximum width */
         }
 
+        .fileLabel:hover,
+        .fileSubmitButton:hover {
+            background-color: #f57c00; /* Darker shade of orange */
+        }
 
+        .status-success {
+            color: green;
+        }
+
+        .status-failed {
+            color: red;
+        }
+
+        .status-none {
+            color: black;
+        }
     </style>
 </head>
 
@@ -43,22 +71,25 @@
             <div class="row">
                 @if (!string.IsNullOrEmpty(Model.loadedDataPath))
                 {
-                <label class="form-label">✅ Loaded data file - @Model.loadedDataPath</label>
+                <label class="form-label status-success">✅ Loaded data file - @Model.loadedDataPath</label>
                 }
                 else
                 {
-                <label class="form-label">❌ No data loaded - Please upload heating demand data from a csv file or choose one of the preloaded options</label>
+                <label class="form-label status-failed">❌ No data loaded - Please upload heating demand data from a csv file or choose one of the preloaded options</label>
                 }
 
                 @if(Model.errorMessage != null) 
                 {
-                <p>@Model.errorMessage</p>
+                <p class="status-failed">@Model.errorMessage</p>
                 }
 
                 <div class="row justify-content-center">
-                    <div class="d-flex justify-content-start inputContainer">
-                        <input type="file" name="uploadedFile" class="form-control fileInput" accept=".csv, .vnd.ms-excel, .xlsx" onchange="uploadFile(this.files[0])" id="fileInput" />
-                        <button type="submit" class="btn btn-primary fileSubmitButton" name="buttonAction" value="uploadData">Upload Custom</button>
+                    <div class="inputContainer">
+                        <div class="fileInputContainer">
+                            <input type="file" name="uploadedFile" class="form-control fileInput" accept=".csv, .vnd.ms-excel, .xlsx" onchange="uploadFile(this.files[0])" id="fileInput" />
+                            <label for="fileInput" class="fileLabel">Select File</label>
+                            <button type="submit" class="btn btn-primary fileSubmitButton" name="buttonAction" value="uploadData">Upload Custom</button>
+                        </div>
                     </div>
                 </div>
 
@@ -71,20 +102,20 @@
     </form>
 
     <script>
-		function uploadFile(file) {
-			var uploadButton = document.querySelector('.btn-primary');
+        function uploadFile(file) {
+            var statusLabel = document.querySelector('.form-label');
 
-			if (file) {
-				if (file.size > 0) {
-					//uploadButton.innerText = 'Upload Successfull';
-					uploadButton.style.backgroundColor = 'green';
-				} else {
-					//uploadButton.innerText = 'Upload Failed';
-					uploadButton.style.backgroundColor = 'red';
-				}
-			}
-		}
-	</script>
+            if (file) {
+                if (file.size > 0) {
+                    statusLabel.className = 'form-label status-success';
+                    statusLabel.innerText = '✅ File selected - Ready to upload';
+                } else {
+                    statusLabel.className = 'form-label status-failed';
+                    statusLabel.innerText = '❌ Failed to load file - Please try again';
+                }
+            }
+        }
+    </script>
 
 </body>
 
