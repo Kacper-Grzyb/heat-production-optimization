@@ -118,3 +118,19 @@ Place: Online
 Preparation: None
 Agenda:  Assign Report Chapters
 Present: Kacper Grzyb, Sebestyen Deak, Levente Sohar, Leonardo Gianola, Ignat Bozhinov.
+
+Meeting 11
+Date: 24/05/2024
+Time: 18:00 -  18:40
+Place: Online 
+Preparation: None
+Agenda:  Re-assign Report Chapters to fit the requirements
+Present: Kacper Grzyb, Sebestyen Deak, Levente Sohar, Leonardo Gianola, Ignat Bozhinov.
+
+Meeting 12
+Date: 26/05/2024
+Time: 18:00 -  19:00
+Place: Online 
+Preparation: None
+Agenda:  Performance Evaluation
+Present: Kacper Grzyb, Sebestyen Deak, Leonardo Gianola, Ignat Bozhinov.
