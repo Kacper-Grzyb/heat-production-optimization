@@ -35,19 +35,6 @@
 
                 }
 
-                @if(Model.IsOptimzerDataCalculated())
-                {
-                    <li class="nav-item">
-                        <a class="nav-link text-dark @(currentPage == "UnitActivations" ? "active" : "")" asp-area="" asp-page="/UnitActivations" style="font-size: 1.5rem;">Unit Activations</a>
-                    </li>
-                }
-                else 
-                {
-                    <li class="nav-item">
-                        <p class="nav-link" style="color: lightgrey; font-size: 1.5rem;">Unit Activations</p>
-                    </li>
-                }
-
             </ul>
         </div>
     </div>
