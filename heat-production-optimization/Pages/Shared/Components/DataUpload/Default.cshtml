@@ -8,29 +8,87 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Heating Demand Data</title>
     <style>
-        .inputContainer {
+        .component-container {
+            max-width: 880px;
+            align-items: center;
+        }
+
+        .input-container {
+            display: flex;
+            align-items: center;
             text-align: center;
-            border-radius: 10px;
             background-color: lightgrey;
-            width: 80vw;
-            max-width: 1200px;
+            border-radius: 5px;
             font-family: Arial, sans-serif;
-            height:100%;
+            width: 100%;
+            height: 3rem;
+            border-radius: 5px;
         }
 
-        .fileInput {
-            margin-top: 5px;
+        .file-input {
+            flex: 3;
             height: 100%;
-            width: 70%;
             border: none;
+            border-radius: 5px;
             background-color: lightgray;
-            max-height:35px;
+            text-align: center;
+            cursor: pointer;
         }
 
-        .fileSubmitButton {
+        .file-input::file-selector-button {
+            padding: 0px 5px 0px 5px;
+            margin-inline-end: 0.75rem;
+            color: #495057;
+            border:none;
+            transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
             height: 100%;
-            width: 30%;
-            max-height: 35px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .file-submit-button {
+            flex: 1;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #ffa31a;
+            color: #fff;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            height: 100%;
+        }
+
+        .danfoss-data {
+            display: flex;
+            align-items: center;
+            align-items: center;
+            margin-top: 20px;
+            gap: 20px;
+            height: 45px;
+        }
+
+        .preloaded-button {
+            flex: 1;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #ffa31a;
+            color: #fff;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            height: 100%;
+        }
+
+        .preloaded-button:hover, .file-submit-button:hover {
+            background-color: #d98e1e;
+        }
+
+        .preloaded-button:active, .file-submit-button:active {
+            transform: scale(0.95);
+        }
+
+        .size-limiter {
+            width: 90%;
         }
 
 
@@ -38,37 +96,35 @@
 </head>
 
 <body>
-    <form method="post" enctype="multipart/form-data">
-        <div class="container">
-            <div class="row">
-                @if (!string.IsNullOrEmpty(Model.loadedDataPath))
-                {
-                <label class="form-label">✅ Loaded data file - @Model.loadedDataPath</label>
-                }
-                else
-                {
-                <label class="form-label">❌ No data loaded - Please upload heating demand data from a csv file or choose one of the preloaded options</label>
-                }
+	<form method="post" enctype="multipart/form-data">
+		<div class="mb-5">
+			@if (!string.IsNullOrEmpty(Model.loadedDataPath))
+			{
+				<label class="form-label">✅ Loaded data file - @Model.loadedDataPath</label>
+			}
+			else
+			{
+				<label class="form-label">❌ No data loaded - Please upload heating demand data from a csv file or choose one of the preloaded options</label>
+			}
 
-                @if(Model.errorMessage != null) 
-                {
-                <p>@Model.errorMessage</p>
-                }
+			@if (Model.errorMessage != null)
+			{
+				<p>@Model.errorMessage</p>
+			}
 
-                <div class="row justify-content-center">
-                    <div class="d-flex justify-content-start inputContainer">
-                        <input type="file" name="uploadedFile" class="form-control fileInput" accept=".csv, .vnd.ms-excel, .xlsx" onchange="uploadFile(this.files[0])" id="fileInput" />
-                        <button type="submit" class="btn btn-primary fileSubmitButton" name="buttonAction" value="uploadData">Upload Custom</button>
-                    </div>
-                </div>
 
-                <div class="d-flex justify-content-start mt-3">
-                    <button type="submit" class="btn btn-primary" name="buttonAction" value="loadDataSummer">Use Pre-Provided Summer Period Data</button>
-                    <button type="submit" class="btn btn-primary" name="buttonAction" value="loadDataWinter">Use Pre-Provided Winter Period Data</button>
-                </div>
-            </div>
-        </div>
-    </form>
+			<div class="input-container">
+				<input type="file" name="uploadedFile" class="file-input" accept=".csv, .vnd.ms-excel, .xlsx" onchange="uploadFile(this.files[0])" id="fileInput" />
+				<button type="submit" class="file-submit-button" name="buttonAction" value="uploadData">Upload Custom</button>
+			</div>
+
+			<div class="danfoss-data">
+				<button type="submit" class="preloaded-button" name="buttonAction" value="loadDataSummer">Use Pre-Provided Summer Period Data</button>
+                <button type="submit" class="preloaded-button" name="buttonAction" value="loadDataWinter">Use Pre-Provided Winter Period Data</button>
+			</div>
+
+		</div>
+	</form>
 
     <script>
 		function uploadFile(file) {
