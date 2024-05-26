@@ -115,7 +115,6 @@
             display: flex;
             align-items: center;
         }
-
     </style>
 </head>
 
@@ -124,7 +123,7 @@
         <div class="center-box">
             <h1>Choose Boilers to Include in Optimization</h1>
             <form method="post">
-                @if(Model.errorMessage != string.Empty)
+                @if (Model.errorMessage != string.Empty)
                 {
                     <p>@Model.errorMessage</p>
                 }
@@ -132,12 +131,14 @@
                     @foreach (IUnit unit in Model.displayProductionUnits)
                     {
                         <div class="checkbox-item">
-                            <input id="@unit.Name" name="BoilersChecked" type="checkbox" value="@unit.Name" @(Model.optimizerProductionUnits.Any(u => u.Name == unit.Name) ? "checked" : "") />
+                            <input id="@unit.Name" name="BoilersChecked" type="checkbox" value="@unit.Name"
+                            @(Model.optimizerProductionUnits.Any(u => u.Name == unit.Name) ? "checked" : "") />
                             <label for="@unit.Name">@unit.Alias</label>
                         </div>
                     }
                 </div>
-                <input type="hidden" id="selectedUnits" name="selectedUnits" value="@string.Join(",", Model.optimizerProductionUnits.Select(u => u.Name))" />
+                <input type="hidden" id="selectedUnits" name="selectedUnits"
+                    value="@string.Join(",", Model.optimizerProductionUnits.Select(u => u.Name))" />
                 <div class="button-container">
                     @if (Model.ShowResults)
                     {
@@ -145,8 +146,9 @@
                     }
                     else
                     {
-                        <button id="optimizeButton" type="submit" disabled>Optimize</button>
+                        <button id="optimizeButton" type="submit">Optimize</button>
                     }
+
                     <a class="LinkButton nav-link" asp-area="" asp-page="/CsvDownload">Save to CSV</a>
                     <a class="LinkButton nav-link" asp-area="" asp-page="/ExcelDownload">Save to Excel</a>
                 </div>
@@ -155,42 +157,42 @@
     </div>
 
     <div class="d-flex justify-content-center mt-5">
-		<div class="center-box">
+        <div class="center-box">
             <h1>Optimized Results</h1>
 
-			<div class="d-flex justify-content-center">
-				<div class="results-display">
-					<div class="d-flex">
-						<p style="margin: 0px 5px 0px 0px">Total Heat Produced:</p>
-						<p style="margin: 0px 0px 5px 0px">@Model.TotalHeatProduction [MW]</p>
-					</div>
-					<div class="d-flex">
-						<p style="margin: 0px 5px 0px 0px">Total Electricity Produced:</p>
-						<p style="margin: 0px 0px 5px 0px">@Model.TotalElectricityProduction [MW]</p>
-					</div>
-					<div class="d-flex">
-						<p style="margin: 0px 5px 0px 0px">Expenses:</p>
-						<p style="margin: 0px 0px 5px 0px">@Model.Expenses [DKK]</p>
-					</div>
-					<div class="d-flex">
-						<p style="margin: 0px 5px 0px 0px">Consumption of Gas:</p>
-						<p style="margin: 0px 0px 5px 0px">@Model.ConsumptionOfGas [MWh(gas)]</p>
-					</div>
-					<div class="d-flex">
-						<p style="margin: 0px 5px 0px 0px">Consumption of Oil:</p>
-						<p style="margin: 0px 0px 5px 0px">@Model.ConsumptionOfOil [MWh(oil)]</p>
-					</div>
-					<div class="d-flex">
-						<p style="margin: 0px 5px 0px 0px">Consumption of Electricity:</p>
-						<p style="margin: 0px 0px 5px 0px">@Model.ConsumptionOfElectricity [MWh]</p>
-					</div>
-					<div class="d-flex">
-						<p style="margin: 0px 5px 0px 0px">CO2 Produced:</p>
-						<p style="margin: 0px 0px 5px 0px">@Model.CO2Emission [kg]</p>
-					</div>
-				</div>
-			</div>
-		</div>
+            <div class="d-flex justify-content-center">
+                <div class="results-display">
+                    <div class="d-flex">
+                        <p style="margin: 0px 5px 0px 0px">Total Heat Produced:</p>
+                        <p style="margin: 0px 0px 5px 0px">@Model.TotalHeatProduction [MW]</p>
+                    </div>
+                    <div class="d-flex">
+                        <p style="margin: 0px 5px 0px 0px">Total Electricity Produced:</p>
+                        <p style="margin: 0px 0px 5px 0px">@Model.TotalElectricityProduction [MW]</p>
+                    </div>
+                    <div class="d-flex">
+                        <p style="margin: 0px 5px 0px 0px">Expenses:</p>
+                        <p style="margin: 0px 0px 5px 0px">@Model.Expenses [DKK]</p>
+                    </div>
+                    <div class="d-flex">
+                        <p style="margin: 0px 5px 0px 0px">Consumption of Gas:</p>
+                        <p style="margin: 0px 0px 5px 0px">@Model.ConsumptionOfGas [MWh(gas)]</p>
+                    </div>
+                    <div class="d-flex">
+                        <p style="margin: 0px 5px 0px 0px">Consumption of Oil:</p>
+                        <p style="margin: 0px 0px 5px 0px">@Model.ConsumptionOfOil [MWh(oil)]</p>
+                    </div>
+                    <div class="d-flex">
+                        <p style="margin: 0px 5px 0px 0px">Consumption of Electricity:</p>
+                        <p style="margin: 0px 0px 5px 0px">@Model.ConsumptionOfElectricity [MWh]</p>
+                    </div>
+                    <div class="d-flex">
+                        <p style="margin: 0px 5px 0px 0px">CO2 Produced:</p>
+                        <p style="margin: 0px 0px 5px 0px">@Model.CO2Emission [kg]</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 
@@ -200,7 +202,7 @@
             <div class="d-flex justify-content-center">
                 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
                 <script type="text/javascript">
-                    google.charts.load('current', {'packages':['bar']});
+                    google.charts.load('current', { 'packages': ['bar'] });
                     google.charts.setOnLoadCallback(drawChart1);
 
                     function drawChart1() {
@@ -213,7 +215,7 @@
 
                         var options = {
                             chart: {
-                                title: 'Total Heat Produced', 
+                                title: 'Total Heat Produced',
                                 subtitle: 'Optimized, Unoptimized, and Random',
                             }
                         };
@@ -233,7 +235,7 @@
             <div class="d-flex justify-content-center">
                 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
                 <script type="text/javascript">
-                    google.charts.load('current', {'packages':['bar']});
+                    google.charts.load('current', { 'packages': ['bar'] });
                     google.charts.setOnLoadCallback(drawChart2);
 
                     function drawChart2() {
@@ -246,7 +248,7 @@
 
                         var options = {
                             chart: {
-                                title: 'Total Heat Produced', 
+                                title: 'Total Heat Produced',
                                 subtitle: 'Optimized, Unoptimized, and Random',
                             }
                         };
@@ -260,13 +262,13 @@
         </div>
     </div>
 
-<div class="d-flex justify-content-center mt-5">
+    <div class="d-flex justify-content-center mt-5">
         <div class="center-box">
             <h1>Total Heat and Electricity Produced</h1>
             <div class="d-flex justify-content-center">
                 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
                 <script type="text/javascript">
-                    google.charts.load('current', {'packages':['bar']});
+                    google.charts.load('current', { 'packages': ['bar'] });
                     google.charts.setOnLoadCallback(drawChart3);
 
                     function drawChart3() {
@@ -279,7 +281,7 @@
 
                         var options = {
                             chart: {
-                                title: 'Total Heat Produced', 
+                                title: 'Total Heat Produced',
                                 subtitle: 'Optimized, Unoptimized, and Random',
                             }
                         };
@@ -293,7 +295,7 @@
         </div>
     </div>
 
-  
+
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
             const checkboxes = document.querySelectorAll('input[name="BoilersChecked"]');
@@ -317,7 +319,7 @@
 
                 optimizeButton.disabled = !anyUnchecked;
                 if (anyUnchecked) {
-                    optimizeButton.style.backgroundColor = '#e60000';
+                    optimizeButton.style.backgroundColor = '#ffa31a';
                     optimizeButton.style.color = '#fff';
                     optimizeButton.style.cursor = 'pointer';
                 } else {
@@ -326,7 +328,7 @@
                     optimizeButton.style.cursor = 'not-allowed';
                 }
 
-                
+
                 updateSelectedUnits();
             }
 
