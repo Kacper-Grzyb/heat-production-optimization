@@ -44,6 +44,8 @@ namespace heat_production_optimization.Pages
             }
             worstScenarioOptimizer = new WorstScenarioOptimizer(optimizerProductionUnits, context.HeatDemandData);
             randomOptimizer = new RandomOptimizer(optimizerProductionUnits, context.HeatDemandData);
+            OptimizeForCost = true;
+            OptimizeForEmissions = false;
             //errorMessage = _context.uiMessages.Find(MessageType.OptimizerError)?.Message ?? string.Empty;
         }
 
@@ -60,6 +62,11 @@ namespace heat_production_optimization.Pages
 
 		[BindProperty]
         public List<string> BoilersChecked { get; set; } = new List<string>();
+
+        [BindProperty]
+        public bool OptimizeForCost { get; set; } 
+        [BindProperty]
+        public bool OptimizeForEmissions { get; set; }
 
 
         //Worst case properties
@@ -115,11 +122,36 @@ namespace heat_production_optimization.Pages
 
         private void OptimizationProcess()
         {
+            OptimizationOption option;
+            if (OptimizeForCost && OptimizeForEmissions)
+            {
+                option = OptimizationOption.Both;
+                errorMessage = "This feature is not yet implemented!";
+                _context.uiMessages.Find(MessageType.OptimizerError).Message = errorMessage;
+                _context.SaveChanges();
+                return;
+            }
+            else if (OptimizeForCost)
+            {
+                option = OptimizationOption.Cost;
+            }
+            else if (OptimizeForEmissions)
+            {
+                option = OptimizationOption.Emission;
+            }
+            else
+            {
+                errorMessage = "At least one variable to optimize for must be selected!";
+                _context.uiMessages.Find(MessageType.OptimizerError).Message = errorMessage;
+                _context.SaveChanges();
+                return;
+            }
+
             optimizerProductionUnits = GetUnitsForOptimizer();
             if (optimizerProductionUnits.Count() == 0) throw new Exception("No boilers to use for calculations!");
 
             kOptimizer = new KOptimizer(optimizerProductionUnits, _context.HeatDemandData);
-            kOptimizer.OptimizeHeatProduction(OptimizationOption.Cost);
+            kOptimizer.OptimizeHeatProduction(option);
 
             TotalHeatProduction = Math.Round(kOptimizer.TotalHeatProduction);
             TotalElectricityProduction = Math.Round(kOptimizer.TotalElectricityProduction);
@@ -130,7 +162,7 @@ namespace heat_production_optimization.Pages
             CO2Emission = Math.Round(kOptimizer.ProducedCO2);
 
             worstScenarioOptimizer = new WorstScenarioOptimizer(optimizerProductionUnits, _context.HeatDemandData);
-            worstScenarioOptimizer.OptimizeHeatProduction(OptimizationOption.Cost);
+            worstScenarioOptimizer.OptimizeHeatProduction(option);
 
             WorstHeat = Math.Round(worstScenarioOptimizer.TotalHeatProduction);
             WorstElectricity = Math.Round(worstScenarioOptimizer.TotalElectricityProduction);
@@ -141,7 +173,7 @@ namespace heat_production_optimization.Pages
             WorstCO2Emission = Math.Round(worstScenarioOptimizer.ProducedCO2);
 
             randomOptimizer = new RandomOptimizer(optimizerProductionUnits, _context.HeatDemandData);
-            randomOptimizer.OptimizeHeatProduction(OptimizationOption.Cost);
+            randomOptimizer.OptimizeHeatProduction(option);
 
             RandomHeat = Math.Round(randomOptimizer.TotalHeatProduction);
             RandomElectricity = Math.Round(randomOptimizer.TotalElectricityProduction);
@@ -249,6 +281,8 @@ namespace heat_production_optimization.Pages
                 }
                 errorMessage = "No boilers were selected!";
                 _context.uiMessages.Find(MessageType.OptimizerError).Message = errorMessage;
+                _context.SaveChanges();
+                _context.productionUnitNamesForOptimization.RemoveRange(_context.productionUnitNamesForOptimization);
                 _context.SaveChanges();
 
                 ShowResults = false;

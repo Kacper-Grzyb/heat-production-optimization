@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using heat_production_optimization.Models;
 using Google.OrTools.LinearSolver;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace heat_production_optimization
 {
@@ -22,7 +23,8 @@ namespace heat_production_optimization
     public enum OptimizationOption
     {
         Cost,
-        Emission
+        Emission,
+        Both
     }
 
 	#region Kacper's Optimizer
@@ -42,7 +44,6 @@ namespace heat_production_optimization
         public double ConsumptionOfElectricity { get; set; } = 0.0;
         public double ProducedCO2 { get; set; } = 0.0;
         public bool CanMeetHeatDemand { get; set; } = true;
-        private readonly SaveToCSV saveToCSV;
 
         public KOptimizer(List<IUnit> productionUnits, DbSet<HeatDemandDataModel> heatDemandData)
         {
@@ -54,7 +55,6 @@ namespace heat_production_optimization
                 Tuple<DateTime, DateTime> timeFrame = new(record.timeFrom, record.timeTo);
 				boilerActivations.Add(timeFrame, new Dictionary<IUnit, double>());
 			}
-            saveToCSV = new SaveToCSV();
         }
 
         private void SortProductionUnitsCost(DateTime timeKey)
@@ -77,6 +77,11 @@ namespace heat_production_optimization
             ProductionUnits = ProductionUnits.OrderBy(u => u.CO2EmissionMWh).ToList();
         }
 
+        private void SortProductionUnitsBoth(DateTime timeKey)
+        {
+            throw new NotImplementedException();
+        }
+
         public void OptimizeHeatProduction(OptimizationOption option)
         {
             double currentHeatDemand = 0.0;
@@ -92,6 +97,9 @@ namespace heat_production_optimization
                         break;
                     case OptimizationOption.Emission:
                         SortProductionUnitsEmission(currentTimeFrame.Item1);
+                        break;
+                    case OptimizationOption.Both:
+                        SortProductionUnitsBoth(currentTimeFrame.Item1);
                         break;
                 }
 

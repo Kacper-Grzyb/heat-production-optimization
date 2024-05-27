@@ -18,6 +18,10 @@
             align-items: center;
         }
 
+        h1 {
+            font-size: 2rem;
+        }
+
         .center-box {
             text-align: center;
             padding: 40px;
@@ -122,7 +126,7 @@
 <body>
     <div class="d-flex justify-content-center">
         <div class="center-box">
-            <h1>Choose Boilers to Include in Optimization</h1>
+            <h1>Optimization Settings</h1>
             <form method="post">
                 @if(Model.errorMessage != string.Empty)
                 {
@@ -133,11 +137,23 @@
                     {
                         <div class="checkbox-item">
                             <input id="@unit.Name" name="BoilersChecked" type="checkbox" value="@unit.Name" @(Model.optimizerProductionUnits.Any(u => u.Name == unit.Name) ? "checked" : "") />
-                            <label for="@unit.Name">@unit.Alias</label>
+                            <label for="@unit.Name">&nbsp; @unit.Alias</label>
                         </div>
                     }
                 </div>
                 <input type="hidden" id="selectedUnits" name="selectedUnits" value="@string.Join(",", Model.optimizerProductionUnits.Select(u => u.Name))" />
+
+                <div class="checkbox-container">
+                    <div class="checkbox-item">
+                        <input asp-for="OptimizeForCost" type="checkbox" checked="@Model.OptimizeForCost" />
+                        <label>&nbsp;Optimize for Costs</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input asp-for="OptimizeForEmissions" type="checkbox" checked="@Model.OptimizeForEmissions"/>
+                        <label>&nbsp;Optimize for Emissions</label>
+                    </div>
+                </div>
+
                 <div class="button-container">
                     @if (Model.ShowResults)
                     {
@@ -274,8 +290,8 @@
                         var data = google.visualization.arrayToDataTable([
                             ['Name', 'Heat Demand', 'Electricity Produced'],
                             ['Optimized', @Model.TotalHeatProduction, @Model.TotalElectricityProduction],
-                            ['Worst', @Model.TotalHeatProduction, @Model.WorstElectricity],
-                            ['Random', @Model.TotalHeatProduction, @Model.RandomElectricity],
+                            ['Worst', @Model.WorstHeat, @Model.WorstElectricity],
+                            ['Random', @Model.WorstElectricity, @Model.RandomElectricity],
                         ]);
 
                         var options = {
