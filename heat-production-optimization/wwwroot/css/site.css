@@ -96,3 +96,48 @@ body {
 .btn-primary:hover {
   background-color: #e8961b;
 }
+
+.configuration-container {
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 95%;
+}
+
+.conf-label {
+    padding: 10px 10px 10px 20px;
+    width: 85%;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.link-button {
+    flex: 1;
+    padding: 15px 0;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #ffa31a;
+    color: #fff;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 15%;
+    height: 100%;
+}
+
+.link-button:hover {
+    background-color: #d98e1e;
+    color: #fff;
+}
+
+.link-button:active {
+    transform: scale(0.95);
+}
+
+.link-button:disabled {
+    background-color: #ccc;
+    color: #999;
+    cursor: not-allowed;
+}

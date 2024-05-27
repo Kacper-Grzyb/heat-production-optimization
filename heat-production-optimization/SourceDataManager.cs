@@ -62,7 +62,9 @@ namespace heat_production_optimization
 			else if(formFile.ContentType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
             {
                 ExcelReader reader = new ExcelReader();
-                List<HeatDemandDataModel> data = reader.Read(formFile);
+                List<HeatDemandDataModel> data = reader.Read(formFile, _context);
+                if (data.Count() == 0) return false;
+
                 foreach(HeatDemandDataModel record in data) 
                 {
                     _context.HeatDemandData.Add(record);    

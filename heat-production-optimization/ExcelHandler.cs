@@ -4,12 +4,13 @@ using Excel = Microsoft.Office.Interop.Excel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace heat_production_optimization
 {
     public class ExcelReader
     {
-        public List<HeatDemandDataModel> Read(IFormFile upload)
+        public List<HeatDemandDataModel> Read(IFormFile upload, SourceDataDbContext context)
         {
             ExcelWorksheet worksheet;
 
@@ -29,37 +30,47 @@ namespace heat_production_optimization
 
                 using(var package = new ExcelPackage(memoryStream))
                 {
-                    worksheet = package.Workbook.Worksheets[0];
-                    rows = worksheet.Dimension.Rows;
-
-                    if(worksheet.Dimension.Columns != 4)
+                    try
                     {
-                        throw new Exception("Wrong Excel Worksheet format!");
+                        worksheet = package.Workbook.Worksheets[0];
+                        rows = worksheet.Dimension.Rows;
+
+                        if (worksheet.Dimension.Columns != 4)
+                        {
+                            context.errorMessage = "Wrong Excel Worksheet format!";
+                            return new List<HeatDemandDataModel>();
+                        }
+
+                        for (int i = 1; i <= rows; i++)
+                        {
+                            if (!DateTime.TryParse(worksheet.Cells[i, 1].Value.ToString(), out timeFrom))
+                            {
+                                throw new Exception($"Cell at row {i} column 1 could not be parsed as a DateTime timeFrom value!");
+                            }
+                            if (!DateTime.TryParse(worksheet.Cells[i, 2].Value.ToString(), out timeTo))
+                            {
+                                throw new Exception($"Cell at row {i} column 2 could not be parsed as a DateTime timeTo value!");
+                            }
+                            if (!double.TryParse(worksheet.Cells[i, 3].Value.ToString(), out heatDemand))
+                            {
+                                throw new Exception($"Cell at row {i} column 3 could not be parsed as a DateTime heatDemand value!");
+                            }
+                            if (!double.TryParse(worksheet.Cells[i, 4].Value.ToString(), out electricityPrice))
+                            {
+                                throw new Exception($"Cell at row {i} column 4 could not be parsed as a DateTime electricityPrice value!");
+                            }
+
+                            HeatDemandDataModel dataRow = new HeatDemandDataModel() { Id = index++, timeFrom = timeFrom, timeTo = timeTo, heatDemand = Math.Round(heatDemand, 2), electricityPrice = Math.Round(electricityPrice, 2) };
+
+                            readResult.Add(dataRow);
+                        }
+                    }
+                    catch
+                    {
+                        context.errorMessage = "Wrong Excel Worksheet format!";
+                        return new List<HeatDemandDataModel>();
                     }
 
-					for (int i = 1; i <= rows; i++)
-					{
-						if (!DateTime.TryParse(worksheet.Cells[i, 1].Value.ToString(), out timeFrom))
-						{
-							throw new Exception($"Cell at row {i} column 1 could not be parsed as a DateTime timeFrom value!");
-						}
-						if (!DateTime.TryParse(worksheet.Cells[i, 2].Value.ToString(), out timeTo))
-						{
-							throw new Exception($"Cell at row {i} column 2 could not be parsed as a DateTime timeTo value!");
-						}
-						if (!double.TryParse(worksheet.Cells[i, 3].Value.ToString(), out heatDemand))
-						{
-							throw new Exception($"Cell at row {i} column 3 could not be parsed as a DateTime heatDemand value!");
-						}
-						if (!double.TryParse(worksheet.Cells[i, 4].Value.ToString(), out electricityPrice))
-						{
-							throw new Exception($"Cell at row {i} column 4 could not be parsed as a DateTime electricityPrice value!");
-						}
-
-						HeatDemandDataModel dataRow = new HeatDemandDataModel() { Id = index++, timeFrom = timeFrom, timeTo = timeTo, heatDemand = Math.Round(heatDemand, 2), electricityPrice = Math.Round(electricityPrice,2) };
-
-						readResult.Add(dataRow);
-					}
 				}
             }
 

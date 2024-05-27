@@ -37,7 +37,10 @@
 							<td>@item.DateInterval.TimeTo</td>
 							@foreach (var unit in Model.productionUnits)
 							{
-								<th>@Math.Round(item.activationsDictionary[unit]*100) %</th>
+								@if (item.activationsDictionary.ContainsKey(unit))
+								{
+									<th>@Math.Round(item.activationsDictionary[unit] * 100) %</th>
+								}
 							}
 						</tr>
 					}
