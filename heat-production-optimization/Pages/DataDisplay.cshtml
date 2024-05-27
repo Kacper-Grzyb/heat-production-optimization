@@ -3,11 +3,35 @@
 @{
 }
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<style>
+
+		.table-container {
+			width: 80vw;
+			margin: 25px;
+			padding: 10px 30px 10px 30px;
+			border-radius: 10px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			background-color: #fff;
+		}
+
+		.table :not(:last-child) :last-child * {
+			border-bottom-color: #ffa31a;
+			border-bottom-width: 2px;
+		}
+
+	</style>
+</head>
+
+<body>
+
 @if(Model.heatDemandData.Count()>0)
 {
-	<div class="row">
+	<div class="table-container">
 		<table class="table">
-			<thead>
+			<thead class="table-headers">
 				<tr>
 					<th>Item Id</th>
 					<th>Time from</th>
@@ -24,8 +48,8 @@
 						<td>@item.Id</td>
 						<td>@item.timeFrom</td>
 						<td>@item.timeTo</td>
-						<th>@item.heatDemand</th>
-						<th>@item.electricityPrice</th>
+						<td>@item.heatDemand</td>
+						<td>@item.electricityPrice</td>
 					</tr>
 				}
 			</tbody>
@@ -36,3 +60,8 @@ else
 {
 	<h1>There is no data to display yet</h1>
 }
+
+
+</body>
+
+</html>

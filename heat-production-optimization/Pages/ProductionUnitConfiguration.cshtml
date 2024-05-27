@@ -9,17 +9,25 @@
 <head>
 	<style>
 		.property-name {
-			width: 50%;
+			width: 30%;
 			float: left;
 		}
 
+		.row {
+			margin-bottom: 5px;
+		}
+
 		.property-input {
-			width: 50%;
+			width: 70%;
 			float: right;
+			border:none;
+			background-color: lightgray;
+			border-radius: 10px;
 		}
 
 		.page-title {
 			margin-bottom: 25px;
+			color: #ffa31a;
 		}
 
 		.unit-title {
@@ -28,10 +36,12 @@
 		}
 
 		.unit-form {
-			border-top: solid black;
 			width: 80vw;
 			margin: 25px;
-			padding-top: 20px
+			padding: 40px;
+			border-radius: 10px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+			background-color: #fff;
 		}
 
 		.unit-form-row {
@@ -40,30 +50,41 @@
 		}
 
 		.unit-form-button {
-			margin-top: 10px;
-			margin-bottom: 10px;
+			padding: 10px 0;
+			margin: 10px 0px 0px 25px;
+			font-size: 16px;
+			cursor: pointer;
+			border: none;
+			border-radius: 5px;
+			background-color: #ffa31a;
+			color: #fff;
+			transition: background-color 0.3s ease, transform 0.2s ease;
 			width: 10%;
-			border: solid grey;
-			background-color: transparent;
-			padding: 5px 0px 5px 0px;
 		}
 
 		.unit-form-button-delete {
-			margin-top: 10px;
-			margin-bottom: 10px;
+			padding: 10px 0;
+			margin: 10px 0px 0px 25px;
+			font-size: 16px;
+			cursor: pointer;
+			border: none;
+			border-radius: 5px;
+			background-color: red;
+			color: #fff;
+			transition: background-color 0.3s ease, transform 0.2s ease;
 			width: 10%;
-			border: solid red;
-			background-color: transparent;
-			padding: 5px 0px 5px 0px;
 		}
 
 		.unit-form-button:hover, .create-button:hover {
-			background-color: grey;
-			color: white;
+			background-color: #d98e1e;
+		}
+
+		.unit-form-button:active, .create-button:active {
+			transform: scale(0.95);
 		}
 
 		.unit-form-button-delete:hover {
-			background-color: red;
+			background-color: darkred;
 			color:white;
 		}
 
@@ -74,10 +95,15 @@
 		}
 
 		.create-button {
-			padding: 10px;
-			border: solid grey;
-			background-color: transparent;
-			margin-top: 10px
+			padding: 15px 20px 15px 20px;
+			margin: 10px 0px 0px 25px;
+			font-size: 16px;
+			cursor: pointer;
+			border: none;
+			border-radius: 5px;
+			background-color: #ffa31a;
+			color: #fff;
+			transition: background-color 0.3s ease, transform 0.2s ease;
 		}
 
 	</style>
