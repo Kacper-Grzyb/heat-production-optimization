@@ -12,27 +12,41 @@
         </button>
         <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
             <ul class="navbar-nav flex-grow-1 justify-content-center" id="menu">
-                <li class="nav-item">
-                    <a class="nav-link text-dark @(currentPage == "Index" ? "active" : "")" asp-area="" asp-page="/Index" style="font-size: 1.5rem;">Home</a>
-                </li>
-                @if(Model.IsDataLoaded())
+                @if(currentPage == "/UnitActivations")
                 {
                     <li class="nav-item">
-                        <a class="nav-link text-dark @(currentPage == "ResultDataManager" ? "active" : "")" asp-area="" asp-page="/ResultDataManager" style="font-size: 1.5rem;">Result Data Manager</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark @(currentPage == "DataDisplay" ? "active" : "")" asp-area="" asp-page="/DataDisplay" style="font-size: 1.5rem;">Database</a>
+                        <a class="nav-link" text-dark asp-area="" asp-page="/ResultDataManager" style="font-size: 1.5rem">Back</a>
                     </li>
                 }
-                else
+                else if(currentPage == "/ProductionUnitConfiguration")
                 {
                     <li class="nav-item">
-                        <p class="nav-link" style="color: lightgrey; font-size: 1.5rem;">Result Data Manager</p>
+                        <a class="nav-link" text-dark asp-area="" asp-page="/Index" style="font-size: 1.5rem">Back</a>
                     </li>
+                }
+                else 
+                {
                     <li class="nav-item">
-                        <p class="nav-link" style="color: lightgrey; font-size: 1.5rem;">Database Preview</p>
+                        <a class="nav-link text-dark @(currentPage == "Index" ? "active" : "")" asp-area="" asp-page="/Index" style="font-size: 1.5rem;">Home</a>
                     </li>
-
+                    @if (Model.IsDataLoaded())
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark @(currentPage == "ResultDataManager" ? "active" : "")" asp-area="" asp-page="/ResultDataManager" style="font-size: 1.5rem;">Result Data Manager</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark @(currentPage == "DataDisplay" ? "active" : "")" asp-area="" asp-page="/DataDisplay" style="font-size: 1.5rem;">Database</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <p class="nav-link" style="color: lightgrey; font-size: 1.5rem;">Result Data Manager</p>
+                        </li>
+                        <li class="nav-item">
+                            <p class="nav-link" style="color: lightgrey; font-size: 1.5rem;">Database Preview</p>
+                        </li>
+                    }
                 }
 
             </ul>

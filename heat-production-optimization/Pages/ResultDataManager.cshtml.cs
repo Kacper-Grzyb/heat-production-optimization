@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.Razor;
 
 namespace heat_production_optimization.Pages
 {
@@ -205,8 +207,8 @@ namespace heat_production_optimization.Pages
         }
 
         public void OnGet()
-        { 
-            errorMessage = _context.uiMessages.Find(MessageType.OptimizerError)?.Message ?? string.Empty;
+        {
+			errorMessage = _context.uiMessages.Find(MessageType.OptimizerError)?.Message ?? string.Empty;
             double heatDemand = _context.HeatDemandData.Sum(data => data.heatDemand);
 
             optimizerProductionUnits = GetUnitsForOptimizer();
