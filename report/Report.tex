@@ -3,6 +3,7 @@
 \usepackage{graphicx}
 \usepackage[colorlinks=true, linkcolor=black, citecolor=black, filecolor=black, urlcolor=black]{hyperref}
 \usepackage{lipsum}
+\usepackage{pdfpages}
 \usepackage{titlesec}
 \usepackage[utf8]{inputenc}
 \title{Heat Production Management Project for Semester Project 2}
@@ -42,8 +43,49 @@ Sprint Planning Chapter goes here
 Technical Details Chapter goes here
 
 % Chapter 4a
-\section{Design and UML Diagrams}
-Design and UML Diagrams yapping goes here
+\section{Software Architecture and Design}
+
+\subsection*{Tools}
+The team decided to use the ASP.NET Core framework's Razor Pages for building the project for reasons such as:
+\begin{itemize}
+  \item The most important argument for using ASP.NET Core is it's cross-platform functionality. The developers in the team use 
+  both Macintosh and Windows based systems, therefore a framework that could switch seamlessly between them was crucial.
+  \item As the name suggests, the framework runs in the .NET ecosystem, which is what the team has been taught in the course so far
+  therefore it is what the team is most experienced and most comfortable working in.
+  \item With Razor Pages being a web-page based solution, the UI is mostly composed of HTML and CSS, which some team members already
+  had experience in and the rest was eager to learn. A light-weight, web-based solution allowed the team to be more flexible,
+  and develop the app at a more rapid pace compared to if the team chose a Model-View-Controler (or a Model-View-ViewModel) solution.
+  This freedom allowed for more features and better adjustment to changing the project requirements.
+\end{itemize}
+As for other tools, the team used:
+\begin{itemize}
+  \item Github: Source and Version Control, Collaborative Development of the App
+  \item Jira: Task Management and Planning as well as adhearing to Agile which was one of the requirements for the project
+  \item Discord: Communication and Resource Sharing
+  \item diagrams.net: Creating UML Diagrams for this chapter
+  \item Figma: Prototyping and General UI Design
+  \item Visual Studio and Visual Studio Code: Code Editors
+\end{itemize}
+
+\subsection*{Database Architecture}
+Before diving into the program architecture the in-memory database solution offered by Razor Pages must first be mentioned.
+In order to achieve data persistance while switching in between pages in a Razor Pages project, a database must be used. 
+Since we did not want to go too far out of the scope of the project, we decided not to use a dedicated database solution
+like a MySQL or MSSQL Server for this project, expecially because the team has not had any database modeling courses
+yet. Instead we chose a middle-ground, which is the before mentioned in-memory database. This soultion offers similar functionality
+to a real database, with the comfort of running in the program's memory, which eliminates potential connection, authentication
+privilege and/or security risks and issues connected with using databases.
+\includepdf[pages=-]{Resources/SP2-database-diagram.pdf}
+The database does not fully comply to standard database structures one could see when dealing with real database systems. 
+We do see the limitations of this design and the flaws inside of it, such as the lack of connections between tables and the 
+lack of foreign keys inside of each table. Instead some fields in the tables use custom class data types for ease of use. Despite the flaws
+of using DbSets, we found that their functionality was sufficient for the scope of the project. It is also worth to mention, that due
+to our lack of experience with Razor Pages, we were unsure of how DbSets and in-memory data structures function. Because of that in the
+middle of development the database had to be refactored from a more json-like data storage structure to one that complies
+with standards enforced by DbSets, such as using Primary Keys. It is because of this process that we ended up having a mixture of both structures.
+
+\subsection*{Applicaion Flow}
+\includepdf[pages=-]{Resources/SP2-state-machine.pdf}
 
 % Chapter 4b
 \section{Simple Design}
