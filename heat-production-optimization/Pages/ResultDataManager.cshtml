@@ -137,18 +137,17 @@
                         </div>
                     }
                 </div>
-                <input type="hidden" id="selectedUnits" name="selectedUnits"
-                    value="@string.Join(",", Model.optimizerProductionUnits.Select(u => u.Name))" />
+                <div>
+                    <label for="optimizationOption">Select Optimization Option:</label>
+                    <select id="optimizationOption" name="OptimizationOption">
+                        <option value="Cost">Cost</option>
+                        <option value="Emission">Emission</option>
+                        <option value="CostAndEfficiency">Cost And Efficiency</option>
+                    </select>
+                </div>
+                
                 <div class="button-container">
-                    @if (Model.ShowResults)
-                    {
-                        <button type="submit">Optimize</button>
-                    }
-                    else
-                    {
-                        <button id="optimizeButton" type="submit">Optimize</button>
-                    }
-
+                    <button id="optimizeButton" type="submit">Optimize</button>
                     <a class="LinkButton nav-link" asp-area="" asp-page="/CsvDownload">Save to CSV</a>
                     <a class="LinkButton nav-link" asp-area="" asp-page="/ExcelDownload">Save to Excel</a>
                 </div>

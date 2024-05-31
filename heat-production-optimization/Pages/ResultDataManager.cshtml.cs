@@ -23,6 +23,9 @@ namespace heat_production_optimization.Pages
         public List<IUnit> displayProductionUnits { get; set; }
         public string errorMessage { get; set; } = string.Empty;
 
+        [BindProperty]
+        public OptimizationOption SelectedOptimizationOption { get; set; }
+
 
         public ResultDataManagerModel(SourceDataDbContext context)
         {
@@ -61,7 +64,7 @@ namespace heat_production_optimization.Pages
         public string SelectedUnit { get; set; }
         public bool IsInitialLoad { get; private set; }
 
-		[BindProperty]
+        [BindProperty]
         public List<string> BoilersChecked { get; set; } = new List<string>();
 
 
@@ -108,7 +111,7 @@ namespace heat_production_optimization.Pages
             errorMessage = _context.uiMessages.Find(MessageType.OptimizerError)?.Message ?? string.Empty;
 
             double heatDemand = _context.HeatDemandData.Sum(data => data.heatDemand);
-            kOptimizer.OptimizeHeatProduction(OptimizationOption.Cost);
+            kOptimizer.OptimizeHeatProduction(OptimizationOption.CostAndEfficiency);
 
             TotalHeatProduction = Math.Round(kOptimizer.TotalHeatProduction);
             TotalElectricityProduction = Math.Round(kOptimizer.TotalElectricityProduction);
@@ -139,14 +142,15 @@ namespace heat_production_optimization.Pages
             RandomConsumptionOfElectricity = Math.Round(randomOptimizer.ConsumptionOfElectricity);
             RandomCO2Emission = Math.Round(randomOptimizer.ProducedCO2);
 
-			// Saving optimizer results to the database
+            // Saving optimizer results to the database
 
-			_context.optimizerResults.RemoveRange(_context.optimizerResults);
+            _context.optimizerResults.RemoveRange(_context.optimizerResults);
             _context.SaveChanges();
             _context.unitUsage.RemoveRange(_context.unitUsage);
             _context.SaveChanges();
 
-            OptimizerResultsDataModel results = new OptimizerResultsDataModel() {
+            OptimizerResultsDataModel results = new OptimizerResultsDataModel()
+            {
                 Id = Guid.NewGuid(),
                 TotalHeatProduction = kOptimizer.TotalHeatProduction,
                 TotalElectricityProduction = kOptimizer.TotalElectricityProduction,
@@ -155,7 +159,7 @@ namespace heat_production_optimization.Pages
                 ConsumptionOfOil = kOptimizer.ConsumptionOfOil,
                 ConsumptionOfElectricity = kOptimizer.ConsumptionOfElectricity,
                 ProducedCO2 = kOptimizer.ProducedCO2
-            }; 
+            };
 
             _context.optimizerResults.Add(results);
             _context.SaveChanges();
@@ -165,16 +169,25 @@ namespace heat_production_optimization.Pages
                 _context.unitUsage.Add(entry);
                 _context.SaveChanges();
             }
-        
+
             _context.SaveChanges();
         }
 
 
 
-		public void OnPost()
+        public void OnPost()
         {
             IsInitialLoad = false;
 
+            string selectedOption = Request.Form["OptimizationOption"];
+            if (Enum.TryParse(selectedOption, out OptimizationOption option))
+            {
+                SelectedOptimizationOption = option;
+            }
+            else
+            {
+                Console.WriteLine("Errorchentse");
+            }
 
             if (BoilersChecked != null && BoilersChecked.Any())
             {
@@ -195,8 +208,24 @@ namespace heat_production_optimization.Pages
                 }
 
                 _context.SaveChanges();
-                kOptimizer = new KOptimizer(optimizerProductionUnits, _context.HeatDemandData);
-                kOptimizer.OptimizeHeatProduction(OptimizationOption.Cost);
+
+                switch (SelectedOptimizationOption)
+                {
+                    case OptimizationOption.Cost:
+                        kOptimizer = new KOptimizer(optimizerProductionUnits, _context.HeatDemandData);
+                        kOptimizer.OptimizeHeatProduction(OptimizationOption.Cost);
+                        break;
+                    case OptimizationOption.Emission:
+                        kOptimizer = new KOptimizer(optimizerProductionUnits, _context.HeatDemandData);
+                        kOptimizer.OptimizeHeatProduction(OptimizationOption.Emission);
+                        break;
+                    case OptimizationOption.CostAndEfficiency:
+                        kOptimizer = new KOptimizer(optimizerProductionUnits, _context.HeatDemandData);
+                        kOptimizer.OptimizeHeatProduction(OptimizationOption.CostAndEfficiency);
+                        break;
+                    default:
+                        break;
+                }
 
                 TotalHeatProduction = Math.Round(kOptimizer.TotalHeatProduction);
                 TotalElectricityProduction = Math.Round(kOptimizer.TotalElectricityProduction);
@@ -206,43 +235,13 @@ namespace heat_production_optimization.Pages
                 ConsumptionOfElectricity = Math.Round(kOptimizer.ConsumptionOfElectricity);
                 CO2Emission = Math.Round(kOptimizer.ProducedCO2);
 
-                if (!kOptimizer.CanMeetHeatDemand)
-                {
-                    if (_context.uiMessages.Find(MessageType.OptimizerError) == null)
-                    {
-                        throw new Exception("The database does not have a record for an optimizer error message!");
-                    }
-                    errorMessage = "Not able to meet heat demand with chosen boiler configuration!"; 
-                    _context.uiMessages.Find(MessageType.OptimizerError).Message = errorMessage;
-                    _context.SaveChanges();
-                }
-                else
-                {
-                    if (_context.uiMessages.Find(MessageType.OptimizerError) == null)
-                    {
-                        throw new Exception("The database does not have a record for an optimizer error message!");
-                    }
-                    errorMessage = string.Empty;
-                    _context.uiMessages.Find(MessageType.OptimizerError).Message = string.Empty;
-                    _context.SaveChanges();
-                }
-
-                ShowResults = true;
+                errorMessage = kOptimizer.CanMeetHeatDemand ? string.Empty : "Heat demand cannot be met with the selected boilers.";
             }
             else
             {
-                if (_context.uiMessages.Find(MessageType.OptimizerError) == null)
-                {
-                    throw new Exception("The database does not have a record for an optimizer error message!");
-                }
-                errorMessage = "No boilers were selected!";
-                _context.uiMessages.Find(MessageType.OptimizerError).Message = errorMessage;
-                _context.SaveChanges();
-
-                ShowResults = false;
+                errorMessage = "Please select at least one boiler to optimize.";
             }
         }
-
 
     }
 }
