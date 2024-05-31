@@ -2,20 +2,21 @@
 \contentsline {chapter}{\numberline {2}Release Planning}{3}{chapter.2}%
 \contentsline {chapter}{\numberline {3}Sprint Materials}{4}{chapter.3}%
 \contentsline {section}{\numberline {3a}Sprint 1}{4}{section.3.1}%
-\contentsline {section}{\numberline {3b}Sprint 2}{7}{section.3.2}%
-\contentsline {section}{\numberline {3c}Sprint 3}{7}{section.3.3}%
-\contentsline {section}{\numberline {3d}Sprint 4}{7}{section.3.4}%
-\contentsline {chapter}{\numberline {4}Technical Details}{8}{chapter.4}%
-\contentsline {section}{\numberline {4a}Design and UML Diagrams}{8}{section.4.1}%
-\contentsline {section}{\numberline {4b}Simple Design}{8}{section.4.2}%
-\contentsline {section}{\numberline {4c}Incremental Design}{8}{section.4.3}%
-\contentsline {section}{\numberline {4d}Refactoring}{8}{section.4.4}%
-\contentsline {section}{\numberline {4e}Test-Driven Development}{8}{section.4.5}%
-\contentsline {section}{\numberline {4f}Unit Testing}{9}{section.4.6}%
-\contentsline {section}{\numberline {4g}Pair Programming}{9}{section.4.7}%
-\contentsline {section}{\numberline {4h}Code Review}{9}{section.4.8}%
-\contentsline {chapter}{\numberline {5}Conclusion and Group's Reflections}{10}{chapter.5}%
-\contentsline {section}{\numberline {5a}Working on a common project with other groups}{10}{section.5.1}%
-\contentsline {section}{\numberline {5b}What went well and not so well with the group's specific set of tasks}{10}{section.5.2}%
-\contentsline {section}{\numberline {5c}Specific contributions of each team member}{10}{section.5.3}%
-\contentsline {section}{\numberline {5d}Future actions to prevent problems and difficulties faced during the project}{11}{section.5.4}%
+\contentsline {subsection}{\numberline {3a.1}Retrospective}{4}{subsection.3.1.1}%
+\contentsline {section}{\numberline {3b}Sprint 2}{8}{section.3.2}%
+\contentsline {section}{\numberline {3c}Sprint 3}{11}{section.3.3}%
+\contentsline {section}{\numberline {3d}Sprint 4}{11}{section.3.4}%
+\contentsline {chapter}{\numberline {4}Technical Details}{12}{chapter.4}%
+\contentsline {section}{\numberline {4a}Design and UML Diagrams}{12}{section.4.1}%
+\contentsline {section}{\numberline {4b}Simple Design}{12}{section.4.2}%
+\contentsline {section}{\numberline {4c}Incremental Design}{12}{section.4.3}%
+\contentsline {section}{\numberline {4d}Refactoring}{12}{section.4.4}%
+\contentsline {section}{\numberline {4e}Test-Driven Development}{12}{section.4.5}%
+\contentsline {section}{\numberline {4f}Unit Testing}{13}{section.4.6}%
+\contentsline {section}{\numberline {4g}Pair Programming}{13}{section.4.7}%
+\contentsline {section}{\numberline {4h}Code Review}{13}{section.4.8}%
+\contentsline {chapter}{\numberline {5}Conclusion and Group's Reflections}{14}{chapter.5}%
+\contentsline {section}{\numberline {5a}Working on a common project with other groups}{14}{section.5.1}%
+\contentsline {section}{\numberline {5b}What went well and not so well with the group's specific set of tasks}{14}{section.5.2}%
+\contentsline {section}{\numberline {5c}Specific contributions of each team member}{14}{section.5.3}%
+\contentsline {section}{\numberline {5d}Future actions to prevent problems and difficulties faced during the project}{15}{section.5.4}%
