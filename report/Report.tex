@@ -70,7 +70,45 @@ Introduction chapter goes here
 
 % Chapter 2
 \chapter{Release Planning}
-Release Planning chapter goes here
+This chapter contains the release planning as we wrote it before the first sprint. As the project matured we made more accurate representations, which are included in the Sprint Materials chapter.
+\section*{User Stories}
+\subsection*{Heating System Manager}
+As a Heating System Manager, I want to visualize real-time heat production data (produced heat, produced/consumed electricity, production costs, consumption of primary energy and produced amount of CO2) through a user-friendly dashboard that allows me to choose the period I want that helps me make informed decisions, optimize heat production and minimize costs. \\
+HIGH Priority, 13 User Points\\
+Connected Requirements: Result Data Manager, Optimizer
+\subsection*{Data Administrator}
+As a Data Administrator for the heat production optimization application, I need to effectively import data to ensure optimal performance and efficiency of the heat production system. \\
+HIGH Priority, 8 User Points\\
+Connected Requirements: Source Data Manager, Asset Manager
+\subsection*{Financial Analyst}
+As Financial Analyst I want to look at previous month's data and look for improvement. I must know when it's the best time to buy electricity, and when to sell it. I need to know which machines are the most efficient, and whether it's the best for the company to keep the already used machines, or to change some of them. For this I need to see the operation costs and a few graphs. \\
+MEDIUM Priority, 13 User Points\\
+Connected Requirements: Result Data Manager, Data Visualization
+\subsection*{Sustainability Officer}
+As a Sustainability Officer I want to promote sustainable energy practices. With background in environmental engineering and deep commitment to combating climate change I want an application where I can easily visualize the emission and the potential improvements I can make.\\
+LOW Priority, 5 User Points\\
+Connected Requirements: Result Data Manager, Data Visualization
+\clearpage
+
+\section*{Definition of Done}
+
+\begin{itemize}
+  \item Result Data Manager component finished
+  \item Asset Manager component finished
+  \item Source Data Manager component finished
+  \item Optimizer component finished
+  \item Continuous Integration implemented with at least 60 \% code coverage
+  \item UI Elements are functional and responsive across all devices
+  \item UX reviewed and tested by external users
+  \item Reviewed by Product Owner
+  \item Group Supervisor has reviewed and approved the features
+  \item All known bugs and issues are resolved and documented
+  \item Third party libraries are properly licensed
+  \item Product increment has been built into release mode and tested by the team
+  \item All release documentation has been written and reviewed by group supervisor
+  \item Scenario 1 and 2 are Implemented
+\end{itemize}
+
 
 % Chapter 3
 \chapter{Sprint Materials}
