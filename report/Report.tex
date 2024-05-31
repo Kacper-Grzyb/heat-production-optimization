@@ -43,8 +43,8 @@ In this chapter all the materials from the sprints can be found.
 
 
 \section{Sprint 1}
-
-\subsection{Retrospective}
+%Retrospective
+\subsection*{Retrospective}
 \textbf{Project:} Semester Project Group 11 \\
 \textbf{Sprint Duration:} March 5 - March 19, 2024 \\
 \textbf{Team Members:} Levente Sohár, Ignat Bozhinov, Leonardo Gianola, Kacper Grzyb, Sebestyén Deák \\
@@ -90,7 +90,7 @@ The biggest win for the team was finishing all of our goals in time.
 \subsection*{10. Action Items for Improvement}
 Breaking the requirement into small tasks that can be worked on independently, therefore not everything has to be done in the one meeting we weekly.
 
-\hfill 2024.03.16
+\hfill 16/03/2024
 
 
 \begin{figure}[H]
@@ -165,7 +165,7 @@ The team has attached screenshots of the current state of the sprint backlog and
   \label{fig:S2Scrum3-image}
 \end{figure}
 
-%Retrospect
+%Retrospective
 
 \subsection*{Sprint 2 Retrospective}
 
@@ -192,7 +192,113 @@ The team has attached screenshots of the current state of the sprint backlog and
 \end{itemize}
 
 
+
+
+
+
 \section{Sprint 3}
+%Planning
+\subsection*{Planning}
+The team's goal for this sprint is to be ready for the Midterm Evaluation that is to happen on
+Wednesday the 17th of March. The team has planned out to work on the 3 required components:
+Result Data Manager, Asset Manager and Source Data Manager. The components will be created in
+Asp.Net using Razor Pages and only the boiler configuration for the first iteration will be supported
+by the app created. The components will be developed throughout the week depending on the time
+of each individual developer . Only one team member was missing during the Sprint 3 Planning
+Meeting, and he will be informed of everything discussed through online matters. The only issue that
+made the planning process harder was the Jira backlog being outdated due to the product vision
+changes. This will be fixed in a future sprint.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{Resources/3-Sprint/Planning/Sprint3Planning.png}
+  \caption{Sprint 3 Planning}
+  \label{fig:S3Planning-image}
+\end{figure}
+
+%Scrum
+\subsection*{Daily Scrum 16/04/2024}
+\subsection*{Team Update}
+\begin{itemize}
+    \item The team completed 6 out of 6 issues.
+    \item The goal for the sprint of being ready for the first iteration presentation has been met.
+\end{itemize}
+
+\subsection*{Roadblocks}
+\begin{itemize}
+    \item Most of the development did not see any roadblocks due to deliberate planning done beforehand.
+    \item Team members helped each other to make sure no one is stuck, and the tasks are finished on time.
+\end{itemize}
+
+\subsection*{Plans for the Next Sprint}
+\begin{itemize}
+    \item Fix bugs.
+    \item Continue development.
+\end{itemize}
+
+\subsection*{Metrics and Progress}
+The team has attached screenshots of the current state of the sprint backlog and the sprint status report to give information about how much work has been done and how much work still needs to be done.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{Resources/3-Sprint/Daily-Scrum/backlog_sprint3.png}
+  \caption{Daily Scrum Backlog}
+  \label{fig:S3Scrum1-image}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{Resources/3-Sprint/Daily-Scrum/burndownchart_sprint3.png}
+  \caption{Daily Scrum Burndown Chart}
+  \label{fig:S3Scrum2-image}
+\end{figure}
+
+%Review
+
+\subsection*{Sprint 3 Review}
+\textbf{Project:} Semester Project Group 11 \\
+\textbf{Sprint Duration:} April 9 - April 23, 2024 \\
+\textbf{Team Members:} Levente Sohár, Ignat Bozhinov, Leonardo Gianola, Kacper Grzyb, Sebestyén Deák \\
+\textbf{Stakeholders:} Sadok Ben Yahia
+
+\subsection*{1. Sprint Goals and Outcomes}
+During this sprint, we aimed to iterate our plans for the optimizer program and make a working prototype for the presentation.
+
+\begin{itemize}
+    \item \textbf{Goal 1:} Optimizer iteration 1\\
+    \textbf{Status:} Completed. The optimizer (for now) looks at the heat demands and if it's below the gas boiler capacity, it only uses that. If exceeded, the other boiler turns on.
+    \item \textbf{Goal 2:} UI, UI Design and Gas Boiler Iteration 1\\
+    \textbf{Status:} Completed. The app skeleton has been created using Bootstrap for better UX.
+    \item \textbf{Goal 3:} Asset Manager Iteration 1\\
+    \textbf{Status:} Completed. Created classes for all the boilers, both for iteration 1 and 2.
+    \item \textbf{Goal 4:} Source Data Manager Iteration 1\\
+    \textbf{Status:} Completed - with minor issue. The Source Data Manager reads in the data from CSV files and creates objects from it. The only issue we have with it is that since Apple's MacOS uses a different DateTime format than Windows, it throws an exception for some of the dates.
+    \item \textbf{Goal 5:} Result Data Manager Oil Boiler Iteration 1\\
+    \textbf{Status:} Completed.
+\end{itemize}
+
+\subsection*{2. Completed Work}
+We had the midterm presentation during this sprint, so our main focus was on getting the program in a state that can be presented and making the presentation. We focused on not just making the program work, but also making it easily expandable, therefore we have less work to do in the second iteration. For the visual UI, we used Razor pages, and in that Bootstrap. We made all the components work almost flawlessly, and the end result visually remained close to our Figma prototype.
+\subsection*{3. Unfinished Work}
+Everything we set out to do during this sprint we have accomplished.
+\subsection*{4. Quality and Technical Issues}
+There remained to be a bug, where Mac devices aren't able to read in all the data from the CSV file, since the OS expects the months to be where the days are in the source data. So after the day exceeds the 13th day, it throws an exception.
+\subsection*{5. Team Dynamics and Collaboration}
+Work has been mostly divided equally, with everyone doing their part. Communication was clear and to the point. We had weekly meetings for scrum.
+\subsection*{6. Processes and Tools}
+Jira helps keep track of the backlog and manage the sprint. Razor pages and Bootstrap have been used for UI. We sometimes looked back at our Figma prototype for reference.
+\subsection*{7. Stakeholder Feedback}
+After our midterm presentation, we got feedback from 2 supervisors, both were supportive of our development methods and the state of the program. The only criticism we got was regarding our presentation style, and we will try to keep that in mind for the next time.
+\subsection*{8. Obstacles and Impediments}
+We have been able to complete all the goals without any obstacles or impediments.
+\subsection*{9. Successes and Wins}
+The biggest win for the team was the feedback we got after the presentation both from the supervisors and the other students.
+\subsection*{10. Action Items for Improvement}
+Setting a hierarchy amongst tasks so no one has to wait for the other to finish.
+
+\hfill 24/04/2024
+
+
 \section{Sprint 4}
 
 
