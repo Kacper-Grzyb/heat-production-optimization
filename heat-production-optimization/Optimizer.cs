@@ -22,7 +22,8 @@ namespace heat_production_optimization
     public enum OptimizationOption
     {
         Cost,
-        Emission
+        Emission,
+        CostAndEfficiency
     }
 
 	#region Kacper's Optimizer
@@ -77,6 +78,18 @@ namespace heat_production_optimization
             ProductionUnits = ProductionUnits.OrderBy(u => u.CO2EmissionMWh).ToList();
         }
 
+        private void SortProductionUnitsCostAndEfficiency(DateTime timeKey)
+        {
+            foreach ( var unit in ProductionUnits)
+            {
+                double costFactor = ((unit.ProductionCostMWh * unit.MaxHeat) - (unit.MaxElectricity * electricityPrices[timeKey])) / unit.MaxHeat;
+                double efficiencyFactor = unit.CO2EmissionMWh;
+                unit.PriceToHeatRatio = 0.5 * costFactor + 0.5 * efficiencyFactor; // but that's assuming equal weighting for cost and efficienct, right? 
+            }
+
+            ProductionUnits = ProductionUnits.OrderBy(u => u.PriceToHeatRatio).ToList();
+        }
+
         public void OptimizeHeatProduction(OptimizationOption option)
         {
             double currentHeatDemand = 0.0;
@@ -92,6 +105,9 @@ namespace heat_production_optimization
                         break;
                     case OptimizationOption.Emission:
                         SortProductionUnitsEmission(currentTimeFrame.Item1);
+                        break;
+                    case OptimizationOption.CostAndEfficiency:
+                        SortProductionUnitsCostAndEfficiency(currentTimeFrame.Item1);
                         break;
                 }
 
