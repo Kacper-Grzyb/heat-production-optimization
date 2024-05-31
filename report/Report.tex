@@ -19,7 +19,6 @@
 \titleformat{\section}
   {\normalfont\Large\bfseries}{\thesection}{1em}{}
 
-
 \begin{document}
 \maketitle
 
@@ -27,7 +26,29 @@
 
 % Chapter 1
 \chapter{Introduction}
-Introduction chapter goes here
+
+\section*{Abstract}
+This project report aims at designing and developing a web-application with a heat production optimization system in the imaginary city of Heatington. The objective is to minimize costs and maximize profits from electricity production while ensuring consistent heat delivery all year round. The system includes multiple modules, some of the key ones being: an Asset Manager, Source Data Manager, Result Data Manager, an Optimizer, and a Data Visualization module. This project addresses the transition from manual to optimized scheduling of heat production, leveraging advanced data management and optimization techniques.
+
+\section{Background}
+Heatington’s district heating network is an essential aspect of urban distribution and supplies heat to a large number of structures through a system of pipelines and production units. The Combined Heat and Power (CHP) network incorporates both conventional heat-only boilers and CHP units that produce both heat and power. Originally, the scheduling of these heat production units has been done in a manual manner, compromising efficiency and incurring high costs. New energy market conditions, with their constant calls for economic efficiency in the energy production process, demand a more complex and automated approach to the scheduling of heat production.
+
+District heating systems centralize the production of heat and distribute it through hot water to different buildings in the city. The heat from the hot water is used for both heating the building and preparing hot water for the occupants. After releasing its heat, the cooled water is recirculated back to the plant where it is reheated. This cycle ensures a constant provision of heat, although controlling it is always a challenge given the unpredictable nature of heat demand at different times and seasons.
+
+\section{Project Brief}
+Developing an optimization system that schedules heat production for Heatington’s district heating network at the lowest possible cost while maximizing profit from electricity production is the main goal of this semester-long project. The system is designed to handle data from different production units, factoring in production costs, electricity prices, and heat demand to generate optimal schedules that ensure operational efficiency and financial profitability.
+
+The system comprises several key modules:
+
+\begin{itemize}
+    \item \textbf{Asset Manager (AM)}: Captures non-operational data of the heating grid and production units, including operational conditions, production rates, cost data, and CO2 emission rates. It ensures that the most up-to-date information required for optimization processes and other system elements is available.
+    \item \textbf{Source Data Manager (SDM)}: Processes dynamic data such as heat demand and electricity prices in the form of time series, as the heating grid requirements often change over time. The SDM aids the optimization process by providing the temporal context for scheduling decisions.
+    \item \textbf{Result Data Manager (RDM)}: Stores optimized scheduling results and performance data for each production unit. This module retains copies of all results for validation, reporting, or further analysis.
+    \item \textbf{Optimizer (OPT)}: The core component responsible for calculating optimal heat production schedules. It considers all available production units, their costs, and electricity market dynamics to generate schedules that secure heat availability while minimizing costs. The Optimizer will be implemented in two scenarios to progressively incorporate complexity, starting with basic heat-only units and extending to include electricity-producing and consuming units.
+    \item \textbf{Data Visualization (DV)}: Provides a graphical interface to review the heating grid format, production facilities, and optimization outcomes. This module enhances system usability by allowing stakeholders to easily understand metrics, time series, and overall system performance through graphical representations.
+\end{itemize}
+
+This project enables Heatington’s district to efficiently and automatically generate the best schedule, ensuring adequate, cost-effective, and reliable heat delivery to its residents.
 
 % Chapter 2
 \chapter{Release Planning}
@@ -91,6 +112,5 @@ Conclusion chapter goes here
 
 \section{Future actions to prevent problems and difficulties faced during the project}
 5d yapping goes here
-
 
 \end{document}
