@@ -152,6 +152,14 @@
                     </select>
                 </div>
 
+                <div class="mt-3">
+                    <label for="optimizerChoice">Select Which Optimizer To Use:</label>
+                    <select id="optimizerChoice" name="OptimizerToUse" asp-for="OptimizerToUse">
+                        <option value="@OptimizerChoice.Standard">Standard</option>
+                        <option value="@OptimizerChoice.NeuralNetwork">Neural Network</option>
+                    </select>
+                </div>
+
                 <div class="button-container">
                     <button id="optimizeButton" type="submit" disabled>Optimize</button>
                     <a class="LinkButton nav-link" asp-area="" asp-page="/UnitActivations">Unit Activations</a> 
