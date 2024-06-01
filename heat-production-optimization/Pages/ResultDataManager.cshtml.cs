@@ -17,7 +17,7 @@ namespace heat_production_optimization.Pages
     public class ResultDataManagerModel : PageModel
     {
         private readonly SourceDataDbContext _context;
-        private KOptimizer kOptimizer;
+        private IOptimizer MainOptimizer;
         private WorstScenarioOptimizer worstScenarioOptimizer;
         private RandomOptimizer randomOptimizer;
         public List<IUnit> optimizerProductionUnits { get; set; } = new List<IUnit>();
@@ -64,6 +64,9 @@ namespace heat_production_optimization.Pages
 
         [BindProperty]
         public OptimizationOption OptimizationParameter { get; set; }
+
+        [BindProperty]
+        public OptimizerChoice OptimizerToUse { get; set; }
 
 
         //Worst case properties
@@ -140,20 +143,28 @@ namespace heat_production_optimization.Pages
             //    return;
             //}
 
-            Console.WriteLine();
             optimizerProductionUnits = GetUnitsForOptimizer();
             if (optimizerProductionUnits.Count() == 0) throw new Exception("No boilers to use for calculations!");
 
-            kOptimizer = new KOptimizer(optimizerProductionUnits, _context.HeatDemandData);
-            kOptimizer.OptimizeHeatProduction(OptimizationParameter);
+            switch(OptimizerToUse)
+            {
+                case OptimizerChoice.Standard:
+                    MainOptimizer = new KOptimizer(optimizerProductionUnits, _context.HeatDemandData);
+                    break;
+                case OptimizerChoice.NeuralNetwork:
+                    MainOptimizer = new NeuralNetworkOptimizer(optimizerProductionUnits, _context.HeatDemandData);
+                    break;
+            }
 
-            TotalHeatProduction = Math.Round(kOptimizer.TotalHeatProduction);
-            TotalElectricityProduction = Math.Round(kOptimizer.TotalElectricityProduction);
-            Expenses = Math.Round(kOptimizer.Expenses);
-            ConsumptionOfGas = Math.Round(kOptimizer.ConsumptionOfGas);
-            ConsumptionOfOil = Math.Round(kOptimizer.ConsumptionOfOil);
-            ConsumptionOfElectricity = Math.Round(kOptimizer.ConsumptionOfElectricity);
-            CO2Emission = Math.Round(kOptimizer.ProducedCO2);
+            MainOptimizer.OptimizeHeatProduction(OptimizationParameter);
+
+            TotalHeatProduction = Math.Round(MainOptimizer.TotalHeatProduction);
+            TotalElectricityProduction = Math.Round(MainOptimizer.TotalElectricityProduction);
+            Expenses = Math.Round(MainOptimizer.Expenses);
+            ConsumptionOfGas = Math.Round(MainOptimizer.ConsumptionOfGas);
+            ConsumptionOfOil = Math.Round(MainOptimizer.ConsumptionOfOil);
+            ConsumptionOfElectricity = Math.Round(MainOptimizer.ConsumptionOfElectricity);
+            CO2Emission = Math.Round(MainOptimizer.ProducedCO2);
 
             worstScenarioOptimizer = new WorstScenarioOptimizer(optimizerProductionUnits, _context.HeatDemandData);
             worstScenarioOptimizer.OptimizeHeatProduction(OptimizationParameter);
@@ -177,7 +188,7 @@ namespace heat_production_optimization.Pages
             RandomConsumptionOfElectricity = Math.Round(randomOptimizer.ConsumptionOfElectricity);
             RandomCO2Emission = Math.Round(randomOptimizer.ProducedCO2);
 
-            if (!kOptimizer.CanMeetHeatDemand)
+            if (!MainOptimizer.CanMeetHeatDemand)
             {
                 if (_context.uiMessages.Find(MessageType.OptimizerError) == null)
                 {
@@ -210,19 +221,19 @@ namespace heat_production_optimization.Pages
             OptimizerResultsDataModel results = new OptimizerResultsDataModel()
             {
                 Id = Guid.NewGuid(),
-                TotalHeatProduction = kOptimizer.TotalHeatProduction,
-                TotalElectricityProduction = kOptimizer.TotalElectricityProduction,
-                Expenses = kOptimizer.Expenses,
-                ConsumptionOfGas = kOptimizer.ConsumptionOfGas,
-                ConsumptionOfOil = kOptimizer.ConsumptionOfOil,
-                ConsumptionOfElectricity = kOptimizer.ConsumptionOfElectricity,
-                ProducedCO2 = kOptimizer.ProducedCO2
+                TotalHeatProduction = MainOptimizer.TotalHeatProduction,
+                TotalElectricityProduction = MainOptimizer.TotalElectricityProduction,
+                Expenses = MainOptimizer.Expenses,
+                ConsumptionOfGas = MainOptimizer.ConsumptionOfGas,
+                ConsumptionOfOil = MainOptimizer.ConsumptionOfOil,
+                ConsumptionOfElectricity = MainOptimizer.ConsumptionOfElectricity,
+                ProducedCO2 = MainOptimizer.ProducedCO2
             };
 
             _context.optimizerResults.Add(results);
             _context.SaveChanges();
 
-            foreach (var entry in kOptimizer.unitUsages)
+            foreach (var entry in MainOptimizer.unitUsages)
             {
                 _context.unitUsage.Add(entry);
                 _context.SaveChanges();
