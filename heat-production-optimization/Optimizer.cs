@@ -79,7 +79,14 @@ namespace heat_production_optimization
 
         private void SortProductionUnitsBoth(DateTime timeKey)
         {
-            throw new NotImplementedException();
+            foreach (var unit in ProductionUnits)
+            {
+                double costFactor = ((unit.ProductionCostMWh * unit.MaxHeat) - (unit.MaxElectricity * electricityPrices[timeKey])) / unit.MaxHeat;
+                double efficiencyFactor = unit.CO2EmissionMWh;
+                unit.PriceToHeatRatio = 0.5 * costFactor + 0.5 * efficiencyFactor;
+            }
+
+            ProductionUnits = ProductionUnits.OrderBy(u => u.PriceToHeatRatio).ToList();
         }
 
         public void OptimizeHeatProduction(OptimizationOption option)
