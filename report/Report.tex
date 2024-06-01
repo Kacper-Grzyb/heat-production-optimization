@@ -126,6 +126,7 @@ therefore it can be seen below.
 
 
 \subsection*{Database Design}
+\label{sec:database}
 Before diving into the program architecture the in-memory database solution offered by Razor Pages must first be mentioned.
 In order to achieve data persistance while switching in between pages in a Razor Pages project, a database must be used. 
 Since we did not want to go too far out of the scope of the project, we decided not to use a dedicated database solution
@@ -160,6 +161,7 @@ That is why for these messages to persist it is important to have a place to sav
 
 
 \subsection*{Code Architecture}
+\label{sec:code}
 With the database covered, we can shift our focus towards the rest of the codebase. Any issues, bugs or problems encountered
 by the group during the development/implementation phase of the project will be \underline{underlined} in this subsection of the report.
 We shall start in the same place as the program's structure: \textit{Program.cs}. This file mostly contains
@@ -221,7 +223,7 @@ components. The latter does not contain any distinguishing code, and was covered
 The \textbf{Result Data Manager}, on the other hand, is the most substancial component of the whole application. The code-behind for its page
 is in \textit{ResultDataManagerModel.cshtml.cs}. It contains the usual reference to the database, but a thing that stands out
 are the two IUnit Lists and the IUnit Interface itself. Firstly, the program contains both a IUnit Interface and a ProductionUnitDataModel parent class
-for production units, which are used interchangeably, because of a \underline{DbSet issue}. At one point in the developmnet
+for production units, which are used interchangeably, because of a \underline{DbSet issue}. At one point in the development
 when trying to access one of the feature of DbSets, it turned out that a DbSet cannot be of an interface type. At that point, the IUnit
 interface was used extensively within the codebase and there was not enough time to make the changes necessary, so a band-aid fix was applied, with which
 the ProductionUnitDataModel class was created. The \textbf{Result Data Manager} also hosts the \textbf{Optimizer}
@@ -263,7 +265,34 @@ Incremental Design yapping goes here
 
 % Chapter 4d
 \section{Refactoring}
-Refactoring yapping goes here
+
+Most of the group did not have much experience in this process because most of the assignments we were being given
+were not on a large enough scale to consider restructuring code throughout their development - the tasks and functionality
+were finished long before poor code design could become a problem.
+The scope and timespan of this project was much larger, therefore the we decided that refactoring should play a considerable
+role in our development. Somewhat to our surprise, refactoring felt quite natural, especially since this was the team's first
+project with Razor Pages, the more we learned about the framework and the more we understood, the more we saw of what 
+could be implemented better, improved or discarded. Some features of the application even required code refactors, because the
+foundation of the program could not have facilitated them beforehand due to our initial poor understanding of the framework.
+It is fair to say that a considerable amount of development time was dedicated solely to code refactoring and it very much 
+paid off in the long run. We found that thanks to continuous code maintenance and refactors, the source code became simpler, cleaner,
+easier to understand and more expandable. Frequent refactoring also strengthened the code's structure, making it less brittle as well
+as eliminating a sizeable amount of bugs and vulnerabilities the team was struggling with, which could be called a happy accident.
+A great example of refactoring done by the group are the database refactors described in \hyperref[sec:database]{Datbase Design}
+and \hyperref[sec:code]{Code Architecture}. Storing variables the traditional, which is what we have been doing for all our previous
+assignments just did not work with Razor Pages, thus we needed to shift more to a database mindset. The first 'code smell' that suggested
+it was a bug with displaying conditional ui messages for the user, they would show up once but after a refresh disappear, simply because
+they were not stored in a database.
+Another instance of refactoring in development was handling the output data from the \textbf{Optimizer} component. At first
+every component that wanted to access it had to get the appropriate properties from the object instance itself. This created and issue
+when it came time to implement downloading this data to the user's device. Since the user needed to be redirected to a different page,
+we could not pass over the object reference, so a change was made to store the results in the database. With that also came another
+refactor to the structure of the \textbf{Optimizer's} output data, which was simplified and made compatible with storing in the DbSet
+data structure. This was a prime example of how refactoring made it easier to work with the code and simplified the underlying
+logic of a component.
+
+Code refactoring was tremendously benefitial in the implementation phase of our application, and we will most definitely
+keep this practice in the future, maybe even putting more focus on it.
 
 % Chapter 4e
 \section{Test-Driven Development}
