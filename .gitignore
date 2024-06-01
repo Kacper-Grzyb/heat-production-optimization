@@ -469,4 +469,10 @@ FodyWeavers.xsd
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio
 
+# LaTeX
+report/Report.aux
+report/Report.out
+report/Report.pdf
+report/Report.toc
+
 # End of https://www.toptal.com/developers/gitignore/api/windows,macos,visualstudiocode,visualstudio
