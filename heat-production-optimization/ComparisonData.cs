@@ -20,6 +20,7 @@ namespace heat_production_optimization
         public double ConsumptionOfElectricity { get; set; } = 0.0;
         public double ProducedCO2 { get; set; } = 0.0;
         public bool CanMeetHeatDemand { get; set; } = true;
+        public List<UnitUsageDataModel> unitUsages { get; set; }
 
         public WorstScenarioOptimizer(List<IUnit> productionUnits, DbSet<HeatDemandDataModel> heatDemandData)
         {
@@ -133,6 +134,7 @@ namespace heat_production_optimization
         public double ConsumptionOfElectricity { get; set; } = 0.0;
         public double ProducedCO2 { get; set; } = 0.0;
         public bool CanMeetHeatDemand { get; set; } = true;
+        public List<UnitUsageDataModel> unitUsages { get; set; }
 
         public RandomOptimizer(List<IUnit> productionUnits, DbSet<HeatDemandDataModel> heatDemandData)
         {

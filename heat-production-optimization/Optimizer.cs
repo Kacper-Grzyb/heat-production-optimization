@@ -18,13 +18,22 @@ namespace heat_production_optimization
 		public double ConsumptionOfElectricity { get; set; }
 		public double ProducedCO2 { get; set; }
         public bool CanMeetHeatDemand { get; set; }
-	}
+        public List<UnitUsageDataModel> unitUsages { get; set; }
+        public void OptimizeHeatProduction(OptimizationOption option);
+
+    }
 
     public enum OptimizationOption
     {
         Cost,
         Emission,
         Both
+    }
+
+    public enum OptimizerChoice
+    {
+        Standard,
+        NeuralNetwork
     }
 
 	#region Kacper's Optimizer
@@ -34,7 +43,7 @@ namespace heat_production_optimization
         private HeatDemandDataModel[] HeatDemandData;
         private Dictionary<DateTime, double> electricityPrices = new();
 
-        public List<UnitUsageDataModel> unitUsages = new();
+        public List<UnitUsageDataModel> unitUsages { get; set; }
         public Dictionary<Tuple<DateTime, DateTime>, Dictionary<IUnit, double>> boilerActivations = new();
         public double TotalHeatProduction { get; set; } = 0.0;
         public double TotalElectricityProduction { get; set; } = 0.0;
@@ -55,6 +64,7 @@ namespace heat_production_optimization
                 Tuple<DateTime, DateTime> timeFrame = new(record.timeFrom, record.timeTo);
 				boilerActivations.Add(timeFrame, new Dictionary<IUnit, double>());
 			}
+            unitUsages = new();
         }
 
         private void SortProductionUnitsCost(DateTime timeKey)
@@ -202,8 +212,8 @@ namespace heat_production_optimization
 
 
     #region Sebi's Optimizer
-
-    public class SOptimizer : IOptimizer
+    [Obsolete]
+    public class SOptimizer
     {
         //private SourceDataDbContext _context;
         private List<IUnit> ProductionUnits;
