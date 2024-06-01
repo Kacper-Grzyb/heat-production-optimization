@@ -470,10 +470,18 @@ FodyWeavers.xsd
 # Additional files built by Visual Studio
 
 # LaTeX
+<<<<<<< HEAD
+/report/Report.aux
+/report/Report.out
+/report/Report.pdf
+/report/Report.toc
+/report/Report.synctex
+=======
 Report.aux
 Report.out
 Report.pdf
 Report.toc
 Report.synctex.gz
+>>>>>>> 433b61cedbf261e1f4769141144dd3db36a095d3
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,macos,visualstudiocode,visualstudio
