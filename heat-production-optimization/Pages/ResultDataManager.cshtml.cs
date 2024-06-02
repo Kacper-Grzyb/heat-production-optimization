@@ -24,7 +24,10 @@ namespace heat_production_optimization.Pages
         public List<IUnit> displayProductionUnits { get; set; }
         public string errorMessage { get; set; } = string.Empty;
 
-        public List<HeatDemandChartData> heatDemandDataForChart { get; set; }
+        public List<HeatDemandChartData> HeatDemandDataForChart { get; set; }
+
+        public List<HeatProductionChartData> HeatProductionDataForChart { get; set; }
+        public List<string> UnitNamesForChart { get; set; }
 
 
         public ResultDataManagerModel(SourceDataDbContext context)
@@ -48,15 +51,17 @@ namespace heat_production_optimization.Pages
             randomOptimizer = new RandomOptimizer(optimizerProductionUnits, context.HeatDemandData);
             OptimizationParameter = OptimizationOption.Cost;
 
-            heatDemandDataForChart = new();
+            HeatDemandDataForChart = new();
             foreach (var record in context.HeatDemandData)
             {
-                heatDemandDataForChart.Add(new HeatDemandChartData(
+                HeatDemandDataForChart.Add(new HeatDemandChartData(
                     $"{record.timeFrom.Date.ToString("dd.MM.yyyy")} {record.timeFrom.TimeOfDay} - {record.timeTo.TimeOfDay}",
                     record.heatDemand,
                     record.electricityPrice
                 ));
             }
+            HeatProductionDataForChart = new();
+            UnitNamesForChart = new();
         }
 
         public double TotalHeatProduction { get; set; }
@@ -229,6 +234,22 @@ namespace heat_production_optimization.Pages
             }
 
             OptimizationProcess();
+
+            foreach(var usage in MainOptimizer.unitUsages)
+            {
+                string timeframe = $"{usage.DateInterval.TimeFrom.Date.ToString("dd.MM.yyyy")} {usage.DateInterval.TimeFrom.TimeOfDay} - {usage.DateInterval.TimeTo.TimeOfDay}";
+                List<double> contributions = new();
+                foreach(var pair in usage.activationsDictionary)
+                {
+                    contributions.Add(pair.Value);
+                }
+                HeatProductionDataForChart.Add(new HeatProductionChartData(timeframe, contributions));
+            }
+
+            foreach(var pair in MainOptimizer.unitUsages[0].activationsDictionary)
+            {
+                UnitNamesForChart.Add(pair.Key.Name);
+            }
         }
 
 
@@ -251,7 +272,7 @@ namespace heat_production_optimization.Pages
 
                 _context.SaveChanges();
 
-                OptimizationProcess();
+                //OptimizationProcess();
             }
             else
             {
@@ -281,6 +302,17 @@ namespace heat_production_optimization.Pages
             Timeframe = timeframe;
             HeatDemand = heatDemand;
             ElectricityPrice = electricityPrice;
+        }
+    }
+
+    public class HeatProductionChartData
+    {
+        public string Timeframe { get; set; }
+        public List<double> UnitContributions { get; set; }
+        public HeatProductionChartData(string timeframe,  List<double> unitContributions)
+        {
+            Timeframe = timeframe;
+            UnitContributions = unitContributions;
         }
     }
 
