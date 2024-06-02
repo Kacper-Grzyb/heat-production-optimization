@@ -1,6 +1,8 @@
 @page
 @model heat_production_optimization.Pages.ResultDataManagerModel
+@using Newtonsoft.Json
 @{
+    var heatDemandJsonData = JsonConvert.SerializeObject(Model.heatDemandDataForChart);
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -209,6 +211,86 @@
 		</div>
     </div>
 
+    @*line chart for heat demand for each time frame*@
+    <div class="d-flex justify-content-center mt-5">
+        <div class="center-box">
+            <h1>Heat Demand</h1>
+            <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+            <script type="text/javascript">
+                google.charts.load('current', { 'packages': ['corechart'] });
+                google.charts.setOnLoadCallback(drawChart);
+
+                function drawChart() {
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Timeframe');
+                    data.addColumn('number', 'HeatDemand');
+
+                    var chartData = @Html.Raw(heatDemandJsonData);
+                    chartData.forEach(function (item) {
+                        data.addRow([item.Timeframe, item.HeatDemand])
+                    })
+
+                    var options = {
+                        vAxis: {
+                            title: 'Heat Demand [MWh]'
+                        },
+                        hAxis: {
+                            textPosition: 'none',
+                            showTextEvery: 24
+                        },
+                        colors: ['#e2431e'],
+                        interpolateNulls: true
+                    };
+
+                    var chart = new google.visualization.LineChart(document.getElementById('curve_chart1'));
+
+                    chart.draw(data, options);
+                }
+            </script>
+            <div id="curve_chart1" style="width: 900px; height: 500px"></div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center mt-5">
+        <div class="center-box">
+            <h1>Electricity Prices</h1>
+            <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+            <script type="text/javascript">
+                google.charts.load('current', { 'packages': ['corechart'] });
+                google.charts.setOnLoadCallback(drawChart);
+
+                function drawChart() {
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Timeframe');
+                    data.addColumn('number', 'Electricity Price');
+
+                    var chartData = @Html.Raw(heatDemandJsonData);
+                    chartData.forEach(function (item) {
+                        data.addRow([item.Timeframe, item.ElectricityPrice])
+                    })
+
+                    var options = {
+                        vAxis: {
+                            title: 'Electricity Price [DKK]'
+                        },
+                        hAxis: {
+                            textPosition: 'none',
+                            showTextEvery: 24
+                        },
+                        colors: ['#1c91c0'],
+                        interpolateNulls: true
+                    };
+
+                    var chart = new google.visualization.LineChart(document.getElementById('curve_chart2'));
+
+                    chart.draw(data, options);
+                }
+            </script>
+            <div id="curve_chart2" style="width: 900px; height: 500px"></div>
+        </div>
+    </div>
+
+    @*stacked column or area chart for heat produced by each boiler for each time frame '#1c91c0', *@
 
     <div class="d-flex justify-content-center mt-5">
         <div class="center-box">

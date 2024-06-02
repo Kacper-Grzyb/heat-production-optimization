@@ -24,6 +24,8 @@ namespace heat_production_optimization.Pages
         public List<IUnit> displayProductionUnits { get; set; }
         public string errorMessage { get; set; } = string.Empty;
 
+        public List<HeatDemandChartData> heatDemandDataForChart { get; set; }
+
 
         public ResultDataManagerModel(SourceDataDbContext context)
         {
@@ -45,7 +47,16 @@ namespace heat_production_optimization.Pages
             worstScenarioOptimizer = new WorstScenarioOptimizer(optimizerProductionUnits, context.HeatDemandData);
             randomOptimizer = new RandomOptimizer(optimizerProductionUnits, context.HeatDemandData);
             OptimizationParameter = OptimizationOption.Cost;
-            //errorMessage = _context.uiMessages.Find(MessageType.OptimizerError)?.Message ?? string.Empty;
+
+            heatDemandDataForChart = new();
+            foreach (var record in context.HeatDemandData)
+            {
+                heatDemandDataForChart.Add(new HeatDemandChartData(
+                    $"{record.timeFrom.Date.ToString("dd.MM.yyyy")} {record.timeFrom.TimeOfDay} - {record.timeTo.TimeOfDay}",
+                    record.heatDemand,
+                    record.electricityPrice
+                ));
+            }
         }
 
         public double TotalHeatProduction { get; set; }
@@ -87,22 +98,6 @@ namespace heat_production_optimization.Pages
         public double RandomConsumptionOfElectricity { get; set; }
         public double RandomCO2Emission { get; set; }
 
-
-        //public void OnGet()
-        //{
-        //    double heatDemand = _context.HeatDemandData.Sum(data => data.heatDemand);
-        //    sOptimizer.OptimizingCycle(_context);
-
-        //    TotalHeatProduction = Math.Round(sOptimizer.TotalHeatProduction);
-        //    TotalElectricityProduction = Math.Round(sOptimizer.TotalElectricityProduction);
-        //    Turnover = Math.Round(sOptimizer.Turnover);
-        //    ConsumptionOfGas = Math.Round(sOptimizer.ConsumptionOfGas);
-        //    ConsumptionOfOil = Math.Round(sOptimizer.ConsumptionOfOil);
-        //    ConsumptionOfElectricity = Math.Round(sOptimizer.ConsumptionOfElectricity);
-        //    CO2Emission = Math.Round(sOptimizer.ProducedCO2);
-
-        //}
-
         private List<IUnit> GetUnitsForOptimizer()
         {
             List<IUnit> resultList = new();
@@ -122,27 +117,6 @@ namespace heat_production_optimization.Pages
 
         private void OptimizationProcess()
         {
-            //OptimizationOption option;
-            //if (OptimizationParameter.ToLower() == "both")
-            //{
-            //    option = OptimizationOption.Both;
-            //}
-            //else if (OptimizationParameter.ToLower() == "cost")
-            //{
-            //    option = OptimizationOption.Cost;
-            //}
-            //else if (OptimizationParameter.ToLower() == "emission")
-            //{
-            //    option = OptimizationOption.Emission;
-            //}
-            //else
-            //{
-            //    errorMessage = "At least one variable to optimize for must be selected!";
-            //    _context.uiMessages.Find(MessageType.OptimizerError).Message = errorMessage;
-            //    _context.SaveChanges();
-            //    return;
-            //}
-
             optimizerProductionUnits = GetUnitsForOptimizer();
             if (optimizerProductionUnits.Count() == 0) throw new Exception("No boilers to use for calculations!");
 
@@ -294,6 +268,19 @@ namespace heat_production_optimization.Pages
                 ShowResults = false;
             }
 
+        }
+    }
+
+    public class HeatDemandChartData
+    {
+        public string Timeframe { get; set; }
+        public double HeatDemand { get; set; }
+        public double ElectricityPrice { get; set; }
+        public HeatDemandChartData(string timeframe, double heatDemand, double electricityPrice)
+        {
+            Timeframe = timeframe;
+            HeatDemand = heatDemand;
+            ElectricityPrice = electricityPrice;
         }
     }
 
