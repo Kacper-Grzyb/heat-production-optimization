@@ -23,55 +23,88 @@
     
 
     <div class="container">
-        <div class="unit" onclick="toggleInfo(this)">
-            <img src="~/images/gas_boiler.png" alt="Gas Boiler" />
-            <div class="unit-name">Gas Boiler</div>
-            <div class="unit-hint">Click for more info</div>
-            <div class="unit-info">
-                <p>Name: @Model.gasBoiler.Name (@Model.gasBoiler.Alias)</p>
-                <p>Maximum Produced Heat: @Model.gasBoiler.MaxHeat MW</p>
-                <p>Production Cost: @Model.gasBoiler.ProductionCostMWh DKK/MWh(heat)</p>
-                <p>CO2 Emissions: @Model.gasBoiler.CO2EmissionMWh kg/MWh(heat)</p>
-                <p>Gas Consumption: @Model.gasBoiler.GasConsumption MWh(gas)/MWh(heat)</p>
-            </div>
-        </div>
-        <div class="unit" onclick="toggleInfo(this)">
-            <img src="~/images/oil_boiler.png" alt="Oil Boiler" />
-            <div class="unit-name">Oil Boiler</div>
-            <div class="unit-hint">Click for more info</div>
-            <div class="unit-info">
-                <p>Name: @Model.oilBoiler.Name (@Model.oilBoiler.Alias)</p>
-                <p>Maximum Produced Heat: @Model.oilBoiler.MaxHeat MW</p>
-                <p>Production Cost: @Model.oilBoiler.ProductionCostMWh DKK/MWh(heat)</p>
-                <p>CO2 Emissions: @Model.oilBoiler.CO2EmissionMWh kg/MWh(heat)</p>
-                <p>Oil Consumption: @Model.oilBoiler.OilConsumption MWh(oil)/MWh(heat)</p>
-            </div>
-        </div>
-        <div class="unit" onclick="toggleInfo(this)">
-            <img src="~/images/gas_motor.png" alt="Gas Motor" />
-            <div class="unit-name">Gas Motor</div>
-            <div class="unit-hint">Click for more info</div>
-            <div class="unit-info">
-                <p>Name: @Model.gasMotor.Name (@Model.gasMotor.Alias)</p>
-                <p>Maximum Produced Heat: @Model.gasMotor.MaxHeat MW</p>
-                <p>Maximum Produced Electricity: @Model.gasMotor.MaxElectricity MW</p>
-                <p>Production Cost: @Model.gasMotor.ProductionCostMWh DKK/MWh(heat)</p>
-                <p>CO2 Emissions: @Model.gasMotor.CO2EmissionMWh kg/MWh(heat)</p>
-                <p>Gas Consumption: @Model.gasMotor.GasConsumption MWh(gas)/MWh(heat)</p>
-            </div>
-        </div>
-        <div class="unit" onclick="toggleInfo(this)">
-            <img src="~/images/electric_boiler.png" alt="Electric Boiler" />
-            <div class="unit-name">Electric Boiler</div>
-            <div class="unit-hint">Click for more info</div>
-            <div class="unit-info">
-                <p>Name: @Model.electricBoiler.Name (@Model.electricBoiler.Alias)</p>
-                <p>Maximum Produced Heat: @Model.electricBoiler.MaxHeat MW</p>
-                <p>Production Cost: @Model.electricBoiler.ProductionCostMWh DKK/MWh(heat)</p>
-                <p>CO2 Emissions: @Model.electricBoiler.CO2EmissionMWh kg/MWh(heat)</p>
-                <p>Electricity Consumption: @Math.Abs(Model.electricBoiler.MaxElectricity) MWh(electricity)/MWh(heat)</p>
-            </div>
-        </div>
+        @foreach(var unit in Model.productionUnits)
+        {
+            if(unit.Alias == "GB")
+            {
+                <div class="unit" onclick="toggleInfo(this)">
+                    <img src="~/images/gas_boiler.png" alt="Gas Boiler" />
+                    <div class="unit-name">Gas Boiler</div>
+                    <div class="unit-hint">Click for more info</div>
+                    <div class="unit-info">
+                        <p>Name: @Model.gasBoiler.Name (@Model.gasBoiler.Alias)</p>
+                        <p>Maximum Produced Heat: @Model.gasBoiler.MaxHeat MW</p>
+                        <p>Production Cost: @Model.gasBoiler.ProductionCostMWh DKK/MWh(heat)</p>
+                        <p>CO2 Emissions: @Model.gasBoiler.CO2EmissionMWh kg/MWh(heat)</p>
+                        <p>Gas Consumption: @Model.gasBoiler.GasConsumption MWh(gas)/MWh(heat)</p>
+                    </div>
+                </div>
+            }
+            else if(unit.Alias == "OB")
+            {
+                <div class="unit" onclick="toggleInfo(this)">
+                    <img src="~/images/oil_boiler.png" alt="Oil Boiler" />
+                    <div class="unit-name">Oil Boiler</div>
+                    <div class="unit-hint">Click for more info</div>
+                    <div class="unit-info">
+                        <p>Name: @Model.oilBoiler.Name (@Model.oilBoiler.Alias)</p>
+                        <p>Maximum Produced Heat: @Model.oilBoiler.MaxHeat MW</p>
+                        <p>Production Cost: @Model.oilBoiler.ProductionCostMWh DKK/MWh(heat)</p>
+                        <p>CO2 Emissions: @Model.oilBoiler.CO2EmissionMWh kg/MWh(heat)</p>
+                        <p>Oil Consumption: @Model.oilBoiler.OilConsumption MWh(oil)/MWh(heat)</p>
+                    </div>
+                </div>
+            }
+            else if(unit.Alias == "GM")
+            {
+                <div class="unit" onclick="toggleInfo(this)">
+                    <img src="~/images/gas_motor.png" alt="Gas Motor" />
+                    <div class="unit-name">Gas Motor</div>
+                    <div class="unit-hint">Click for more info</div>
+                    <div class="unit-info">
+                        <p>Name: @Model.gasMotor.Name (@Model.gasMotor.Alias)</p>
+                        <p>Maximum Produced Heat: @Model.gasMotor.MaxHeat MW</p>
+                        <p>Maximum Produced Electricity: @Model.gasMotor.MaxElectricity MW</p>
+                        <p>Production Cost: @Model.gasMotor.ProductionCostMWh DKK/MWh(heat)</p>
+                        <p>CO2 Emissions: @Model.gasMotor.CO2EmissionMWh kg/MWh(heat)</p>
+                        <p>Gas Consumption: @Model.gasMotor.GasConsumption MWh(gas)/MWh(heat)</p>
+                    </div>
+                </div>
+            }
+            else if(unit.Alias == "EK")
+            {
+                <div class="unit" onclick="toggleInfo(this)">
+                    <img src="~/images/electric_boiler.png" alt="Electric Boiler" />
+                    <div class="unit-name">Electric Boiler</div>
+                    <div class="unit-hint">Click for more info</div>
+                    <div class="unit-info">
+                        <p>Name: @Model.electricBoiler.Name (@Model.electricBoiler.Alias)</p>
+                        <p>Maximum Produced Heat: @Model.electricBoiler.MaxHeat MW</p>
+                        <p>Production Cost: @Model.electricBoiler.ProductionCostMWh DKK/MWh(heat)</p>
+                        <p>CO2 Emissions: @Model.electricBoiler.CO2EmissionMWh kg/MWh(heat)</p>
+                        <p>Electricity Consumption: @Math.Abs(Model.electricBoiler.MaxElectricity) MWh(electricity)/MWh(heat)</p>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="unit" onclick="toggleInfo(this)">
+                    <img src="~/images/production_unit_icon.png" alt="@unit.Name" />
+                    <div class="unit-name">@unit.Name</div>
+                    <div class="unit-hint">Click for more info</div>
+                    <div class="unit-info">
+                        <p>Name: @unit.Name (@unit.Alias)</p>
+                        <p>Maximum Produced Heat: @unit.MaxHeat MW</p>
+                        <p>Maximum Electricity: @unit.MaxElectricity MWh(electricity)/MWh(heat)</p>
+                        <p>Production Cost: @unit.ProductionCostMWh DKK/MWh(heat)</p>
+                        <p>CO2 Emissions: @unit.CO2EmissionMWh kg/MWh(heat)</p>
+                        <p>Gas Consumption: @unit.GasConsumption MWh(gas)/MWh(heat)</p>
+                        <p>Oil Consumption: @unit.OilConsumption MWh(oil)/MWh(heat)</p>
+                    </div>
+                </div>
+            }
+        }
+
     </div>
 
     <script>

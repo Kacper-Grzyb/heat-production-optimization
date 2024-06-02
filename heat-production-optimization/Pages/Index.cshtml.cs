@@ -16,6 +16,8 @@ namespace heat_production_optimization.Pages
         public IUnit gasMotor;
         public IUnit electricBoiler;
 
+        public List<ProductionUnitDataModel> productionUnits;
+
 		[BindProperty]
         public IFormFile formFile { get; set; }
 
@@ -27,6 +29,7 @@ namespace heat_production_optimization.Pages
             oilBoiler = context.oilBoiler;
             gasMotor = context.gasMotor;
             electricBoiler = context.electricBoiler;
+            productionUnits = context.productionUnits.ToList();
         }
 
         public void OnGet()

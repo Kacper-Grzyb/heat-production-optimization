@@ -756,7 +756,7 @@ the program into the components from the project's requirements, and clarify in 
 This diagram also plays a part in explaining the interactions between each component, and the class diagram is able to complete this explanation,
 as well as go more in depth for each component, breaking them down into individual classes. The component diagram can be seen below.
 
-% Include the finished component diagram here
+\includepdf[pages=-]{Resources/SP2-component-diagram.pdf}
 
 Following the component hierarchy we will cover the \textbf{Source Data Manager} next. The class diagrams facilitating this explanation
 can be seen below this paragraph. Our implementation of this component makes it handle the most important interaction between the program
@@ -796,7 +796,7 @@ This is why a custom \textit{DoubleModelBinder} was written, to convert HTML for
 no matter if they used a dot or a comma as their decimal separator. A safety check was also implemented, so that a production
 unit's Alias property has to be unique, to eliminate potential errors with the optimization process, which will be covered soon.
 
-\includepdf[page={4, 1}]{Resources/SP2-class-diagrams.pdf}
+\includepdf[pages={4, 1}]{Resources/SP2-class-diagrams.pdf}
 
 Back in \textbf{Asset Manager}, the navbar allows the user to navigate to the \textbf{Result Data Manager} and \textbf{Database Preview}
 components. The latter does not contain any distinguishing code, and was covered entirely in the subsection \hyperref[sec:appflow]{Application Flow}.
@@ -833,7 +833,7 @@ to access this data, convert it to their own respective formats, and redirect th
 Lastly, \textbf{Result Data Manager} also hosts the \textbf{Unit Activations} component, which in similar fashion
 as the \textbf{Database Preview}, was covered in \hyperref[sec:appflow]{Application Flow}.
 
-\includepdf[page={3, 2}]{Resources/SP2-class-diagrams.pdf}
+\includepdf[pages={3, 2}]{Resources/SP2-class-diagrams.pdf}
 
 % Chapter 4b
 \section{Simple Design}
@@ -892,23 +892,89 @@ Code Review yapping goes here
 
 % Chapter 5
 \chapter{Conclusion and Group's Reflections}
-Conclusion chapter goes here
+
+The completion of the Heat Production Management Project was far from a simple task. 
+It consisted of many steps, thorough planning, and unpredicted difficulties. The main goal was to create and implement
+ a web-based application to help Heatington improve its heat output. In addressing the challenges and 
+ learnings of the project, our team identified several obstacles and experiences crucial to our learning and development. 
+ This chapter includes our assessment of our activities, successes and failures, and tips for future projects.
 
 % Chapter 5a
-\section{Working on a common project with other groups}
-5a yapping goes here
+\section{Working on a Common Project with Other Groups}
+
+\subsection*{Positive Aspects}
+Working on the same problem alongside other groups was a beneficial experience, especially for early-semester students.
+It allowed us to learn from each other and exchange valuable insights. For instance, the use of extreme 
+programming and code reviews within the team helped maintain consistency and avoid mistakes. Additionally, observing 
+how other groups dealt with similar problems provided a comparative perspective, aiding our understanding of 
+problem-solving approaches. Adopting the Agile methodology for the first time was an interesting experience for all 
+team members. Learning to spread the work across different sprints made the project more manageable and intuitive 
+once the methodology was grasped.
+
+\subsection*{Challenges}
+However, there were some drawbacks to having multiple groups work on the same projects. 
+Meetings were sometimes too loose, lacking the necessary structure and efficiency. 
+More structured and consistent meetings, especially at the beginning of the project, could have eliminated 
+uncertainties among group members. Additionally, clearer project specifications from the outset would have 
+facilitated better execution.
 
 % Chapter 5b
-\section{What went well and not so well with the group's specific set of tasks}
-5b yapping goes here
+\section{Experience with the Development of the Group's Specific Set of Tasks}
+
+\subsection*{Positive Aspects}
+The chosen development process for our specific tasks led the team to achieve all vital aspects of the project, 
+combined with additional components that improved the user experience. The implementation phase went smoothly, 
+and the team divided tasks efficiently, ensuring that each member made significant contributions. Following the 
+Agile methodology was quite helpful, as its flexible nature made responding to new ideas and requirements 
+effortless as the project progressed.
+
+\subsection*{Challenges}
+Nevertheless, there were areas for improvement. Meetings could have been better organized, and 
+time could have been utilized more effectively. It was sometimes unclear how various pieces of code interfaced 
+within the project, suggesting that a better understanding of the system architecture was needed. 
+More planning at the project's beginning could have developed a clearer vision and understanding of the project requirements.
 
 % Chapter 5c
 \section{Specific contributions of each team member}
-5c yapping goes here
 
+\subsection*{Sebestyén}
+Sebestyén served as the Scrum Master. His responsibilities included building the original \textbf{Asset Manager}, 
+developing different optimizer versions for general purposes and for comparable data, and saving data to external CSV files.
+
+\subsection*{Ignat}
+Ignat was part of the developer team and served as the main UI programmer. 
+He enhanced the \textbf{Asset Manager} UI, polished the \textbf{Result Data Manager}, helped develop the \textbf{Boiler 
+Usage Page}, and added optimization features for both costs and emissions. Additionally, Ignat maintained 
+the group log and occasionally provided feedback to the team.
+
+\subsection*{Leonardo}
 \label{sec:nnexplanation} %explain how the neural network optimizer works here
+[Content for Leonardo goes here.]
+
+\subsection*{Kacper}
+Kacper served as the Product Owner, making sure the group is alligned on the vision and requirements of the project. He was also
+responsible for managing the jira backlog as well as the github repository, resolving merge conflicts and reviewing pull requests.
+Kacper also prepared the second version of the application's Figma prototype.
+In the codebase, Kacper was responsible for the \textbf{Source Data Manager} component, reading from .csv and .xslx files and saving
+data to .xslx files. He was also responsible for the Standard Optimizer used by the \textbf{Result Data Manger} component by default.
+Kacper is responsible for creating the in-memory database, along with it's many refactors, and the data models for the program. 
+Kacper is also responsible for the \textbf{Unit Configuration} and the \textbf{Unit Activations} components, as 
+well as providing help with the rest of the components.
+
+\subsection*{Levente}
+Levente was part of the developer team and created \textbf{Optimizer} component to display the optimized results and 
+the production unit usage(hour by hour) data. He was also responsible for the Oil Boiler subcomponent of \textbf{Result Data Manager} in Iteration 1.
 
 \section{Future actions to prevent problems and difficulties faced during the project}
-5d yapping goes here
+To avoid the problems and difficulties faced during this project, the following actions could be adopted in future projects:
+
+\begin{itemize}
+  \item \textbf{Structured and Consistent Meetings:} Implement more structured and frequent meetings to ensure all team members are on the same page. Daily Scrums should be carried out to ensure a clear workflow.
+  \item \textbf{Clear Role Definitions:} Reevaluate team roles to ensure they suit each member's strengths. Consider having an external facilitator for meeting structures.
+  \item \textbf{Early and Thorough Requirement Analysis:} Dive deeper into the project requirements early on and ensure everyone understands them. This includes reading through documentation and preparing for meetings in advance.
+  \item \textbf{Better Integration and Communication:} Foster better communication regarding how different parts of the code and project fit together. Regularly review and discuss the overall system architecture.
+  \item \textbf{Increased Preparation:} Encourage team members to prepare for new concepts and tasks before meetings, ensuring everyone is well-informed and ready to contribute effectively.
+\end{itemize}
+
 
 \end{document}

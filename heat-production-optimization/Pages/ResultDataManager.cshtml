@@ -314,8 +314,11 @@
             const checkboxes = document.querySelectorAll('input[name="BoilersChecked"]');
             const optimizeButton = document.getElementById('optimizeButton');
             const optimizationParameter = document.getElementById('optimizationParameter');
+            const optimizerChoice = document.getElementById('optimizerChoice')
+
             const initialSelectedUnits = document.getElementById('selectedUnits').value;
             const initialOptimizationParameter = optimizationParameter.value;
+            const initialOptimizerChoice = optimizerChoice.value;
 
             function toggleOptimizeButton() {
                 let currentSelectedUnits = Array.from(checkboxes)
@@ -325,8 +328,9 @@
 
                 let isUnitsChanged = initialSelectedUnits !== currentSelectedUnits;
                 let isOptimizationChanged = initialOptimizationParameter !== optimizationParameter.value;
+                let isOptimizerChanged = initialOptimizerChoice !== optimizerChoice.value;
 
-                if (isUnitsChanged || isOptimizationChanged) {
+                if (isUnitsChanged || isOptimizationChanged || isOptimizerChanged) {
                     optimizeButton.disabled = false;
                     optimizeButton.style.backgroundColor = '#ffa31a';
                     optimizeButton.style.color = '#fff';
@@ -344,6 +348,7 @@
             });
 
             optimizationParameter.addEventListener('change', toggleOptimizeButton);
+            optimizerChoice.addEventListener('change', toggleOptimizeButton);
 
             // Initial check
             toggleOptimizeButton();
