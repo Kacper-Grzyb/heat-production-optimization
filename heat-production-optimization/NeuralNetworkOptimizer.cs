@@ -9,9 +9,9 @@ namespace heat_production_optimization
         private HeatDemandDataModel[] HeatDemandData { get; set; }
         private List<IUnit> ProductionUnits { get; set; }
 
-        public double TotalHeatProduction { get; set; } 
-        public double TotalElectricityProduction { get; set; } 
-        public double Expenses { get; set; } 
+        public double TotalHeatProduction { get; set; }
+        public double TotalElectricityProduction { get; set; }
+        public double Expenses { get; set; }
         public double ConsumptionOfGas { get; set; }
         public double ConsumptionOfOil { get; set; }
         public double ConsumptionOfElectricity { get; set; }
@@ -38,23 +38,32 @@ namespace heat_production_optimization
 
         public void OptimizeHeatProduction(OptimizationOption option)
         {
-            foreach(HeatDemandDataModel record in HeatDemandData)
+
+            // Define penalties and incentives for each boiler unit
+            Dictionary<string, double> unitPenalties = new Dictionary<string, double>
             {
-                GeneticAlgorithm ga = new GeneticAlgorithm(ProductionUnits, record.heatDemand, record.electricityPrice, seed);
+                { "OB", 1000000000000 }, // Very high penalty for OB unit
+            };
+
+            Dictionary<string, double> unitIncentives = new Dictionary<string, double>
+            {
+                { "GB", -1000000 } // Significant incentive for GB unit to ensure heat demand is met
+            };
+
+            foreach (HeatDemandDataModel record in HeatDemandData)
+            {
+                GeneticAlgorithm ga = new GeneticAlgorithm(ProductionUnits, record.heatDemand, record.electricityPrice, seed, option, unitPenalties, unitIncentives);
                 Individual bestSolution;
 
-                switch(option)
+                switch (option)
                 {
                     case OptimizationOption.Cost:
-                        // Implement cost specific calculations here
                         bestSolution = ga.Run();
                         break;
                     case OptimizationOption.Emission:
-                        // Implement emission specific calculations here
                         bestSolution = ga.Run();
                         break;
                     case OptimizationOption.Both:
-                        // Implement cost and emission specific calculations here (cost and emission are equal in weight)
                         bestSolution = ga.Run();
                         break;
                     default:
@@ -68,7 +77,7 @@ namespace heat_production_optimization
                 ConsumptionOfOil += bestSolution.OilConsumption;
                 ConsumptionOfElectricity += bestSolution.ElectricityConsumption;
                 ProducedCO2 += bestSolution.CO2;
-                
+
                 // Saving the unit usage data
 
                 List<UnitActivationPercentage> activations = new List<UnitActivationPercentage>();
@@ -91,7 +100,7 @@ namespace heat_production_optimization
                     {
                         Id = Guid.NewGuid(),
                         TimeFrom = record.timeFrom,
-                        TimeTo = record.timeTo,  
+                        TimeTo = record.timeTo,
                     },
                     ActivationPercentages = activations
                 };
@@ -99,7 +108,7 @@ namespace heat_production_optimization
                 unitUsages.Add(usage);
             }
         }
-}
+    }
 
     public class GeneticAlgorithm
     {
@@ -113,13 +122,19 @@ namespace heat_production_optimization
         public List<IUnit> ProductionUnits { get; set; }
         public double HeatDemand { get; set; }
         public double ElectricityPrice { get; set; }
+        public OptimizationOption Option { get; set; }
+        public Dictionary<string, double> UnitPenalties { get; set; }
+        public Dictionary<string, double> UnitIncentives { get; set; }
 
-        public GeneticAlgorithm(List<IUnit> productionUnits, double heatDemand, double electricityPrice, int seed)
+        public GeneticAlgorithm(List<IUnit> productionUnits, double heatDemand, double electricityPrice, int seed, OptimizationOption option, Dictionary<string, double> unitPenalties, Dictionary<string, double> unitIncentives)
         {
             ProductionUnits = productionUnits;
             HeatDemand = heatDemand;
             ElectricityPrice = electricityPrice;
             random = new Random(seed); // Set the seed for the random number generator
+            Option = option;
+            UnitPenalties = unitPenalties;
+            UnitIncentives = unitIncentives;
         }
 
         public Individual Run()
@@ -258,6 +273,16 @@ namespace heat_production_optimization
                 individual.ElectricityConsumption += unitElectricityConsumption;
             }
 
+            // Safety check for meeting heat demand
+            if (individual.TotalHeat < HeatDemand)
+            {
+                CanMeetHeatDemand = false;
+            }
+            else
+            {
+                CanMeetHeatDemand = true;
+            }
+
             // Adjust the calculation of electricity costs
             if (individual.TotalElectricity > 0)
             {
@@ -268,34 +293,130 @@ namespace heat_production_optimization
                 individual.Expenses += individual.ElectricityConsumption * ElectricityPrice; // Cost for consumed electricity (since TotalElectricity is negative)
             }
 
-            // Calculate penalties and incentives
+            double fitness;
             double heatPenalty = individual.TotalHeat < HeatDemand ? (HeatDemand - individual.TotalHeat) * 100000 : 0; // Strong penalty for not meeting heat demand
-            double expensePenalty = individual.Expenses * 1000; // Very high penalty for expenses
-            double co2Penalty = individual.CO2 * 0.01; // Reduced penalty for CO2 emissions
 
-            // Note from Kacper to Leonardo: 
-            // Keep in mind that the optimizer gets passed a *custom* array of boilers
-            // therefore it might not have the boilers you are checking for down here
-            // i would recommend changing the obPenalty etc properties to a single array for each boiler
-            // that gets passed into the class
-            // You also need to create a safety check somewhere in the optimizer so that if the passed unit configuration
-            // cannot meet the passed heat demand, the CanMeetHeatDemand boolean property will be set to false, so that
-            // the result data manger will be able to react properly
+            if (Option == OptimizationOption.Cost)
+            {
+                // Calculate fitness based only on expenses
+                double expensePenalty = individual.Expenses * 1000;
 
-            // Adding a very high penalty for the use of OB unit
-            double obPenalty = individual.ActivationPercentages[ProductionUnits.Find(p => p.Alias == "OB")] * 1000000000000;
+                double totalPenalty = 0;
+                foreach (var unit in ProductionUnits)
+                {
+                    if (UnitPenalties.ContainsKey(unit.Alias))
+                    {
+                        totalPenalty += individual.ActivationPercentages[unit] * UnitPenalties[unit.Alias];
+                    }
+                }
 
-            // Incentives and penalties based on electricity price
-            double gmIncentive = individual.ActivationPercentages[ProductionUnits.Find(p => p.Alias == "GM")] * (ElectricityPrice > 900 ? -1000000 : 0); // High incentive if electricity price is high
-            double ekPenalty = individual.ActivationPercentages[ProductionUnits.Find(p => p.Alias == "EK")] * (ElectricityPrice > 900 ? 1000000 : 0); // High penalty if electricity price is high and EK is used
+                double totalIncentive = 0;
+                foreach (var unit in ProductionUnits)
+                {
+                    if (UnitIncentives.ContainsKey(unit.Alias))
+                    {
+                        totalIncentive += individual.ActivationPercentages[unit] * UnitIncentives[unit.Alias];
+                    }
+                }
 
-            // Adding a significant incentive for the use of GB to ensure heat demand is met
-            double gbIncentive = individual.ActivationPercentages[ProductionUnits.Find(p => p.Alias == "GB")] * -1000000;
+                if (ElectricityPrice > 900)
+                {
+                    if (individual.ActivationPercentages.ContainsKey(ProductionUnits.Find(p => p.Alias == "GM")))
+                    {
+                        totalIncentive += individual.ActivationPercentages[ProductionUnits.Find(p => p.Alias == "GM")] * -1000000;
+                    }
 
-            // Fitness function primarily aims to minimize expenses, with strong incentives for GM and GB when appropriate and penalties for OB and EK when prices are high
-            individual.Fitness = 1.0 / (1 + heatPenalty + expensePenalty + co2Penalty + obPenalty + ekPenalty - gmIncentive - gbIncentive);
+                    if (individual.ActivationPercentages.ContainsKey(ProductionUnits.Find(p => p.Alias == "EK")))
+                    {
+                        totalPenalty += individual.ActivationPercentages[ProductionUnits.Find(p => p.Alias == "EK")] * 1000000;
+                    }
+                }
 
-            //Console.WriteLine($"Calculated Fitness: {individual.Fitness} for Heat: {individual.TotalHeat}, Expenses: {individual.Expenses}, CO2: {individual.CO2}, GM Incentive: {gmIncentive}, OB Penalty: {obPenalty}, GB Incentive: {gbIncentive}, EK Penalty: {ekPenalty}");
+                fitness = 1.0 / (1 + heatPenalty + expensePenalty + totalPenalty - totalIncentive);
+            }
+            else if (Option == OptimizationOption.Emission)
+            {
+                // Calculate fitness based only on CO2 emissions
+                double co2Penalty = individual.CO2 * 1000;
+
+                double totalPenalty = 0;
+                foreach (var unit in ProductionUnits)
+                {
+                    if (UnitPenalties.ContainsKey(unit.Alias))
+                    {
+                        totalPenalty += individual.ActivationPercentages[unit] * UnitPenalties[unit.Alias];
+                    }
+                }
+
+                double totalIncentive = 0;
+                foreach (var unit in ProductionUnits)
+                {
+                    if (UnitIncentives.ContainsKey(unit.Alias))
+                    {
+                        totalIncentive += individual.ActivationPercentages[unit] * UnitIncentives[unit.Alias];
+                    }
+                }
+
+                if (ElectricityPrice > 900)
+                {
+                    if (individual.ActivationPercentages.ContainsKey(ProductionUnits.Find(p => p.Alias == "GM")))
+                    {
+                        totalIncentive += individual.ActivationPercentages[ProductionUnits.Find(p => p.Alias == "GM")] * -1000000;
+                    }
+
+                    if (individual.ActivationPercentages.ContainsKey(ProductionUnits.Find(p => p.Alias == "EK")))
+                    {
+                        totalPenalty += individual.ActivationPercentages[ProductionUnits.Find(p => p.Alias == "EK")] * 1000000;
+                    }
+                }
+
+                fitness = 1.0 / (1 + heatPenalty + co2Penalty + totalPenalty - totalIncentive);
+            }
+            else if (Option == OptimizationOption.Both)
+            {
+                // Calculate fitness based on both expenses and CO2 emissions
+                double expensePenalty = individual.Expenses * 1000;
+                double co2Penalty = individual.CO2 * 1000;
+
+                double totalPenalty = 0;
+                foreach (var unit in ProductionUnits)
+                {
+                    if (UnitPenalties.ContainsKey(unit.Alias))
+                    {
+                        totalPenalty += individual.ActivationPercentages[unit] * UnitPenalties[unit.Alias];
+                    }
+                }
+
+                double totalIncentive = 0;
+                foreach (var unit in ProductionUnits)
+                {
+                    if (UnitIncentives.ContainsKey(unit.Alias))
+                    {
+                        totalIncentive += individual.ActivationPercentages[unit] * UnitIncentives[unit.Alias];
+                    }
+                }
+
+                if (ElectricityPrice > 900)
+                {
+                    if (individual.ActivationPercentages.ContainsKey(ProductionUnits.Find(p => p.Alias == "GM")))
+                    {
+                        totalIncentive += individual.ActivationPercentages[ProductionUnits.Find(p => p.Alias == "GM")] * -1000000;
+                    }
+
+                    if (individual.ActivationPercentages.ContainsKey(ProductionUnits.Find(p => p.Alias == "EK")))
+                    {
+                        totalPenalty += individual.ActivationPercentages[ProductionUnits.Find(p => p.Alias == "EK")] * 1000000;
+                    }
+                }
+
+                fitness = 1.0 / (1 + heatPenalty + expensePenalty + co2Penalty + totalPenalty - totalIncentive);
+            }
+            else
+            {
+                throw new Exception("Invalid optimization option selected.");
+            }
+
+            individual.Fitness = fitness;
         }
 
         private Individual Crossover(Individual parent1, Individual parent2)
