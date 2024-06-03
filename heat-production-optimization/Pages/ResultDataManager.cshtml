@@ -136,6 +136,7 @@
                 {
                     <p>@Model.errorMessage</p>
                 }
+                <p id="optimizerWarning"></p>
                 <div class="checkbox-container">
                     @foreach (IUnit unit in Model.displayProductionUnits)
                     {
@@ -431,7 +432,8 @@
             const checkboxes = document.querySelectorAll('input[name="BoilersChecked"]');
             const optimizeButton = document.getElementById('optimizeButton');
             const optimizationParameter = document.getElementById('optimizationParameter');
-            const optimizerChoice = document.getElementById('optimizerChoice')
+            const optimizerChoice = document.getElementById('optimizerChoice');
+            const optimizerWarningText = document.getElementById('optimizerWarning');
 
             const initialSelectedUnits = document.getElementById('selectedUnits').value;
             const initialOptimizationParameter = optimizationParameter.value;
@@ -457,6 +459,13 @@
                     optimizeButton.style.backgroundColor = '#ccc';
                     optimizeButton.style.color = '#999';
                     optimizeButton.style.cursor = 'not-allowed';
+                }
+
+                if(optimizerChoice.value == "NeuralNetwork") {
+                    optimizerWarningText.innerText = "Warning: The Neural Network Optimizer does not work with custom production units and can only optimize for costs.";
+                }
+                else {
+                    optimizerWarningText.innerText = "";
                 }
             }
 

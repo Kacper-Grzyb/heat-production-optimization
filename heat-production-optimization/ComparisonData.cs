@@ -115,7 +115,6 @@ namespace heat_production_optimization
             ConsumptionOfElectricity = Math.Round(ConsumptionOfElectricity, 2);
             ProducedCO2 = Math.Round(ProducedCO2, 2);
 
-            Console.WriteLine("The Worst Case has been calculated");
 	    }
 
     }
@@ -208,8 +207,6 @@ namespace heat_production_optimization
             ConsumptionOfOil = Math.Round(ConsumptionOfOil, 2);
             ConsumptionOfElectricity = Math.Round(ConsumptionOfElectricity, 2);
             ProducedCO2 = Math.Round(ProducedCO2, 2);
-
-            Console.WriteLine("The random case hase been generated");
 	    }
 
     }

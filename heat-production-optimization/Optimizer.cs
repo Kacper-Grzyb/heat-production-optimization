@@ -174,7 +174,6 @@ namespace heat_production_optimization
             foreach(var record in HeatDemandData)
             {
                 Tuple<DateTime, DateTime> timeFrame = new(record.timeFrom, record.timeTo);
-                Console.Write(timeFrame);
 
                 HourlyOptimization newHour = new HourlyOptimization
                 {
@@ -183,18 +182,12 @@ namespace heat_production_optimization
                 };
                 foreach (var unit in ProductionUnits)
                 {
-                    Console.Write($"{unit.Alias} {boilerActivations[timeFrame][unit]} ");
                     newHour[unit] = boilerActivations[timeFrame][unit];
 
                 }
                 HourlyOptimization.HourlyOptimizations.Add(newHour);
 
-
-                Console.WriteLine();
-
             }
-            //SaveToCSV.SaveOptimization();
-
 	    }
 
     }
@@ -298,13 +291,11 @@ namespace heat_production_optimization
 
             if (resultStatus == Solver.ResultStatus.OPTIMAL)
             {
-                System.Console.WriteLine("Solution for the hour:");
                 double totalCO2Emissions = 0;
                 double totalElectricityGenerated = 0;
                 double totalHeatProduced = 0;
                 for (int i = 0; i < units.Length; i++)
                 {
-                    System.Console.WriteLine($"{units[i].Name} operates at {Math.Round(unitOperation[i].SolutionValue() * 100)}% capacity;");
                     totalCO2Emissions += unitOperation[i].SolutionValue() * units[i].CO2Emission;
                     if (units[i] is GasMotor)
                     {
@@ -316,20 +307,15 @@ namespace heat_production_optimization
                     }
                     totalHeatProduced += unitOperation[i].SolutionValue() * units[i].MaxHeat;
                 }
-                System.Console.WriteLine($"Total Cost: {Math.Round(objective.Value())}");
                 Expenses += objective.Value();
-                System.Console.WriteLine($"Total CO2 Emissions: {Math.Round(totalCO2Emissions)}");
                 ProducedCO2 += totalCO2Emissions;
-                System.Console.WriteLine($"Total Electricity Generated: {Math.Round(totalElectricityGenerated)}");
                 TotalElectricityProduction += totalElectricityGenerated;
-                System.Console.WriteLine($"Total Heat Produced: {Math.Round(totalHeatProduced)}");
                 TotalHeatProduction += totalHeatProduced;
 
                 return (objective.Value(), totalCO2Emissions, totalElectricityGenerated, totalHeatProduced);
             }
             else
             {
-                System.Console.WriteLine("The problem does not have an optimal solution.");
                 return (double.NaN, 0, 0, 0);
             }
         }
