@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1717402796.30052 "c:/CodingWorkspace/heat-production-optimization/report/Report.tex" "Report.pdf" "Report" 1717402801.93206 0
+["pdflatex"] 1717405061.80491 "c:/CodingWorkspace/heat-production-optimization/report/Report.tex" "Report.pdf" "Report" 1717405067.33664 0
   "C:/Users/kgrzy/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1717233819 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
   "C:/Users/kgrzy/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1200.pk" 1708265518 14064 02fc6e7c86f94f2b4bbfe69b32fb84c8 ""
   "C:/Users/kgrzy/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1708265426 24225046 c48b4731e0c484f7d273fce8981c2153 ""
@@ -95,10 +95,10 @@
   "C:/Users/kgrzy/AppData/Local/Programs/MiKTeX/tex/latex/tools/calc.sty" 1700599895 10214 547fd4d29642cb7c80bf54b49d447f01 ""
   "C:/Users/kgrzy/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "C:/Users/kgrzy/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1700127522 55487 80a65caedd3722f4c20a14a69e785d8f ""
-  "Report.aux" 1717402801 7170 758aed8689279048daa1587396511f33 "pdflatex"
-  "Report.out" 1717402801 4040 150763673201dd598067b49e8f64990c "pdflatex"
-  "Report.tex" 1717402789 67577 3661d71a893bce6079730c70e35ff749 ""
-  "Report.toc" 1717402801 1944 759c6383f220d62a7e5ec30a94bf40b3 "pdflatex"
+  "Report.aux" 1717405067 7170 b30f443b39aeda3385f2b41f79485650 "pdflatex"
+  "Report.out" 1717405067 4040 150763673201dd598067b49e8f64990c "pdflatex"
+  "Report.tex" 1717405059 71879 e4c8d57895a34047ecc7217938559a63 ""
+  "Report.toc" 1717405067 1944 cadda23021fbb27ae78f2e24bf10ae10 "pdflatex"
   "Resources/1-Sprint/Gantt-Chart-Optimal.png" 1717258724 8848 ea28575e93394edde31c54c3bf7c4fdb ""
   "Resources/1-Sprint/Gantt-Chart-Realistic.png" 1717258724 22064 bf68e9cfc1ef48cee95ed6ca4b9acd92 ""
   "Resources/2-Sprint/Daily-Scrum/backlog1.png" 1717258724 75220 6d2089131e5f99105f9eeab2519f879a ""
@@ -121,7 +121,7 @@
   "Resources/SP2-database-diagram.pdf" 1717258724 63743 43609fbf326179bb10f87820930b7352 ""
   "Resources/SP2-sequence-diagram.pdf" 1717401246 26933 a5bf6b202a11ce4afb925fe4919e36c6 ""
   "Resources/SP2-state-machine.pdf" 1717258724 68896 780050dbcf7ac95da3965a1e380a0813 ""
-  "c:/CodingWorkspace/heat-production-optimization/report/Report.tex" 1717402789 67577 3661d71a893bce6079730c70e35ff749 ""
+  "c:/CodingWorkspace/heat-production-optimization/report/Report.tex" 1717405059 71879 e4c8d57895a34047ecc7217938559a63 ""
   (generated)
   "Report.aux"
   "Report.log"
