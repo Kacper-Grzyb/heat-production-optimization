@@ -23,14 +23,6 @@ namespace heat_production_optimization
 
         public NeuralNetworkOptimizer(List<IUnit> productionUnits, DbSet<HeatDemandDataModel> heatDemandData)
         {
-            ProductionUnits = new List<IUnit>()
-            {
-                new GasBoiler(Guid.NewGuid(), 5, 500, 215, 1.1, "GB", "Gas Boiler"),
-                new OilBoiler(Guid.NewGuid(), 4, 700, 265, 1.2, "OB", "Oil Boiler"),
-                new GasMotor(Guid.NewGuid(), 3.6, 2.7, 1100, 640, 1.9, "GM", "Gas Motor"),
-                new ElectricBoiler(Guid.NewGuid(), 8, -8, 50, 0, "EK", "Electric Boiler")
-            };
-
             ProductionUnits = productionUnits;
 
             HeatDemandData = heatDemandData.OrderBy(r => r.timeFrom).ToArray();
