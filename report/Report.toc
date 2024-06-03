@@ -4,21 +4,21 @@
 \contentsline {chapter}{\numberline {2}Release Planning}{5}{chapter.2}%
 \contentsline {chapter}{\numberline {3}Sprint Materials}{8}{chapter.3}%
 \contentsline {section}{\numberline {3a}Sprint 1}{8}{section.3.1}%
-\contentsline {section}{\numberline {3b}Sprint 2}{12}{section.3.2}%
-\contentsline {section}{\numberline {3c}Sprint 3}{16}{section.3.3}%
-\contentsline {section}{\numberline {3d}Sprint 4}{23}{section.3.4}%
-\contentsline {section}{\numberline {3e}Sprint 5}{30}{section.3.5}%
-\contentsline {chapter}{\numberline {4}Technical Details}{36}{chapter.4}%
-\contentsline {section}{\numberline {4a}Software Architecture and Design}{36}{section.4.1}%
-\contentsline {section}{\numberline {4b}Simple Design}{56}{section.4.2}%
-\contentsline {section}{\numberline {4c}Incremental Design}{56}{section.4.3}%
-\contentsline {section}{\numberline {4d}Refactoring}{57}{section.4.4}%
-\contentsline {section}{\numberline {4e}Test-Driven Development}{58}{section.4.5}%
-\contentsline {section}{\numberline {4f}Unit Testing}{58}{section.4.6}%
-\contentsline {section}{\numberline {4g}Pair Programming}{59}{section.4.7}%
-\contentsline {section}{\numberline {4h}Code Review}{59}{section.4.8}%
-\contentsline {chapter}{\numberline {5}Conclusion and Group's Reflections}{61}{chapter.5}%
-\contentsline {section}{\numberline {5a}Working on a Common Project with Other Groups}{61}{section.5.1}%
-\contentsline {section}{\numberline {5b}Experience with the Development of the Group's Specific Set of Tasks}{62}{section.5.2}%
-\contentsline {section}{\numberline {5c}Specific contributions of each team member}{62}{section.5.3}%
-\contentsline {section}{\numberline {5d}Future actions to prevent problems and difficulties faced during the project}{64}{section.5.4}%
+\contentsline {section}{\numberline {3b}Sprint 2}{13}{section.3.2}%
+\contentsline {section}{\numberline {3c}Sprint 3}{17}{section.3.3}%
+\contentsline {section}{\numberline {3d}Sprint 4}{24}{section.3.4}%
+\contentsline {section}{\numberline {3e}Sprint 5}{31}{section.3.5}%
+\contentsline {chapter}{\numberline {4}Technical Details}{37}{chapter.4}%
+\contentsline {section}{\numberline {4a}Software Architecture and Design}{37}{section.4.1}%
+\contentsline {section}{\numberline {4b}Simple Design}{57}{section.4.2}%
+\contentsline {section}{\numberline {4c}Incremental Design}{57}{section.4.3}%
+\contentsline {section}{\numberline {4d}Refactoring}{58}{section.4.4}%
+\contentsline {section}{\numberline {4e}Test-Driven Development}{59}{section.4.5}%
+\contentsline {section}{\numberline {4f}Unit Testing}{59}{section.4.6}%
+\contentsline {section}{\numberline {4g}Pair Programming}{60}{section.4.7}%
+\contentsline {section}{\numberline {4h}Code Review}{60}{section.4.8}%
+\contentsline {chapter}{\numberline {5}Conclusion and Group's Reflections}{62}{chapter.5}%
+\contentsline {section}{\numberline {5a}Working on a Common Project with Other Groups}{62}{section.5.1}%
+\contentsline {section}{\numberline {5b}Experience with the Development of the Group's Specific Set of Tasks}{63}{section.5.2}%
+\contentsline {section}{\numberline {5c}Specific contributions of each team member}{63}{section.5.3}%
+\contentsline {section}{\numberline {5d}Future actions to prevent problems and difficulties faced during the project}{65}{section.5.4}%
