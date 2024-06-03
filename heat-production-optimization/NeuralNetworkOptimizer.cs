@@ -70,6 +70,9 @@ namespace heat_production_optimization
                         throw new Exception("Input not recognized");
                 }
 
+                CanMeetHeatDemand = ga.CanMeetHeatDemand;
+                if (!CanMeetHeatDemand) return;
+
                 TotalHeatProduction += bestSolution.TotalHeat;
                 TotalElectricityProduction += bestSolution.TotalElectricity;
                 Expenses += bestSolution.Expenses;
@@ -118,6 +121,7 @@ namespace heat_production_optimization
         private const int PopulationSize = 200;
         private const int MaxGenerations = 1000;
         private const int StagnationLimit = 100;
+        
 
         public List<IUnit> ProductionUnits { get; set; }
         public double HeatDemand { get; set; }
@@ -125,6 +129,7 @@ namespace heat_production_optimization
         public OptimizationOption Option { get; set; }
         public Dictionary<string, double> UnitPenalties { get; set; }
         public Dictionary<string, double> UnitIncentives { get; set; }
+        public bool CanMeetHeatDemand { get; set; }
 
         public GeneticAlgorithm(List<IUnit> productionUnits, double heatDemand, double electricityPrice, int seed, OptimizationOption option, Dictionary<string, double> unitPenalties, Dictionary<string, double> unitIncentives)
         {

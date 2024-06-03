@@ -139,7 +139,7 @@ namespace heat_production_optimization.Pages
 
             TotalHeatProduction = Math.Round(MainOptimizer.TotalHeatProduction);
             TotalElectricityProduction = Math.Round(MainOptimizer.TotalElectricityProduction);
-            Expenses = Math.Round(MainOptimizer.Expenses);
+            Expenses = Math.Abs(Math.Round(MainOptimizer.Expenses));
             ConsumptionOfGas = Math.Round(MainOptimizer.ConsumptionOfGas);
             ConsumptionOfOil = Math.Round(MainOptimizer.ConsumptionOfOil);
             ConsumptionOfElectricity = Math.Round(MainOptimizer.ConsumptionOfElectricity);
@@ -166,6 +166,7 @@ namespace heat_production_optimization.Pages
             RandomConsumptionOfOil = Math.Round(randomOptimizer.ConsumptionOfOil);
             RandomConsumptionOfElectricity = Math.Round(randomOptimizer.ConsumptionOfElectricity);
             RandomCO2Emission = Math.Round(randomOptimizer.ProducedCO2);
+
 
             if (!MainOptimizer.CanMeetHeatDemand)
             {
@@ -256,7 +257,6 @@ namespace heat_production_optimization.Pages
 
         public void OnPost()
         {
-            Console.WriteLine();
             if (BoilersChecked != null && BoilersChecked.Any())
             {
                 SelectedUnit = BoilersChecked.First();
@@ -272,7 +272,7 @@ namespace heat_production_optimization.Pages
 
                 _context.SaveChanges();
 
-                //OptimizationProcess();
+                OptimizationProcess();
             }
             else
             {
