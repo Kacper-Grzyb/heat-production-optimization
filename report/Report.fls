@@ -435,6 +435,7 @@ INPUT .\Resources\SP2-class-diagrams.pdf
 INPUT .\Resources\SP2-class-diagrams.pdf
 INPUT .\Resources\SP2-class-diagrams.pdf
 INPUT .\Resources\SP2-class-diagrams.pdf
+INPUT C:\Users\kgrzy\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmtt12.tfm
 INPUT Report.aux
 INPUT .\Report.out
 INPUT .\Report.out
@@ -450,3 +451,5 @@ INPUT C:\Users\kgrzy\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\c
 INPUT C:\Users\kgrzy\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmr12.pfb
 INPUT C:\Users\kgrzy\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmti12.pfb
 INPUT C:\Users\kgrzy\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmti12.pfb
+INPUT C:\Users\kgrzy\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmtt12.pfb
+INPUT C:\Users\kgrzy\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmtt12.pfb

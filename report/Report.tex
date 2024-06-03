@@ -615,6 +615,11 @@ None noted.
   \label{fig:S5Burndown}
 \end{figure}
 
+\section*{Notes}
+
+The rest of the project was finished before submission in a 6th Jira Sprint, that was outside of project requirements
+and Itslearning Sprint submission tasks, so we decided to omit it's inclusion here.
+
 
 % Chapter 4
 \chapter{Technical Details}
@@ -820,7 +825,13 @@ The main optimizer that the application uses is the KOptimizer, which is also re
 Greedy Algorithm implementation that judges which production units are the most cost effective for each timeframe, and uses 
 them to produce as much heat as possible until the demand is met. An outlier to the goal of our optimizer sprint was the Neural Network Optimizer,
 which was too good of an idea to pass up on, while begin to risky to be the only optimization algorithm, so we decided to use both.
-The explanation on how it is implemented can be found in \hyperref[sec:nnexplanation]{Chapter 5c}.
+The \textbf{Neural Network Optimizer} is a simple implementation of a Fitness Score Neural Network algorithm. It first creates a population of Individuals, where
+each Individual is randomly mutated in terms of the production unit activation percentage in order to explore new solutions. Then a Fitness Score is calculated 
+for each Individual based on how close it is to achieving the heat demand whilst keeping the costs low. Once the Individual with the highest Fitness Score is
+found, the process begins again, this time every Individual in the new population is a mutation of the best Fitness Score individual from the previous generation,
+and this is repeated a large amount of times until a satisfying result is achieved. Unfortunately there was not enough time
+for the group to implement optimizer settings for the \textbf{Neural Network Optimizer} component, so it is only able to optimize for costs and use the default production units
+but we think that even at it's most basic it adds value to the application.
 The Optimization Process has 3 main configuration options to consider before re-running it, which were also mentioned in \hyperref[sec:appflow]{Application Flow}.
 This configuration is handled in the OnPost method of ResultDataManagerModel. It is important to mention, that due to \underline{allowing}
 \underline{the user to choose their own production unit scenario}, each \textbf{Optimizer} implementation had to have a built-in check to
@@ -1026,8 +1037,7 @@ Usage Page}, and added optimization features for both costs and emissions. Addit
 the group log and occasionally provided feedback to the team.
 
 \subsection*{Leonardo}
-\label{sec:nnexplanation} %explain how the neural network optimizer works here
-Leonardo was part of the devleoper team and helped with different parts of the application. His biggest and most important contribution was the role of developing the \textbf{Neural Network} for the program.
+Leonardo was part of the devleoper team and helped with different parts of the application. His biggest and most important contribution was the role of developing the \textbf{Neural Network Optimizer} component for the program.
 Moreover, he worked on other parts that did not involve the code but helped with the general success of the project. 
 
 \subsection*{Kacper}
@@ -1055,5 +1065,11 @@ To avoid the problems and difficulties faced during this project, the following 
   \item \textbf{Increased Preparation:} Encourage team members to prepare for new concepts and tasks before meetings, ensuring everyone is well-informed and ready to contribute effectively.
 \end{itemize}
 
+\chapter*{Appendix}
+
+\begin{itemize}
+  \item Team's Github: \url{https://github.com/Kacper-Grzyb/heat-production-optimization.git}
+  \item Figma Prototype: \url{https://www.figma.com/design/mVm6JOdz3luFADmHjPqNgJ/UI-Design?node-id=0-1&t=DokOTTTC6V7hd7sF-1}
+\end{itemize}
 
 \end{document}
